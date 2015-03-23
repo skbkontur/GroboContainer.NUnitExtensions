@@ -138,7 +138,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
     public class BaseTest
     {
         [Injected]
-        private IService1 service1;
+        private readonly IService1 service1;
 
         [Test]
         public void Test()
