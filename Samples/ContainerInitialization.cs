@@ -11,6 +11,8 @@ using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers.ForSuite;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 using SKBKontur.Catalogue.NUnit.Extensions.TestEnvironments.PropertyInjection;
 
+#pragma warning disable 649
+
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
 {
     public interface IService1
