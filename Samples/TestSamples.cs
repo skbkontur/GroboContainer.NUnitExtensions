@@ -48,6 +48,17 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
         }
     }
 
+    [Ignore("todo [edi-test]: fails because of multiple [TestSuite] declarations")]
+    [EdiTestSuite("Sample")]
+    public class TF1_Derived : TF1
+    {
+        [Test]
+        public void Test()
+        {
+            Console.Out.WriteLine("TF1_Derived.Test: {0}", EdiTestContext.Current.SuiteDebugId());
+        }
+    }
+
     [EdiTestSuite(Suite.SampleTests), WithDebugLogPerSuite, WithDebugLogPerMethod]
     public class TF2
     {

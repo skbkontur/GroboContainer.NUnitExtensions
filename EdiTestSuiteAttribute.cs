@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 {
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = true)]
     public sealed class EdiTestSuiteAttribute : EdiTestSuiteAttributeBase
     {
         public EdiTestSuiteAttribute([NotNull] string suiteName = "DefaultSuite")

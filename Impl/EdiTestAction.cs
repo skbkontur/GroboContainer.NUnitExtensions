@@ -72,6 +72,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
             InvokeWrapperMethod(test.FindTearDownMethod(), testDetails.Fixture);
 
+            // todo [edi-test]: duplicate call fails when [TestSuite] is defined mltiple times for the given test
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
 
             var testName = testDetails.FullName;
