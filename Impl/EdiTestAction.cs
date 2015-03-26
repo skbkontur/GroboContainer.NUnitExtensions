@@ -11,6 +11,7 @@ using NUnit.Framework;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 using SKBKontur.Catalogue.NUnit.Extensions.TestEnvironments.ExceptionUtils;
 using SKBKontur.Catalogue.Objects;
+using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 {
@@ -104,12 +105,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             if(appDomainIsIntialized)
                 return;
-            AppDomain.CurrentDomain.DomainUnload += (sender, args) => TearDownSuiteWrappersAndContexts();
+            AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
             appDomainIsIntialized = true;
         }
 
-        private static void TearDownSuiteWrappersAndContexts()
+        private static void OnAppDomainUnload()
         {
+            Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptors.Select(x => x.Key)));
             foreach(var kvp in suiteDescriptors.OrderByDescending(x => x.Value.Order))
             {
                 var suiteName = kvp.Key;
@@ -118,6 +120,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
                 suiteDescriptor.SuiteContext.Destroy();
             }
+            Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
         }
 
         private static bool appDomainIsIntialized;
