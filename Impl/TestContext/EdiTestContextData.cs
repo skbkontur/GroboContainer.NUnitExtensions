@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using DiadocSys.Core.Json;
@@ -9,6 +10,7 @@ using JetBrains.Annotations;
 
 using SKBKontur.Catalogue.Objects;
 using SKBKontur.Catalogue.ServiceLib;
+using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
@@ -43,8 +45,20 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             object container;
             if(Items.TryGetValue(ContainerItemKey, out container))
             {
-                ((IContainer)container).Dispose();
+                TryDisposeContainer((IContainer)container);
                 Items.Remove(ContainerItemKey);
+            }
+        }
+
+        private void TryDisposeContainer([NotNull] IContainer container)
+        {
+            try
+            {
+                container.Dispose();
+            }
+            catch(Exception e)
+            {
+                Log.For(this).Fatal("Failed to dispose container", e);
             }
         }
 
