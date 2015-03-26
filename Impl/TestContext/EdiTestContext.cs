@@ -8,7 +8,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
     public class EdiTestContext : IEdiTestContext
     {
-        public EdiTestContext([NotNull] string testName, [NotNull] EdiTestSuiteContextData testSuiteContext, [NotNull] EdiTestMethodContextData testMethodContext)
+        public EdiTestContext([NotNull] string testName, [NotNull] IEdiTestContextData testSuiteContext, [NotNull] IEdiTestContextData testMethodContext)
         {
             this.testName = testName;
             this.testSuiteContext = testSuiteContext;
@@ -23,7 +23,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         {
             get
             {
-                var container = GetContextItem<IContainer>(EdiTestContextData.ContainerItemKey);
+                var container = TryGetContextItem<IContainer>(EdiTestContextDataExtensions.ContainerItemKey);
                 if(container == null)
                     throw new InvalidProgramStateException(string.Format("Container is not set for test context: {0}", ToString()));
                 return container;
@@ -31,12 +31,12 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         }
 
         [CanBeNull]
-        public TItem GetContextItem<TItem>([NotNull] string contextItemName)
+        public TItem TryGetContextItem<TItem>([NotNull] string contextItemName)
         {
             object item;
-            if(testMethodContext.Items.TryGetValue(contextItemName, out item))
+            if(testMethodContext.TryGetItem(contextItemName, out item))
                 return (TItem)item;
-            if(testSuiteContext.Items.TryGetValue(contextItemName, out item))
+            if(testSuiteContext.TryGetItem(contextItemName, out item))
                 return (TItem)item;
             return default(TItem);
         }
@@ -47,7 +47,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         }
 
         private readonly string testName;
-        private readonly EdiTestSuiteContextData testSuiteContext;
-        private readonly EdiTestMethodContextData testMethodContext;
+        private readonly IEdiTestContextData testSuiteContext;
+        private readonly IEdiTestContextData testMethodContext;
     }
 }

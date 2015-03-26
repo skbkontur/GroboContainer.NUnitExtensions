@@ -32,12 +32,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var suiteContext = suiteDescriptor.SuiteContext;
             foreach(var suiteWrapper in test.GetSuiteWrappers())
             {
-                var setUpedWrappersForSuite = setUpedSuiteWrappers.GetOrAdd(suiteName, x => new List<EdiTestSuiteWrapperAttribute>());
-                if(!setUpedWrappersForSuite.Contains(suiteWrapper))
-                {
-                    suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
-                    setUpedWrappersForSuite.Add(suiteWrapper);
-                }
+                if(suiteDescriptor.SetUpedSuiteWrappers.Contains(suiteWrapper))
+                    continue;
+                suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
+                suiteDescriptor.SetUpedSuiteWrappers.Add(suiteWrapper);
             }
 
             if(setUpedFixtures.Add(fixtureType))
@@ -78,6 +76,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var testName = testDetails.FullName;
             foreach(var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
                 methodWrapper.TearDown(testName, suiteDescriptor.SuiteContext, methodContext);
+
+            methodContext.Destroy();
         }
 
         private static void InvokeWrapperMethod([CanBeNull] MethodInfo wrapperMethod, [NotNull] object testFixture, params object[] @params)
@@ -104,42 +104,48 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             if(appDomainIsIntialized)
                 return;
-            AppDomain.CurrentDomain.DomainUnload += (sender, args) => TearDownSuiteWrappers();
+            AppDomain.CurrentDomain.DomainUnload += (sender, args) => TearDownSuiteWrappersAndContexts();
             appDomainIsIntialized = true;
         }
 
-        private static void TearDownSuiteWrappers()
+        private static void TearDownSuiteWrappersAndContexts()
         {
-            foreach(var kvp in setUpedSuiteWrappers)
+            foreach(var kvp in suiteDescriptors.OrderByDescending(x => x.Value.Order))
             {
                 var suiteName = kvp.Key;
-                var setUpedWrappersForSuite = kvp.Value;
-                foreach(var suiteWrapper in Enumerable.Reverse(setUpedWrappersForSuite))
-                {
-                    var suiteDescriptor = suiteDescriptors[suiteName];
+                var suiteDescriptor = kvp.Value;
+                foreach(var suiteWrapper in Enumerable.Reverse(suiteDescriptor.SetUpedSuiteWrappers))
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
-                }
+                suiteDescriptor.SuiteContext.Destroy();
             }
         }
 
         private static bool appDomainIsIntialized;
         private static readonly HashSet<Type> setUpedFixtures = new HashSet<Type>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
-        private static readonly ConcurrentDictionary<string, List<EdiTestSuiteWrapperAttribute>> setUpedSuiteWrappers = new ConcurrentDictionary<string, List<EdiTestSuiteWrapperAttribute>>();
 
         private class SuiteDescriptor
         {
             public SuiteDescriptor([NotNull] Assembly testAssembly)
             {
+                Order = order++;
                 TestAssembly = testAssembly;
                 SuiteContext = new EdiTestSuiteContextData();
+                SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
             }
+
+            public int Order { get; private set; }
 
             [NotNull]
             public Assembly TestAssembly { get; private set; }
 
             [NotNull]
             public EdiTestSuiteContextData SuiteContext { get; private set; }
+
+            [NotNull]
+            public List<EdiTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; private set; }
+
+            private static int order;
         }
     }
 }

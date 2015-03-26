@@ -63,7 +63,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
             this.p = p;
         }
 
-        public override void SetUp(string testSuiteName, Assembly testAssembly, EdiTestSuiteContextData testSuiteContext)
+        public override void SetUp(string testSuiteName, Assembly testAssembly, IEdiTestContextData testSuiteContext)
         {
             Console.Out.WriteLine("WithService2(p ={0}).SetUp()", p);
             testSuiteContext.GetContainer().Configurator.ForAbstraction<IService2>().UseInstances(new Service2(p));
@@ -84,7 +84,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
             this.p = p;
         }
 
-        public override void SetUp(string testSuiteName, Assembly testAssembly, EdiTestSuiteContextData testSuiteContext)
+        public override void SetUp(string testSuiteName, Assembly testAssembly, IEdiTestContextData testSuiteContext)
         {
             Console.Out.WriteLine("WithX(p={0}).SetUp()", p);
         }
@@ -105,7 +105,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
             this.p = p;
         }
 
-        public override void SetUp(string testSuiteName, Assembly testAssembly, EdiTestSuiteContextData testSuiteContext)
+        public override void SetUp(string testSuiteName, Assembly testAssembly, IEdiTestContextData testSuiteContext)
         {
             Console.Out.WriteLine("WithY(p={0}).SetUp()", p);
         }
@@ -126,7 +126,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
             this.p = p;
         }
 
-        public override void SetUp(string testSuiteName, Assembly testAssembly, EdiTestSuiteContextData testSuiteContext)
+        public override void SetUp(string testSuiteName, Assembly testAssembly, IEdiTestContextData testSuiteContext)
         {
             Console.Out.WriteLine("WithZ(p={0}).SetUp()", p);
         }

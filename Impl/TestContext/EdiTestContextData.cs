@@ -1,72 +1,96 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using DiadocSys.Core.Json;
-
-using GroboContainer.Core;
-using GroboContainer.Impl;
 
 using JetBrains.Annotations;
 
 using SKBKontur.Catalogue.Objects;
-using SKBKontur.Catalogue.ServiceLib;
 using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
-    public abstract class EdiTestContextData
+    public abstract class EdiTestContextData : IEdiTestContextData
     {
         protected EdiTestContextData()
         {
-            Items = new Dictionary<string, object>();
+            items = new Dictionary<string, ItemValueHolder>();
+        }
+
+        public void AddItem([NotNull] string itemName, [NotNull] object itemValue)
+        {
+            if(items.ContainsKey(itemName))
+                throw new InvalidProgramStateException(string.Format("Item with the same name is already added: {0}", itemName));
+            items.Add(itemName, new ItemValueHolder(items.Count, itemValue));
         }
 
         [NotNull]
-        public Dictionary<string, object> Items { get; private set; }
-
-        [NotNull]
-        public IContainer GetContainer()
+        public object GetItem([NotNull] string itemName)
         {
-            object container;
-            if(!Items.TryGetValue(ContainerItemKey, out container))
-                throw new InvalidProgramStateException("Container is not set");
-            return (IContainer)container;
+            object itemValue;
+            if(!TryGetItem(itemName, out itemValue) || itemValue == null)
+                throw new InvalidProgramStateException(string.Format("Item is not set: {0}", itemName));
+            return itemValue;
         }
 
-        public void InitContainer()
+        public bool TryGetItem([NotNull] string itemName, out object itemValue)
         {
-            if(Items.ContainsKey(ContainerItemKey))
-                throw new InvalidProgramStateException("Container is already created");
-            Items[ContainerItemKey] = new Container(new ContainerConfiguration(AssembliesLoader.Load()));
+            itemValue = null;
+            ItemValueHolder holder;
+            var result = items.TryGetValue(itemName, out holder);
+            if(result)
+                itemValue = holder.ItemValue;
+            return result;
         }
 
-        public void DestroyContainer()
+        public bool RemoveItem([NotNull] string itemName)
         {
-            object container;
-            if(Items.TryGetValue(ContainerItemKey, out container))
+            return items.Remove(itemName);
+        }
+
+        public void Destroy()
+        {
+            foreach(var kvp in items.OrderByDescending(x => x.Value.Order))
             {
-                TryDisposeContainer((IContainer)container);
-                Items.Remove(ContainerItemKey);
+                var disposableItem = kvp.Value.ItemValue as IDisposable;
+                if(disposableItem != null)
+                    TryDisposeItem(kvp.Key, disposableItem);
             }
+            items.Clear();
         }
 
-        private void TryDisposeContainer([NotNull] IContainer container)
+        private void TryDisposeItem([NotNull] string itemName, [NotNull] IDisposable disposableItem)
         {
             try
             {
-                container.Dispose();
+                disposableItem.Dispose();
             }
             catch(Exception e)
             {
-                Log.For(this).Fatal("Failed to dispose container", e);
+                Log.For(this).Fatal(string.Format("Failed to dispose item: {0}", itemName), e);
             }
         }
 
         public override string ToString()
         {
-            return string.Format("{0}", Items.ToPrettyJson());
+            return string.Format("{0}", items.ToPrettyJson());
         }
 
-        public const string ContainerItemKey = "__Container";
+        private readonly Dictionary<string, ItemValueHolder> items;
+
+        private class ItemValueHolder
+        {
+            public ItemValueHolder(int order, [NotNull] object itemValue)
+            {
+                Order = order;
+                ItemValue = itemValue;
+            }
+
+            public int Order { get; private set; }
+
+            [NotNull]
+            public object ItemValue { get; private set; }
+        }
     }
 }

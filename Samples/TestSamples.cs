@@ -121,7 +121,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
     {
         public static Guid SuiteDebugId(this IEdiTestContext ctx)
         {
-            return ctx.GetContextItem<Guid>("SuiteDebugId");
+            return ctx.TryGetContextItem<Guid>("SuiteDebugId");
         }
     }
 }
