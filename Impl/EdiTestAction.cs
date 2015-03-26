@@ -111,8 +111,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static void OnAppDomainUnload()
         {
-            Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptors.Select(x => x.Key)));
-            foreach(var kvp in suiteDescriptors.OrderByDescending(x => x.Value.Order))
+            var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Order).ToList();
+            Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptorsInOrderOfDestruction.Select(x => x.Key)));
+            foreach(var kvp in suiteDescriptorsInOrderOfDestruction)
             {
                 var suiteName = kvp.Key;
                 var suiteDescriptor = kvp.Value;
@@ -120,6 +121,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
                 suiteDescriptor.SuiteContext.Destroy();
             }
+            suiteDescriptors.Clear();
             Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
         }
 
