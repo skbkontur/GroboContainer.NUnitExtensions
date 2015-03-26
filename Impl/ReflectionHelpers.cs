@@ -154,8 +154,18 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         private static List<TAttribute> GetAttributesForTestFixture<TAttribute>([NotNull] Type fixtureType)
         {
-            return GetAttributesForType<TAttribute>(fixtureType)
-                .Concat(fixtureType.GetInterfaces().SelectMany(GetAttributesForType<TAttribute>))
+            return GetAllTypesToSearchForAttributes(fixtureType).SelectMany(GetAttributesForType<TAttribute>).ToList();
+        }
+
+        [NotNull]
+        private static List<Type> GetAllTypesToSearchForAttributes([CanBeNull] Type type)
+        {
+            if(type == null)
+                return new List<Type>();
+            return new[] {type}
+                .Union(type.GetInterfaces())
+                .Union(GetAllTypesToSearchForAttributes(type.BaseType))
+                .Distinct()
                 .ToList();
         }
 
