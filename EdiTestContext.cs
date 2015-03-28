@@ -2,9 +2,10 @@
 
 using JetBrains.Annotations;
 
+using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 using SKBKontur.Catalogue.Objects;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
+namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 {
     public class EdiTestContext : IEdiTestContext
     {

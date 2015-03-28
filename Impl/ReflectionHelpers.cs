@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting;
-using SKBKontur.Catalogue.NUnit.Extensions.TestEnvironments.PropertyInjection;
 using SKBKontur.Catalogue.Objects;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl

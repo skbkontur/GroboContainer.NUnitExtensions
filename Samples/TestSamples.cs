@@ -2,8 +2,6 @@
 
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Samples
 {
     [EdiTestSuite("Sample"), WithDebugLogPerSuite, WithDebugLogPerMethod]

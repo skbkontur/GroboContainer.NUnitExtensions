@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-using SKBKontur.Catalogue.NUnit.Extensions.TestEnvironments.ExceptionUtils;
 using SKBKontur.Catalogue.Objects;
 using SKBKontur.Catalogue.ServiceLib.Logging;
 
