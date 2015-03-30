@@ -14,7 +14,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
         {
             var result = new TopSorter<T>().Run(nodes);
             if (result.Cycles.Any())
-                throw new InvalidProgramStateException(string.Format("At least one cycle was detected in: {0}", string.Join(", ", nodes)));
+                throw new InvalidProgramStateException(string.Format("At least one cycle was detected in: {0}; First cycle: {1}", string.Join(", ", nodes), string.Join(", ", result.Cycles.First())));
             return result.SortedNodes;
         }
     }
