@@ -78,7 +78,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             foreach(var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
                 methodWrapper.TearDown(testName, suiteDescriptor.SuiteContext, methodContext);
 
-            methodContext.Destroy();
+            AggregateException error;
+            if(!methodContext.TryDestroy(out error))
+                throw error;
         }
 
         private static void InvokeWrapperMethod([CanBeNull] MethodInfo wrapperMethod, [NotNull] object testFixture, params object[] @params)
@@ -119,7 +121,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 var suiteDescriptor = kvp.Value;
                 foreach(var suiteWrapper in Enumerable.Reverse(suiteDescriptor.SetUpedSuiteWrappers))
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
-                suiteDescriptor.SuiteContext.Destroy();
+                AggregateException error;
+                if(!suiteDescriptor.SuiteContext.TryDestroy(out error))
+                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to destroy suite context for: {0}", suiteName), error);
             }
             suiteDescriptors.Clear();
             Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");

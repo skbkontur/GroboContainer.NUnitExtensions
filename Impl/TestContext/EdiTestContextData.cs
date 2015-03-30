@@ -7,7 +7,6 @@ using DiadocSys.Core.Json;
 using JetBrains.Annotations;
 
 using SKBKontur.Catalogue.Objects;
-using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
@@ -49,26 +48,41 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             return items.Remove(itemName);
         }
 
-        public void Destroy()
+        public bool TryDestroy(out AggregateException aggregateError)
         {
+            var errors = new List<InvalidProgramStateException>();
             foreach(var kvp in items.OrderByDescending(x => x.Value.Order))
             {
                 var disposableItem = kvp.Value.ItemValue as IDisposable;
                 if(disposableItem != null)
-                    TryDisposeItem(kvp.Key, disposableItem);
+                {
+                    InvalidProgramStateException error;
+                    if(!TryDisposeItem(kvp.Key, disposableItem, out error))
+                        errors.Add(error);
+                }
             }
             items.Clear();
+            if(errors.Any())
+            {
+                aggregateError = new AggregateException("Failed to dispose at least one of context items", errors);
+                return false;
+            }
+            aggregateError = null;
+            return true;
         }
 
-        private void TryDisposeItem([NotNull] string itemName, [NotNull] IDisposable disposableItem)
+        private static bool TryDisposeItem([NotNull] string itemName, [NotNull] IDisposable disposableItem, out InvalidProgramStateException error)
         {
+            error = null;
             try
             {
                 disposableItem.Dispose();
+                return true;
             }
             catch(Exception e)
             {
-                Log.For(this).Fatal(string.Format("Failed to dispose item: {0}", itemName), e);
+                error = new InvalidProgramStateException(string.Format("Failed to dispose item: {0}", itemName), e);
+                return false;
             }
         }
 
