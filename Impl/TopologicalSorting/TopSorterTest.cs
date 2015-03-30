@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting
 {
     [TestFixture]
-    public class TopSortTest
+    public class TopSorterTest
     {
         [Test]
         public void Test1()
@@ -17,7 +17,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n1.DependsOn(n2);
             n2.DependsOn(n1);
 
-            var sortResult = TopSort.Run(new[] {n1, n2});
+            var sortResult = RunTopSorter(new[] { n1, n2 });
             Assert.AreEqual(sortResult.Cycles[0][0], n2);
             Assert.AreEqual(sortResult.Cycles[0][1], n1);
             Assert.AreEqual(sortResult.Cycles[0].Count, 2);
@@ -34,7 +34,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n1.DependsOn(n2);
             n2.DependsOn(n3);
 
-            var sortResult = TopSort.Run(new[] {n1, n2, n3});
+            var sortResult = RunTopSorter(new[] { n1, n2, n3 });
             Assert.AreEqual(sortResult.Cycles.Count, 0);
             Assert.AreEqual(sortResult.SortedNodes[0], n3);
             Assert.AreEqual(sortResult.SortedNodes[1], n2);
@@ -51,7 +51,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n1.DependsOn(n2);
             n2.DependsOn(n3);
 
-            var sortResult = TopSort.Run(new[] {n3, n2, n1});
+            var sortResult = RunTopSorter(new[] { n3, n2, n1 });
             Assert.AreEqual(sortResult.Cycles.Count, 0);
             CheckDependencies(sortResult.SortedNodes);
             Assert.AreEqual(sortResult.SortedNodes.Count, 3);
@@ -66,7 +66,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n2.DependsOn(n1);
             n3.DependsOn(n2);
             n1.DependsOn(n3);
-            var result = TopSort.Run(new[] {n1, n2, n3});
+            var result = RunTopSorter(new[] { n1, n2, n3 });
             Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n2, n3, n1}));
         }
 
@@ -87,7 +87,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n11.DependsOn(n2, n9, n10);
             n8.DependsOn(n9);
 
-            var result = TopSort.Run(new[] {n2, n3, n5, n7, n8, n9, n10, n11});
+            var result = RunTopSorter(new[] { n2, n3, n5, n7, n8, n9, n10, n11 });
             Assert.That(result.Cycles, Is.Empty);
             Assert.That(result.SortedNodes, Is.EqualTo(new[] {n2, n9, n8, n3, n10, n11, n5, n7}));
             CheckDependencies(result.SortedNodes);
@@ -106,7 +106,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
             n4.DependsOn(n3);
             n4.DependsOn(n5);
 
-            var sortResult = TopSort.Run(new[] {n1, n2, n3, n4, n5});
+            var sortResult = RunTopSorter(new[] { n1, n2, n3, n4, n5 });
             CheckDependencies(sortResult.SortedNodes);
         }
 
@@ -139,11 +139,16 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
 
                 var testDependencyNodes = new[] {n1, n2, n3, n4, n5, n6, n7, n8, n9};
                 testDependencyNodes = SortRandomly(testDependencyNodes).ToArray();
-                var sortResult = TopSort.Run(testDependencyNodes);
+                var sortResult = RunTopSorter(testDependencyNodes);
                 var sortedNodes = sortResult.SortedNodes;
                 Assert.AreEqual(9, sortedNodes.Count);
                 CheckDependencies(sortedNodes);
             }
+        }
+
+        public static TopSortResult<string> RunTopSorter(ICollection<DependencyNode<string>> nodes)
+        {
+            return new TopSorter<string>().Run(nodes);
         }
 
         private static IEnumerable<T> SortRandomly<T>(IEnumerable<T> enumerable)

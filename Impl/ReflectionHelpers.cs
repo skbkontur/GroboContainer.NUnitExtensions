@@ -148,7 +148,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     node.DependsOn(nodeDependency);
                 }
             }
-            return TopSort.RunAndThrowIfCycleIsDetected(nodes.Values).Select(x => x.Payload).ToList();
+            return nodes.Values.OrderTopologically().Select(x => x.Payload).ToList();
         }
 
         [NotNull]
