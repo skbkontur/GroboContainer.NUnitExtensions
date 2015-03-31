@@ -12,6 +12,16 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
     public class TopSorterTest
     {
         [Test]
+        public void Loop()
+        {
+            var n1 = Node.Create("n1");
+            n1.DependsOn(n1);
+            var result = RunTopSorter(new[] { n1 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n1 }));
+            AssertTopologicalOrder(result.SortedNodes);
+        }
+
+        [Test]
         public void Line()
         {
             var n1 = Node.Create("n1");
@@ -49,7 +59,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
         }
 
         [Test]
-        public void Loop()
+        public void CycleAndRoot()
         {
             var n1 = Node.Create("1");
             var n2 = Node.Create("2");
@@ -110,6 +120,31 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
             Assert.That(result.Cycles[0], Is.EqualTo(new[] { n2, n3, n1 }));
             Assert.That(result.Cycles[1], Is.EqualTo(new[] { n6, n4, n5, n7 }));
             Assert.That(result.SortedNodes, Is.Empty);
+        }
+
+        [Test]
+        public void SeveralConnectedComponents()
+        {
+            var n1 = Node.Create("n1");
+            var n2 = Node.Create("n2");
+            n1.DependsOn(n2);
+            n2.DependsOn(n1);
+            var n3 = Node.Create("n3");
+            var n4 = Node.Create("n4");
+            var n5 = Node.Create("n5");
+            var n6 = Node.Create("n6");
+            n3.DependsOn(n4);
+            n3.DependsOn(n5);
+            n4.DependsOn(n6);
+            n5.DependsOn(n6);
+            var n7 = Node.Create("n7");
+            var n8 = Node.Create("n8");
+            var n9 = Node.Create("n9");
+            n7.DependsOn(n8);
+            n8.DependsOn(n9);
+            var result = RunTopSorter(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n2, n1 }));
+            Assert.That(result.SortedNodes, Is.EqualTo(new[] { n6, n4, n5, n3, n9, n8, n7 }));
         }
 
         [Test]
