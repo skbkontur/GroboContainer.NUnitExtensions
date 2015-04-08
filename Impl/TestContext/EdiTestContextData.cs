@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using DiadocSys.Core.Json;
-
 using JetBrains.Annotations;
 
 using SKBKontur.Catalogue.Objects;
+using SKBKontur.Catalogue.Objects.Json;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
