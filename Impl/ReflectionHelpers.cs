@@ -82,15 +82,19 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [CanBeNull]
         private static MethodInfo FindSingleMethodMarkedWith<TAttribute>([NotNull] Type fixtureType)
         {
-            return fixtureType
+            var methods = fixtureType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .SingleOrDefault(x => x.GetCustomAttributes(typeof(TAttribute), true).Any());
+                .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
+                .ToList();
+            if (methods.Count > 1)
+                throw new InvalidProgramStateException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
+            return methods.SingleOrDefault();
         }
 
         public static void EnsureNunitAttributesAbscence([NotNull] this MethodInfo test)
         {
             var fixtureType = GetFixtureType(test);
-            if(nunitAttributesPresence.GetOrAdd(fixtureType, x => IsMarkedWithNunitAttribute(x) || HasMethodMarkedWithNunitAttribute(x)))
+            if(nunitAttributesPresence.GetOrAdd(fixtureType, x => IsMarkedWithNUnitTestFixtureAttribute(x) || HasMethodMarkedWithNUnitAttribute(x)))
                 throw new InvalidProgramStateException(string.Format("Prohibited NUnit attributes (TestFixture, {0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
         }
 
@@ -109,12 +113,12 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 .ToList();
         }
 
-        private static bool IsMarkedWithNunitAttribute([NotNull] Type fixtureType)
+        private static bool IsMarkedWithNUnitTestFixtureAttribute([NotNull] Type fixtureType)
         {
             return GetAttributesForTestFixture<TestFixtureAttribute>(fixtureType).Any();
         }
 
-        private static bool HasMethodMarkedWithNunitAttribute([NotNull] Type fixtureType)
+        private static bool HasMethodMarkedWithNUnitAttribute([NotNull] Type fixtureType)
         {
             return forbiddenNunitMethodAttributes.Any(a => fixtureType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Any(m => IsMarkedWithAttribute(m, a)));
         }

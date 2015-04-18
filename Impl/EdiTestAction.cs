@@ -45,7 +45,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 if(fixtureSetUpMethod != null)
                 {
                     if(suiteName != fixtureType.FullName)
-                        throw new InvalidProgramStateException(string.Format("EdiTestFixtureSetUp method is only allowed inside EdiTestFixure suite. Test: {0}", test.GetMethodName()));
+                        throw new InvalidProgramStateException(string.Format("EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {0}", test.GetMethodName()));
                     InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext.GetContainer());
                 }
             }
