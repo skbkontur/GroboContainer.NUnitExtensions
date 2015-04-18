@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
+namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Impl
 {
     [TestFixture]
     public class TopSorterTest
