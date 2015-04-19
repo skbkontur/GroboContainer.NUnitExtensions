@@ -8,7 +8,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
     public class DerivedTestClass_WithItsOwnEdiTestSuiteAttribute_Test : TestBaseWithEdiTestSuiteAttribute
     {
         [Test]
-        [Ignore("todo [edi-test]: Intentionally fails with 'There are multiple suite names (BaseSuite, BaseSuite) defined for ...' error")]
+        [Ignore("Intentionally fails with 'There are multiple suite names (BaseSuite, BaseSuite) defined for ...' error")]
         public void Test()
         {
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("BaseSuite"));

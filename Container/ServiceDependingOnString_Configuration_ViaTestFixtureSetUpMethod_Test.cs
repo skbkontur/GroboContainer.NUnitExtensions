@@ -18,12 +18,6 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
             container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString("2"));
         }
 
-        [EdiSetUp]
-        public void SetUp()
-        {
-            serviceDependingOnString = EdiTestContext.Current.Container.Get<IServiceDependingOnString>();
-        }
-
         [Test]
         public void Test01()
         {
@@ -53,11 +47,9 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
         }
 
-        private IServiceDependingOnString serviceDependingOnString;
 #pragma warning disable 649
-        // todo [edi-test]: inject fields after TestFixtureSetUp() call
-        //[Injected]
-        //private readonly IServiceDependingOnString serviceDependingOnString;
+        [Injected]
+        private readonly IServiceDependingOnString serviceDependingOnString;
 #pragma warning restore 649
     }
 }
