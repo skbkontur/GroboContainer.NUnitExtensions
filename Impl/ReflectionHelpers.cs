@@ -51,14 +51,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         public static List<EdiTestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
         {
-            // todo [edi-test]: ignore / forbid suite wrappers declared at method level
-            return suiteWrappersForTest.GetOrAdd(test, x => GetWrappers(x, suiteWrappersForFixtureCache, suiteWrappersForWrapperCache));
+            return suiteWrappersForTest.GetOrAdd(test, x => GetWrappers(x, suiteWrappersForFixtureCache, suiteWrappersForWrapperCache, forbidMethodLevelDeclarations: true));
         }
 
         [NotNull]
         public static List<EdiTestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
         {
-            return methodWrappersForTest.GetOrAdd(test, x => GetWrappers(x, methodWrappersForFixtureCache, methodWrappersForWrapperCache));
+            return methodWrappersForTest.GetOrAdd(test, x => GetWrappers(x, methodWrappersForFixtureCache, methodWrappersForWrapperCache, forbidMethodLevelDeclarations: false));
         }
 
         [CanBeNull]
@@ -129,11 +128,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         }
 
         [NotNull]
-        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForFixtureCache, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForWrapperCache) where TWrapper : EdiTestWrapperAttribute
+        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForFixtureCache, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForWrapperCache, bool forbidMethodLevelDeclarations) where TWrapper : EdiTestWrapperAttribute
         {
             var fixtureType = GetFixtureType(test);
             var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<TWrapper>);
             var wrappersForMethod = GetAttributesForMethod<TWrapper>(test);
+            if(forbidMethodLevelDeclarations && wrappersForMethod.Any())
+                throw new InvalidProgramStateException(string.Format("Suite wrappers ({0}) cannot be declared at method level for: {1}", string.Join(", ", wrappersForMethod.Select(x => x.GetType().Name)), fixtureType.FullName));
             var visitedWrappers = new HashSet<TWrapper>();
             var nodes = new ConcurrentDictionary<TWrapper, DependencyNode<TWrapper>>();
             var queue = new Queue<TWrapper>(wrappersForMethod.Concat(wrappersForFixture));
@@ -173,9 +174,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         }
 
         [NotNull]
-        private static IEnumerable<TAttribute> GetAttributesForMethod<TAttribute>([NotNull] MethodInfo method)
+        private static List<TAttribute> GetAttributesForMethod<TAttribute>([NotNull] MethodInfo method)
         {
-            return method.GetCustomAttributes(typeof(TAttribute), true).Cast<TAttribute>();
+            return method.GetCustomAttributes(typeof(TAttribute), true).Cast<TAttribute>().ToList();
         }
 
         [NotNull]
