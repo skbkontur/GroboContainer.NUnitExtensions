@@ -12,19 +12,19 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             EdiTestMachineryTrace.Log("Test01()");
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithDuplicateWrappersSuite"));
-            AssertEdiTestMachineryTrace(new[]
+            Assert.That(EdiTestMachineryTrace.TraceLines, Is.EquivalentTo(new[]
                 {
                     string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    "WithX(p=0).SetUp()",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    "WithX(p=0).SetUp()",
                     string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
-                    "AndU(s=11).SetUp()",
                     "AndU(s=10).SetUp()",
+                    "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "Test01()",
-                });
+                }));
         }
     }
 }
