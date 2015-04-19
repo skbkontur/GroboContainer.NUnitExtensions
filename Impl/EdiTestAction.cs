@@ -40,7 +40,6 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
             if(setUpedFixtures.Add(fixtureType))
             {
-                InjectFixtureFields(suiteContext, testFixture);
                 var fixtureSetUpMethod = test.FindFixtureSetUpMethod();
                 if(fixtureSetUpMethod != null)
                 {
@@ -48,6 +47,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                         throw new InvalidProgramStateException(string.Format("EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {0}", test.GetMethodName()));
                     InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext.GetContainer());
                 }
+                InjectFixtureFields(suiteContext, testFixture);
             }
 
             var testName = testDetails.FullName;
