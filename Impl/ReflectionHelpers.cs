@@ -85,7 +85,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
                 .ToList();
-            if (methods.Count > 1)
+            if(methods.Count > 1)
                 throw new InvalidProgramStateException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
             return methods.SingleOrDefault();
         }
