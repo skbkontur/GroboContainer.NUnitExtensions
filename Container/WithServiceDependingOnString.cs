@@ -1,6 +1,6 @@
 using System.Reflection;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers.ForSuite;
+using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 

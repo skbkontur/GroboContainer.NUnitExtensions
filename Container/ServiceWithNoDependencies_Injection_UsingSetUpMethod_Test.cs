@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers.ForSuite;
+using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
