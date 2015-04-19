@@ -2,7 +2,7 @@ using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
 {
-    public abstract class TestBaseWithSetUpMethod
+    public abstract class TestBaseWithSetUpMethod : EdiTestMachineryTestBase
     {
         [EdiSetUp]
         public void TestBase_SetUp()
