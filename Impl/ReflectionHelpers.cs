@@ -35,7 +35,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             return suiteNamesCache.GetOrAdd(test.GetFixtureType(), fixtureType =>
                 {
-                    var suiteNames = GetAttributesForTestFixture<EdiTestSuiteAttribute>(fixtureType).Select(x => x.SuiteName).Distinct().ToList();
+                    var suiteNames = GetAttributesForTestFixture<EdiTestSuiteAttribute>(fixtureType).Select(x => x.SuiteName).ToList();
                     var testFixtureAttribute = GetAttributesForType<EdiTestFixtureAttribute>(fixtureType).SingleOrDefault();
                     if(testFixtureAttribute != null)
                         suiteNames.Add(fixtureType.FullName);
