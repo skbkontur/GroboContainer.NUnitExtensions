@@ -1,13 +1,10 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 using JetBrains.Annotations;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 {
-    [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class EdiTestWrapperAttribute : Attribute, IEquatable<EdiTestWrapperAttribute>
     {
         public bool Equals([CanBeNull] EdiTestWrapperAttribute other)
