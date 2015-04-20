@@ -180,7 +180,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         private static IEnumerable<TAttribute> GetAttributesForType<TAttribute>([NotNull] Type type)
         {
-            return type.GetCustomAttributes(typeof(TAttribute), false).Cast<TAttribute>();
+            return type.GetCustomAttributes(typeof(TAttribute), true).Cast<TAttribute>();
         }
 
         private static readonly Type[] forbiddenNunitMethodAttributes =
