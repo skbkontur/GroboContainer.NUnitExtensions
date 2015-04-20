@@ -7,34 +7,34 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
     public static class EdiTestContextHolder
     {
         [NotNull]
-        public static EdiTestContext GetCurrentTestContext()
+        public static EdiTestContext GetCurrentContext()
         {
-            if(currentTestMethodContext == null)
+            if(currentMethodContext == null)
                 throw new InvalidProgramStateException("Current test context is not set");
-            return new EdiTestContext(currentTestName, currentTestSuiteContext, currentTestMethodContext);
+            return new EdiTestContext(currentTestName, currentSuiteContext, currentMethodContext);
         }
 
-        public static void SetCurrentTestContext([NotNull] string testName, [NotNull] EdiTestSuiteContextData testSuiteContext, [NotNull] EdiTestMethodContextData testMethodContext)
+        public static void SetCurrentContext([NotNull] string testName, [NotNull] EdiTestSuiteContextData suiteContext, [NotNull] EdiTestMethodContextData methodContext)
         {
             currentTestName = testName;
-            currentTestSuiteContext = testSuiteContext;
-            currentTestMethodContext = testMethodContext;
+            currentSuiteContext = suiteContext;
+            currentMethodContext = methodContext;
         }
 
         [NotNull]
         public static EdiTestMethodContextData ResetCurrentTestContext()
         {
-            var testMethodContext = currentTestMethodContext;
-            if(testMethodContext == null)
+            var methodContext = currentMethodContext;
+            if(methodContext == null)
                 throw new InvalidProgramStateException("Current test context is not set");
-            currentTestMethodContext = null;
-            currentTestSuiteContext = null;
+            currentMethodContext = null;
+            currentSuiteContext = null;
             currentTestName = null;
-            return testMethodContext;
+            return methodContext;
         }
 
         private static string currentTestName;
-        private static EdiTestSuiteContextData currentTestSuiteContext;
-        private static EdiTestMethodContextData currentTestMethodContext;
+        private static EdiTestSuiteContextData currentSuiteContext;
+        private static EdiTestMethodContextData currentMethodContext;
     }
 }

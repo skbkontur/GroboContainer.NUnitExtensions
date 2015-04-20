@@ -9,7 +9,6 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
         [NotNull]
         IContainer Container { get; }
 
-        [CanBeNull]
-        TItem TryGetContextItem<TItem>([NotNull] string contextItemName);
+        bool TryGetContextItem([NotNull] string itemName, out object itemValue);
     }
 }

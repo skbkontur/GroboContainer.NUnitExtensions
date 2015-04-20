@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using GroboContainer.Core;
+using GroboContainer.Impl;
+
 using JetBrains.Annotations;
 
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 using SKBKontur.Catalogue.Objects;
+using SKBKontur.Catalogue.ServiceLib;
 using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
@@ -45,17 +49,17 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 {
                     if(suiteName != fixtureType.FullName)
                         throw new InvalidProgramStateException(string.Format("EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {0}", test.GetMethodName()));
-                    InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext.GetContainer());
+                    InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
                 }
                 InjectFixtureFields(suiteContext, testFixture);
             }
 
             var testName = testDetails.FullName;
-            var methodContext = new EdiTestMethodContextData();
+            var methodContext = new EdiTestMethodContextData(suiteDescriptor.LazyContainer);
             foreach(var methodWrapper in test.GetMethodWrappers())
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
 
-            EdiTestContextHolder.SetCurrentTestContext(testName, suiteContext, methodContext);
+            EdiTestContextHolder.SetCurrentContext(testName, suiteContext, methodContext);
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
         }
@@ -98,7 +102,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         private static void InjectFixtureFields([NotNull] EdiTestSuiteContextData suiteContext, [NotNull] object testFixture)
         {
             foreach(var fieldInfo in testFixture.GetType().GetFieldsForInjection())
-                fieldInfo.SetValue(testFixture, suiteContext.GetContainer().Get(fieldInfo.FieldType));
+                fieldInfo.SetValue(testFixture, suiteContext.Container.Get(fieldInfo.FieldType));
         }
 
         private static void EnsureAppDomainIntialization()
@@ -119,9 +123,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 var suiteDescriptor = kvp.Value;
                 foreach(var suiteWrapper in Enumerable.Reverse(suiteDescriptor.SetUpedSuiteWrappers))
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
-                AggregateException error;
-                if(!suiteDescriptor.SuiteContext.TryDestroy(out error))
-                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to destroy suite context for: {0}", suiteName), error);
+                suiteDescriptor.Destroy(suiteName);
             }
             suiteDescriptors.Clear();
             Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
@@ -137,7 +139,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             {
                 Order = order++;
                 TestAssembly = testAssembly;
-                SuiteContext = new EdiTestSuiteContextData();
+                LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load())));
+                SuiteContext = new EdiTestSuiteContextData(LazyContainer);
                 SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
             }
 
@@ -147,10 +150,30 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             public Assembly TestAssembly { get; private set; }
 
             [NotNull]
+            public Lazy<IContainer> LazyContainer { get; private set; }
+
+            [NotNull]
             public EdiTestSuiteContextData SuiteContext { get; private set; }
 
             [NotNull]
             public List<EdiTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; private set; }
+
+            public void Destroy([NotNull] string suiteName)
+            {
+                AggregateException error;
+                if(!SuiteContext.TryDestroy(out error))
+                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to destroy suite context for: {0}", suiteName), error);
+                if(!LazyContainer.IsValueCreated)
+                    return;
+                try
+                {
+                    LazyContainer.Value.Dispose();
+                }
+                catch(Exception e)
+                {
+                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to dispose container for: {0}", suiteName), e);
+                }
+            }
 
             private static int order;
         }

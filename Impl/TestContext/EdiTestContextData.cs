@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using GroboContainer.Core;
+
 using JetBrains.Annotations;
 
 using SKBKontur.Catalogue.Objects;
@@ -9,30 +11,18 @@ using SKBKontur.Catalogue.Objects.Json;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
-    public abstract class EdiTestContextData : IEdiTestContextData
+    public abstract class EdiTestContextData : IEditableEdiTestContext
     {
-        protected EdiTestContextData()
+        protected EdiTestContextData([NotNull] Lazy<IContainer> lazyContainer)
         {
+            this.lazyContainer = lazyContainer;
             items = new Dictionary<string, ItemValueHolder>();
         }
 
-        public void AddItem([NotNull] string itemName, [NotNull] object itemValue)
-        {
-            if(items.ContainsKey(itemName))
-                throw new InvalidProgramStateException(string.Format("Item with the same name is already added: {0}", itemName));
-            items.Add(itemName, new ItemValueHolder(items.Count, itemValue));
-        }
-
         [NotNull]
-        public object GetItem([NotNull] string itemName)
-        {
-            object itemValue;
-            if(!TryGetItem(itemName, out itemValue) || itemValue == null)
-                throw new InvalidProgramStateException(string.Format("Item is not set: {0}", itemName));
-            return itemValue;
-        }
+        public IContainer Container { get { return lazyContainer.Value; } }
 
-        public bool TryGetItem([NotNull] string itemName, out object itemValue)
+        public bool TryGetContextItem([NotNull] string itemName, out object itemValue)
         {
             itemValue = null;
             ItemValueHolder holder;
@@ -40,6 +30,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             if(result)
                 itemValue = holder.ItemValue;
             return result;
+        }
+
+        public void AddItem([NotNull] string itemName, [NotNull] object itemValue)
+        {
+            if(items.ContainsKey(itemName))
+                throw new InvalidProgramStateException(string.Format("Item with the same name is already added: {0}", itemName));
+            items.Add(itemName, new ItemValueHolder(items.Count, itemValue));
         }
 
         public bool RemoveItem([NotNull] string itemName)
@@ -90,6 +87,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             return string.Format("{0}", items.ToPrettyJson());
         }
 
+        private readonly Lazy<IContainer> lazyContainer;
         private readonly Dictionary<string, ItemValueHolder> items;
 
         private class ItemValueHolder
