@@ -12,17 +12,17 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
 {
     public class WithDebugLogPerSuite : EdiTestSuiteWrapperAttribute
     {
-        public override sealed void SetUp([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEdiTestContextData suiteContext)
+        public override sealed void SetUp([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEditableEdiTestContext suiteContext)
         {
             suiteContext.AddItem("SuiteDebugId", Guid.NewGuid());
             suiteContext.AddItem("TestSuiteName", suiteName);
             EdiTestMachineryTrace.Log(string.Format("SuiteWrapper.SetUp() for {0}", suiteName), suiteContext);
         }
 
-        public override sealed void TearDown([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEdiTestContextData suiteContext)
+        public override sealed void TearDown([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEditableEdiTestContext suiteContext)
         {
             EdiTestMachineryTrace.Log(string.Format("SuiteWrapper.TearDown() for {0}", suiteName), suiteContext);
-            Assert.That(suiteName, Is.EqualTo(suiteContext.GetItem("TestSuiteName")));
+            Assert.That(suiteName, Is.EqualTo(suiteContext.GetContextItem<string>("TestSuiteName")));
             Assert.That(suiteContext.RemoveItem("TestSuiteName"), Is.True);
         }
     }

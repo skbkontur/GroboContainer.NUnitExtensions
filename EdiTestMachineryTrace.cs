@@ -7,7 +7,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
 {
     public static class EdiTestMachineryTrace
     {
-        public static void Log(string message, IEdiTestContextData context = null)
+        public static void Log(string message, IEditableEdiTestContext context = null)
         {
             TraceLines.Add(message);
             Console.Out.WriteLine(message);

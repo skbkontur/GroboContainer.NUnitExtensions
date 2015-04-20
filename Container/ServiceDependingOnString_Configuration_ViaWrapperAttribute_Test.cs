@@ -1,11 +1,10 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
 {
-    [EdiTestFixture, WithContainerPerSuite, WithServiceDependingOnString("1")]
+    [EdiTestFixture, WithServiceDependingOnString("1")]
     public class ServiceDependingOnString_Configuration_ViaWrapperAttribute_Test : EdiTestMachineryTestBase
     {
         [Test]

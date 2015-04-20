@@ -1,21 +1,18 @@
-using GroboContainer.Core;
-
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
+using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
 {
-    [EdiTestFixture, WithContainerPerSuite]
+    [EdiTestFixture]
     public class ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test : EdiTestMachineryTestBase
     {
         [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IContainer container/*, IEdiTestContextData suiteContext*/) // todo [edi-test]: add suiteContext param to TestFixtureSetUp() method
+        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
         {
-            //EdiTestMachineryTrace.Log(string.Format("TestFixtureSetUp() for {0}", suiteContext.GetItem("TestSuiteName")));
-            EdiTestMachineryTrace.Log(string.Format("TestFixtureSetUp() for {0}", "SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test"));
-            container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString("2"));
+            EdiTestMachineryTrace.Log(string.Format("TestFixtureSetUp() for {0}", suiteContext.GetContextItem<string>("TestSuiteName")));
+            suiteContext.Container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString("2"));
         }
 
         [Test]

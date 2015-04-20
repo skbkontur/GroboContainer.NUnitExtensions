@@ -1,12 +1,11 @@
 using System.Reflection;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
 {
-    [WithContainerPerSuite, WithDebugLogPerSuite]
+    [WithDebugLogPerSuite]
     public class WithServiceDependingOnString : EdiTestSuiteWrapperAttribute
     {
         public WithServiceDependingOnString(string p)
@@ -14,10 +13,10 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
             this.p = p;
         }
 
-        public override void SetUp(string suiteName, Assembly testAssembly, IEdiTestContextData suiteContext)
+        public override void SetUp(string suiteName, Assembly testAssembly, IEditableEdiTestContext suiteContext)
         {
             EdiTestMachineryTrace.Log(string.Format("WithServiceDependingOnString(p={0}).SetUp()", p), suiteContext);
-            suiteContext.GetContainer().Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString(p));
+            suiteContext.Container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString(p));
         }
 
         protected override string TryGetIdentity()

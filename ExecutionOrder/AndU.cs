@@ -11,12 +11,12 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
             this.s = s;
         }
 
-        public override void SetUp(string suiteName, IEdiTestContextData suiteContext, IEdiTestContextData methodContext)
+        public override void SetUp(string suiteName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
         {
             EdiTestMachineryTrace.Log(string.Format("AndU(s={0}).SetUp()", s), methodContext);
         }
 
-        public override void TearDown(string suiteName, IEdiTestContextData suiteContext, IEdiTestContextData methodContext)
+        public override void TearDown(string suiteName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
         {
             EdiTestMachineryTrace.Log(string.Format("AndU(s={0}).TearDown()", s), methodContext);
         }

@@ -1,10 +1,7 @@
-using GroboContainer.Core;
-
-using JetBrains.Annotations;
-
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
+using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
 {
@@ -12,7 +9,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
     public class TestFixtureSetUpMethod_InEdiTestSuite_Test : EdiTestMachineryTestBase
     {
         [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp([NotNull] IContainer container)
+        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
         {
             EdiTestMachineryTrace.Log("TestFixtureSetUp()");
         }

@@ -1,11 +1,10 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
 {
-    [EdiTestFixture, WithContainerPerSuite]
+    [EdiTestFixture]
     public class ServiceWithNoDependencies_Injection_UsingAttribute_Test : EdiTestMachineryTestBase
     {
         [Test]

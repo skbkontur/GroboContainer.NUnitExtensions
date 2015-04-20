@@ -1,17 +1,15 @@
-using GroboContainer.Core;
-
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.CommonWrappers;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
+using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
 {
-    [EdiTestFixture, WithContainerPerSuite]
+    [EdiTestFixture]
     public class EdiTestFixture_Test : EdiTestMachineryTestBase
     {
         [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IContainer container)
+        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
         {
             EdiTestMachineryTrace.Log("TestFixtureSetUp()");
         }
