@@ -104,11 +104,14 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         }
 
         [NotNull]
-        private static List<FieldInfo> DoGetFieldsForInjection([NotNull] Type fixtureType)
+        private static List<FieldInfo> DoGetFieldsForInjection([CanBeNull] Type fixtureType)
         {
+            if(fixtureType == null)
+                return new List<FieldInfo>();
             return fixtureType
-                .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
+                .Concat(DoGetFieldsForInjection(fixtureType.BaseType))
                 .ToList();
         }
 
