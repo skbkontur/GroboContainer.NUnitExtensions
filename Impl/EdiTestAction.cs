@@ -139,7 +139,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             {
                 Order = order++;
                 TestAssembly = testAssembly;
-                LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load())));
+                LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load(), "test", ContainerMode.UseShortLog)));
                 SuiteContext = new EdiTestSuiteContextData(LazyContainer);
                 SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
             }
