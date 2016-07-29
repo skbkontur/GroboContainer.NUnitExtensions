@@ -93,7 +93,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         public static void EnsureNunitAttributesAbscence([NotNull] this MethodInfo test)
         {
             var fixtureType = GetFixtureType(test);
-            if(nunitAttributesPresence.GetOrAdd(fixtureType, x => IsMarkedWithNUnitTestFixtureAttribute(x) || HasMethodMarkedWithNUnitAttribute(x)))
+            if(nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))
                 throw new InvalidProgramStateException(string.Format("Prohibited NUnit attributes (TestFixture, {0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
         }
 
@@ -113,11 +113,6 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
                 .Concat(DoGetFieldsForInjection(fixtureType.BaseType))
                 .ToList();
-        }
-
-        private static bool IsMarkedWithNUnitTestFixtureAttribute([NotNull] Type fixtureType)
-        {
-            return GetAttributesForTestFixture<TestFixtureAttribute>(fixtureType).Any();
         }
 
         private static bool HasMethodMarkedWithNUnitAttribute([NotNull] Type fixtureType)

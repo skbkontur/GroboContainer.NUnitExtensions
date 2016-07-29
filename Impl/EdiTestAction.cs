@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using GroboContainer.Core;
 using GroboContainer.Impl;
@@ -42,7 +43,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 suiteDescriptor.SetUpedSuiteWrappers.Add(suiteWrapper);
             }
 
-            if(setUpedFixtures.Add(fixtureType))
+            if(IsFixtureNotSetuped(testFixture))
             {
                 var fixtureSetUpMethod = test.FindFixtureSetUpMethod();
                 if(fixtureSetUpMethod != null)
@@ -62,6 +63,15 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             EdiTestContextHolder.SetCurrentContext(testName, suiteContext, methodContext);
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
+        }
+
+        private static bool IsFixtureNotSetuped(object testFixture)
+        {
+            object value;
+            if(setUpedFixtures.TryGetValue(testFixture, out value))
+                return false;
+            setUpedFixtures.Add(testFixture, null);
+            return true;
         }
 
         public static void AfterTest([NotNull] TestDetails testDetails)
@@ -129,8 +139,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
         }
 
+        private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
+
         private static bool appDomainIsIntialized;
-        private static readonly HashSet<Type> setUpedFixtures = new HashSet<Type>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
 
         private class SuiteDescriptor
