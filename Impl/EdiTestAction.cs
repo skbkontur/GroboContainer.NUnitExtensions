@@ -65,7 +65,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
         }
 
-        private static bool IsFixtureNotSetuped(object testFixture)
+        private static bool IsFixtureNotSetuped([NotNull]object testFixture)
         {
             object value;
             if(setUpedFixtures.TryGetValue(testFixture, out value))
