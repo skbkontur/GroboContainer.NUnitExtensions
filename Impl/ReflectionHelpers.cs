@@ -51,13 +51,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         public static List<EdiTestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
         {
-            return suiteWrappersForTest.GetOrAdd(test, x => GetWrappers(x, suiteWrappersForFixtureCache, suiteWrappersForWrapperCache));
+            return suiteWrappersForTest.GetOrAdd(test, GetWrappers<EdiTestSuiteWrapperAttribute>);
         }
 
         [NotNull]
         public static List<EdiTestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
         {
-            return methodWrappersForTest.GetOrAdd(test, x => GetWrappers(x, methodWrappersForFixtureCache, methodWrappersForWrapperCache));
+            return methodWrappersForTest.GetOrAdd(test, GetWrappers<EdiTestMethodWrapperAttribute>);
         }
 
         [CanBeNull]
@@ -126,21 +126,21 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         }
 
         [NotNull]
-        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForFixtureCache, [NotNull] ConcurrentDictionary<Type, List<TWrapper>> wrappersForWrapperCache) where TWrapper : EdiTestWrapperAttribute
+        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test) where TWrapper : EdiTestWrapperAttribute
         {
             var fixtureType = GetFixtureType(test);
-            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<TWrapper>);
+            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<EdiTestWrapperAttribute>);
             var wrappersForMethod = GetAttributesForMethod<TWrapper>(test);
-            var visitedWrappers = new HashSet<TWrapper>();
-            var nodes = new ConcurrentDictionary<TWrapper, DependencyNode<TWrapper>>();
-            var queue = new Queue<TWrapper>(wrappersForMethod.Concat(wrappersForFixture));
+            var visitedWrappers = new HashSet<EdiTestWrapperAttribute>();
+            var nodes = new ConcurrentDictionary<EdiTestWrapperAttribute, DependencyNode<EdiTestWrapperAttribute>>();
+            var queue = new Queue<EdiTestWrapperAttribute>(wrappersForMethod.Concat(wrappersForFixture));
             while(queue.Count > 0)
             {
                 var wrapper = queue.Dequeue();
                 if(!visitedWrappers.Add(wrapper))
                     continue;
                 var node = nodes.GetOrAdd(wrapper, Node.Create);
-                var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<TWrapper>(x).ToList());
+                var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<EdiTestWrapperAttribute>(x).ToList());
                 foreach(var wrapperDependency in wrapperDependencies)
                 {
                     queue.Enqueue(wrapperDependency);
@@ -148,7 +148,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     node.DependsOn(nodeDependency);
                 }
             }
-            return nodes.Values.OrderTopologically().Select(x => x.Payload).ToList();
+            return nodes.Values.OrderTopologically().Select(x => x.Payload).OfType<TWrapper>().ToList();
         }
 
         [NotNull]
@@ -195,10 +195,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         private static readonly ConcurrentDictionary<Type, MethodInfo> fixtureSetUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> setUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> tearDownMethods = new ConcurrentDictionary<Type, MethodInfo>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestSuiteWrapperAttribute>> suiteWrappersForFixtureCache = new ConcurrentDictionary<Type, List<EdiTestSuiteWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestMethodWrapperAttribute>> methodWrappersForFixtureCache = new ConcurrentDictionary<Type, List<EdiTestMethodWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestSuiteWrapperAttribute>> suiteWrappersForWrapperCache = new ConcurrentDictionary<Type, List<EdiTestSuiteWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestMethodWrapperAttribute>> methodWrappersForWrapperCache = new ConcurrentDictionary<Type, List<EdiTestMethodWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>> wrappersForFixtureCache = new ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>> wrappersForWrapperCache = new ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>>();
         private static readonly ConcurrentDictionary<MethodInfo, List<EdiTestSuiteWrapperAttribute>> suiteWrappersForTest = new ConcurrentDictionary<MethodInfo, List<EdiTestSuiteWrapperAttribute>>();
         private static readonly ConcurrentDictionary<MethodInfo, List<EdiTestMethodWrapperAttribute>> methodWrappersForTest = new ConcurrentDictionary<MethodInfo, List<EdiTestMethodWrapperAttribute>>();
     }
