@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
@@ -41,7 +41,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
                     "MethodWrapper.TearDown() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test01",
                     "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test02",
                     "ServiceDependingOnString.Hoo(p=2, q=2)",
-                }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
         }
 
 #pragma warning disable 649

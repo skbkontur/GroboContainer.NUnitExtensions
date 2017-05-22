@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
@@ -63,7 +63,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                     "AndV(t=12).SetUp()",
                     "SetUp()",
                     "Test02()",
-                }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
         }
     }
 }

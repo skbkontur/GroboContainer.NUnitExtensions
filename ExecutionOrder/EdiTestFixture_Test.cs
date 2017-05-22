@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
@@ -58,7 +58,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                     string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.EdiTestFixture_Test.Test02", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "Test02()",
-                }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
         }
     }
 }

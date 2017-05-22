@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
@@ -78,7 +78,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                         string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
                         "Part02_SetUp()",
                         "Test02()",
-                    }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                    }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
             }
 
             [Test]
@@ -102,7 +102,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                         string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test03", EdiTestContext.Current.SuiteName()),
                         "Part02_SetUp()",
                         "Test03()",
-                    }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                    }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
             }
         }
     }

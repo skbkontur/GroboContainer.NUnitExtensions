@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
@@ -45,7 +45,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
                     "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test02",
                     "SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
                     "ServiceWithNoDependencies.Foo(p=2)",
-                }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
+                }); // NB! РїРѕР»Р°РіР°РµРјСЃСЏ РЅР° Р°Р»С„Р°РІРёС‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє Р·Р°РїСѓСЃРєР° С‚РµСЃС‚РѕРІ РІРЅСѓС‚СЂРё РѕРґРЅРѕРіРѕ РєР»Р°СЃСЃР°
         }
 
         private IServiceWithNoDependencies serviceWithNoDependencies;
