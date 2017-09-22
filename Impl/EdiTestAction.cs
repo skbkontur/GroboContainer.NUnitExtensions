@@ -76,23 +76,49 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         public static void AfterTest([NotNull] TestDetails testDetails)
         {
+            var errors = new List<Exception>();
             var test = testDetails.Method;
             var suiteName = test.GetSuiteName();
             SuiteDescriptor suiteDescriptor;
             if(!suiteDescriptors.TryGetValue(suiteName, out suiteDescriptor))
                 throw new InvalidProgramStateException(string.Format("Suite context is not set for: {0}", suiteName));
 
-            InvokeWrapperMethod(test.FindTearDownMethod(), testDetails.Fixture);
+            try
+            {
+                InvokeWrapperMethod(test.FindTearDownMethod(), testDetails.Fixture);
+            }
+            catch(Exception exception)
+            {
+                errors.Add(exception);
+            }
 
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
 
             var testName = testDetails.FullName;
             foreach(var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
-                methodWrapper.TearDown(testName, suiteDescriptor.SuiteContext, methodContext);
+            {
+                try
+                {
+                    methodWrapper.TearDown(testName, suiteDescriptor.SuiteContext, methodContext);
+                }
+                catch(Exception exception)
+                {
+                    errors.Add(exception);
+                }
+            }
+                
 
             AggregateException error;
             if(!methodContext.TryDestroy(out error))
-                throw error;
+            {
+                errors.Add(error);
+            }
+            if(errors.Count > 0)
+            {
+                if (errors.Count == 1)
+                    throw errors[0];
+                throw new AggregateException("After test methods failed.", errors);
+            }
         }
 
         private static void InvokeWrapperMethod([CanBeNull] MethodInfo wrapperMethod, [NotNull] object testFixture, params object[] @params)
