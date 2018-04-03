@@ -27,14 +27,14 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             itemValue = null;
             ItemValueHolder holder;
             var result = items.TryGetValue(itemName, out holder);
-            if (result)
+            if(result)
                 itemValue = holder.ItemValue;
             return result;
         }
 
         public void AddItem([NotNull] string itemName, [NotNull] object itemValue)
         {
-            if (items.ContainsKey(itemName))
+            if(items.ContainsKey(itemName))
                 throw new InvalidProgramStateException(string.Format("Item with the same name is already added: {0}", itemName));
             items.Add(itemName, new ItemValueHolder(items.Count, itemValue));
         }
@@ -47,18 +47,18 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         public bool TryDestroy(out AggregateException aggregateError)
         {
             var errors = new List<InvalidProgramStateException>();
-            foreach (var kvp in items.OrderByDescending(x => x.Value.Order))
+            foreach(var kvp in items.OrderByDescending(x => x.Value.Order))
             {
                 var disposableItem = kvp.Value.ItemValue as IDisposable;
-                if (disposableItem != null)
+                if(disposableItem != null)
                 {
                     InvalidProgramStateException error;
-                    if (!TryDisposeItem(kvp.Key, disposableItem, out error))
+                    if(!TryDisposeItem(kvp.Key, disposableItem, out error))
                         errors.Add(error);
                 }
             }
             items.Clear();
-            if (errors.Any())
+            if(errors.Any())
             {
                 aggregateError = new AggregateException("Failed to dispose at least one of context items", errors);
                 return false;
@@ -75,7 +75,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
                 disposableItem.Dispose();
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 error = new InvalidProgramStateException(string.Format("Failed to dispose item: {0}", itemName), e);
                 return false;

@@ -23,9 +23,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 
         public bool TryGetContextItem([NotNull] string itemName, out object itemValue)
         {
-            if (methodContext.TryGetContextItem(itemName, out itemValue))
+            if(methodContext.TryGetContextItem(itemName, out itemValue))
                 return true;
-            if (suiteContext.TryGetContextItem(itemName, out itemValue))
+            if(suiteContext.TryGetContextItem(itemName, out itemValue))
                 return true;
             return false;
         }

@@ -25,7 +25,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         public static Type GetFixtureType([NotNull] this MethodInfo test)
         {
             var fixtureType = test.ReflectedType;
-            if (fixtureType == null)
+            if(fixtureType == null)
                 throw new InvalidProgramStateException(string.Format("test.ReflectedType is null for: {0}", test.Name));
             return fixtureType;
         }
@@ -37,12 +37,12 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 {
                     var suiteNames = GetAttributesForTestFixture<EdiTestSuiteAttribute>(fixtureType).Select(x => x.SuiteName).ToList();
                     var testFixtureAttribute = GetAttributesForType<EdiTestFixtureAttribute>(fixtureType).SingleOrDefault();
-                    if (testFixtureAttribute != null)
+                    if(testFixtureAttribute != null)
                         suiteNames.Add(fixtureType.FullName);
-                    if (suiteNames.Count > 1)
+                    if(suiteNames.Count > 1)
                         throw new InvalidProgramStateException(string.Format("There are multiple suite names ({0}) defined for: {1}", string.Join(", ", suiteNames), test.GetMethodName()));
                     var suiteName = suiteNames.SingleOrDefault();
-                    if (string.IsNullOrEmpty(suiteName))
+                    if(string.IsNullOrEmpty(suiteName))
                         throw new InvalidProgramStateException(string.Format("Suite name is not defined for: {0}", test.GetMethodName()));
                     return suiteName;
                 });
@@ -85,7 +85,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
                 .ToList();
-            if (methods.Count > 1)
+            if(methods.Count > 1)
                 throw new InvalidProgramStateException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
             return methods.SingleOrDefault();
         }
@@ -93,7 +93,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         public static void EnsureNunitAttributesAbscence([NotNull] this MethodInfo test)
         {
             var fixtureType = GetFixtureType(test);
-            if (nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))
+            if(nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))
                 throw new InvalidProgramStateException(string.Format("Prohibited NUnit attributes ({0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
         }
 
@@ -106,7 +106,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         private static List<FieldInfo> DoGetFieldsForInjection([CanBeNull] Type fixtureType)
         {
-            if (fixtureType == null)
+            if(fixtureType == null)
                 return new List<FieldInfo>();
             return fixtureType
                 .GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
@@ -134,14 +134,14 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var visitedWrappers = new HashSet<EdiTestWrapperAttribute>();
             var nodes = new ConcurrentDictionary<EdiTestWrapperAttribute, DependencyNode<EdiTestWrapperAttribute>>();
             var queue = new Queue<EdiTestWrapperAttribute>(wrappersForMethod.Concat(wrappersForFixture));
-            while (queue.Count > 0)
+            while(queue.Count > 0)
             {
                 var wrapper = queue.Dequeue();
-                if (!visitedWrappers.Add(wrapper))
+                if(!visitedWrappers.Add(wrapper))
                     continue;
                 var node = nodes.GetOrAdd(wrapper, Node.Create);
                 var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<EdiTestWrapperAttribute>(x).ToList());
-                foreach (var wrapperDependency in wrapperDependencies)
+                foreach(var wrapperDependency in wrapperDependencies)
                 {
                     queue.Enqueue(wrapperDependency);
                     var nodeDependency = nodes.GetOrAdd(wrapperDependency, Node.Create);
@@ -160,7 +160,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         [NotNull]
         private static List<Type> GetAllTypesToSearchForAttributes([CanBeNull] Type type)
         {
-            if (type == null)
+            if(type == null)
                 return new List<Type>();
             return new[] {type}
                 .Union(type.GetInterfaces())

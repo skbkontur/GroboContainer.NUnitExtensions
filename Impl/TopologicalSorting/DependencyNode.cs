@@ -20,7 +20,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
 
         public void DependsOn([NotNull] params DependencyNode<T>[] nodes)
         {
-            foreach (var node in nodes)
+            foreach(var node in nodes)
                 dependencies.Add(node);
         }
 

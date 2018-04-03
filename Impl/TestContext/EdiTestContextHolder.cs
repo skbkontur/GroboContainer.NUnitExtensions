@@ -9,7 +9,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         [NotNull]
         public static EdiTestContext GetCurrentContext()
         {
-            if (currentMethodContext == null)
+            if(currentMethodContext == null)
                 throw new InvalidProgramStateException("Current test context is not set");
             return new EdiTestContext(currentTestName, currentSuiteContext, currentMethodContext);
         }
@@ -25,7 +25,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         public static EdiTestMethodContextData ResetCurrentTestContext()
         {
             var methodContext = currentMethodContext;
-            if (methodContext == null)
+            if(methodContext == null)
                 throw new InvalidProgramStateException("Current test context is not set");
             currentMethodContext = null;
             currentSuiteContext = null;

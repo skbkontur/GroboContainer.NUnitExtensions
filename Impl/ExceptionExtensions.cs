@@ -15,7 +15,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         public static void RethrowInnerException([NotNull] this TargetInvocationException exception)
         {
-            if (exception.InnerException != null)
+            if(exception.InnerException != null)
                 exception.InnerException.Rethrow();
             throw exception;
         }

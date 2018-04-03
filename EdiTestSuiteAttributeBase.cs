@@ -27,7 +27,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 
         private static void EnsureWeAreInMethodContext([NotNull] TestDetails testDetails)
         {
-            if (testDetails.IsSuite)
+            if(testDetails.IsSuite)
                 throw new InvalidProgramStateException(string.Format("IsSuite == true for: {0}, Type: {1}", testDetails.FullName, testDetails.Type));
         }
     }

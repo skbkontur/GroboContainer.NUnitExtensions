@@ -9,15 +9,15 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
     {
         public bool Equals([CanBeNull] EdiTestWrapperAttribute other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if(ReferenceEquals(null, other)) return false;
+            if(ReferenceEquals(this, other)) return true;
             return GetType() == other.GetType() && TryGetIdentity() == other.TryGetIdentity();
         }
 
         public override bool Equals([CanBeNull] object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if(ReferenceEquals(null, obj)) return false;
+            if(ReferenceEquals(this, obj)) return true;
             var other = obj as EdiTestWrapperAttribute;
             return other != null && Equals(other);
         }
@@ -25,7 +25,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
         public override int GetHashCode()
         {
             var identity = TryGetIdentity();
-            if (identity == null)
+            if(identity == null)
                 return GetType().GetHashCode();
             unchecked
             {
@@ -38,7 +38,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
             var sb = new StringBuilder();
             sb.AppendFormat("{0}", GetType().Name);
             var identity = TryGetIdentity();
-            if (identity != null)
+            if(identity != null)
                 sb.AppendFormat("#{0}", identity);
             return sb.ToString();
         }
