@@ -28,10 +28,10 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
 
         private void Check()
         {
-            switch (x)
+            switch(x)
             {
             case 1:
-                if (ServiceForTest.wasNotNull1)
+                if(ServiceForTest.wasNotNull1)
                     Assert.IsNull(injected, "double injected");
                 else
                 {
@@ -41,7 +41,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
                 }
                 break;
             case 2:
-                if (ServiceForTest.wasNotNull2)
+                if(ServiceForTest.wasNotNull2)
                     Assert.IsNull(injected, "double injected");
                 else
                 {

@@ -16,8 +16,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
         {
             var n1 = Node.Create("n1");
             n1.DependsOn(n1);
-            var result = RunTopSorter(new[] {n1});
-            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n1}));
+            var result = RunTopSorter(new[] { n1 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n1 }));
             AssertTopologicalOrder(result.SortedNodes);
         }
 
@@ -29,8 +29,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             var n3 = Node.Create("n3");
             n1.DependsOn(n2);
             n2.DependsOn(n3);
-            var result = RunTopSorter(new[] {n1, n2, n3});
-            Assert.That(result.SortedNodes, Is.EqualTo(new[] {n3, n2, n1}));
+            var result = RunTopSorter(new[] { n1, n2, n3 });
+            Assert.That(result.SortedNodes, Is.EqualTo(new[] { n3, n2, n1 }));
             AssertTopologicalOrder(result.SortedNodes);
         }
 
@@ -41,8 +41,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             var n2 = Node.Create("n2");
             n1.DependsOn(n2);
             n2.DependsOn(n1);
-            var result = RunTopSorter(new[] {n1, n2});
-            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n2, n1}));
+            var result = RunTopSorter(new[] { n1, n2 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n2, n1 }));
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             n2.DependsOn(n1);
             n3.DependsOn(n2);
             n1.DependsOn(n3);
-            var result = RunTopSorter(new[] {n1, n2, n3});
-            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n2, n3, n1}));
+            var result = RunTopSorter(new[] { n1, n2, n3 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n2, n3, n1 }));
         }
 
         [Test]
@@ -69,8 +69,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             n3.DependsOn(n2);
             n1.DependsOn(n3);
             n4.DependsOn(n2);
-            var result = RunTopSorter(new[] {n4, n1, n2, n3});
-            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n3, n1, n2, n4}));
+            var result = RunTopSorter(new[] { n4, n1, n2, n3 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n3, n1, n2, n4 }));
             Assert.That(result.SortedNodes, Is.Empty);
         }
 
@@ -90,10 +90,10 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             n6.DependsOn(n5);
             n4.DependsOn(n6);
             n2.DependsOn(n6);
-            var result = RunTopSorter(new[] {n1, n2, n3, n4, n5, n6});
+            var result = RunTopSorter(new[] { n1, n2, n3, n4, n5, n6 });
             Assert.That(result.Cycles.Count, Is.EqualTo(2));
-            Assert.That(result.Cycles[0], Is.EqualTo(new[] {n2, n3, n1}));
-            Assert.That(result.Cycles[1], Is.EqualTo(new[] {n5, n6, n4}));
+            Assert.That(result.Cycles[0], Is.EqualTo(new[] { n2, n3, n1 }));
+            Assert.That(result.Cycles[1], Is.EqualTo(new[] { n5, n6, n4 }));
             Assert.That(result.SortedNodes, Is.Empty);
         }
 
@@ -115,10 +115,10 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             n4.DependsOn(n6);
             n7.DependsOn(n2);
             n7.DependsOn(n5);
-            var result = RunTopSorter(new[] {n1, n2, n3, n7, n4, n5, n6});
+            var result = RunTopSorter(new[] { n1, n2, n3, n7, n4, n5, n6 });
             Assert.That(result.Cycles.Count, Is.EqualTo(2));
-            Assert.That(result.Cycles[0], Is.EqualTo(new[] {n2, n3, n1}));
-            Assert.That(result.Cycles[1], Is.EqualTo(new[] {n6, n4, n5, n7}));
+            Assert.That(result.Cycles[0], Is.EqualTo(new[] { n2, n3, n1 }));
+            Assert.That(result.Cycles[1], Is.EqualTo(new[] { n6, n4, n5, n7 }));
             Assert.That(result.SortedNodes, Is.Empty);
         }
 
@@ -142,9 +142,9 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             var n9 = Node.Create("n9");
             n7.DependsOn(n8);
             n8.DependsOn(n9);
-            var result = RunTopSorter(new[] {n1, n2, n3, n4, n5, n6, n7, n8, n9});
-            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] {n2, n1}));
-            Assert.That(result.SortedNodes, Is.EqualTo(new[] {n6, n4, n5, n3, n9, n8, n7}));
+            var result = RunTopSorter(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9 });
+            Assert.That(result.Cycles.Single(), Is.EqualTo(new[] { n2, n1 }));
+            Assert.That(result.SortedNodes, Is.EqualTo(new[] { n6, n4, n5, n3, n9, n8, n7 }));
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
             n11.DependsOn(n2, n9, n10);
             n8.DependsOn(n9);
 
-            var result = RunTopSorter(new[] {n2, n3, n5, n7, n8, n9, n10, n11});
+            var result = RunTopSorter(new[] { n2, n3, n5, n7, n8, n9, n10, n11 });
             Assert.That(result.Cycles, Is.Empty);
             Assert.That(result.SortedNodes, Is.EqualTo(new[] {n2, n9, n8, n3, n10, n11, n5, n7}));
             AssertTopologicalOrder(result.SortedNodes);
@@ -219,9 +219,9 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Im
         {
             Console.Out.WriteLine(string.Join(", ", nodes));
             var visited = new Dictionary<DependencyNode<T>, bool>();
-            foreach (var node in nodes)
+            foreach(var node in nodes)
             {
-                foreach (var n in node.GetDependencies())
+                foreach(var n in node.GetDependencies())
                     Assert.IsTrue(visited[n]);
                 visited[node] = true;
             }

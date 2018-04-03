@@ -21,7 +21,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
 
         private void Check()
         {
-            if (ServiceForTest.wasNotNull)
+            if(ServiceForTest.wasNotNull)
                 Assert.IsNull(injected, "double injected");
             else
             {

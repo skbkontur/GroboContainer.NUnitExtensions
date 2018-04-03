@@ -12,7 +12,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
         {
             EdiTestMachineryTrace.Log(string.Format("SetUp() for {0}", EdiTestContext.Current.SuiteName()));
             var serviceFromContainer = EdiTestContext.Current.Container.Get<IServiceWithNoDependencies>();
-            if (serviceWithNoDependencies == null)
+            if(serviceWithNoDependencies == null)
                 serviceWithNoDependencies = serviceFromContainer;
             else
                 Assert.That(serviceFromContainer, Is.SameAs(serviceWithNoDependencies));
