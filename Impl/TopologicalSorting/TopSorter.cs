@@ -9,7 +9,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
         [NotNull]
         public TopSortResult<T> Run([NotNull] ICollection<DependencyNode<T>> nodes)
         {
-            foreach(var node in nodes)
+            foreach (var node in nodes)
             {
                 currentCycle = null;
                 Process(node);
@@ -19,9 +19,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
 
         private void Process([NotNull] DependencyNode<T> node)
         {
-            if(node.InResults)
+            if (node.InResults)
                 return;
-            if(node.InProgress)
+            if (node.InProgress)
             {
                 currentCycle = new List<DependencyNode<T>>();
                 result.Cycles.Add(currentCycle);
@@ -29,10 +29,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.Topological
                 return;
             }
             node.InProgress = true;
-            foreach(var dependentNode in node.GetDependencies())
+            foreach (var dependentNode in node.GetDependencies())
             {
                 Process(dependentNode);
-                if(currentCycle != null)
+                if (currentCycle != null)
                 {
                     node.InResults = true;
                     currentCycle.Add(node);
