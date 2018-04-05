@@ -37,6 +37,11 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
             DoPrivateReadonlyFieldInBaseClass();
         }
 
+        [Injected]
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public IServiceWithNoDependencies PublicProperty { get; set; }
+
 #pragma warning disable 649
         [Injected]
         private readonly IServiceWithNoDependencies privateReadonlyField;
@@ -47,10 +52,5 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
         // ReSharper disable once UnassignedReadonlyField
         // ReSharper disable once MemberCanBePrivate.Global
         public IServiceWithNoDependencies publicField;
-
-        [Injected]
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public IServiceWithNoDependencies PublicProperty { get; set; }
     }
 }

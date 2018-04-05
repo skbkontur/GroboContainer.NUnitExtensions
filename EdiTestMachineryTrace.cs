@@ -11,7 +11,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
         {
             TraceLines.Add(message);
             Console.Out.WriteLine(message);
-            if(context != null)
+            if (context != null)
                 Console.Out.WriteLine("Context: {0}", context);
         }
 
