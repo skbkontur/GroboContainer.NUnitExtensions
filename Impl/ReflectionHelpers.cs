@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -185,8 +185,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             {
                 typeof(SetUpAttribute),
                 typeof(TearDownAttribute),
-                typeof(TestFixtureSetUpAttribute),
-                typeof(TestFixtureTearDownAttribute),
+                typeof(OneTimeSetUpAttribute),
+                typeof(OneTimeTearDownAttribute),
             };
 
         private static readonly ConcurrentDictionary<Type, string> suiteNamesCache = new ConcurrentDictionary<Type, string>();
