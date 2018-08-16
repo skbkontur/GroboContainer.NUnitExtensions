@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 
@@ -51,7 +51,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         [EdiTestSuite]
         public class NUnit_TestFixtureSetUpAttribute_IsProhibited_Test
         {
-            [TestFixtureSetUp]
+            [OneTimeSetUp]
             public void TestFixtureSetUp()
             {
             }
@@ -66,7 +66,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         [EdiTestSuite]
         public class NUnit_TestFixtureTearDownAttribute_IsProhibited_Test
         {
-            [TestFixtureTearDown]
+            [OneTimeTearDown]
             public void TestFixtureTearDown()
             {
             }
