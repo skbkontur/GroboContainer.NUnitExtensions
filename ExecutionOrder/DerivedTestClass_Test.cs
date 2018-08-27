@@ -26,11 +26,11 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
             AssertEdiTestMachineryTrace(new[]
                 {
                     string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.TestBase.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "Test01()",
                     "TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.TestBase.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
                     string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.TestX", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "TestX()",

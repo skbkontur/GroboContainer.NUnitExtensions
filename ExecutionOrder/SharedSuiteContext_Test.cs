@@ -7,11 +7,6 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
     [TestFixture]
     public class SharedSuiteContext_Test
     {
-        public SharedSuiteContext_Test()
-        {
-            EdiTestMachineryTrace.ClearTrace();
-        }
-
         private static void AssertEdiTestMachineryTrace(string[] expectedMessages)
         {
             Assert.That(EdiTestMachineryTrace.TraceLines, Is.EqualTo(expectedMessages));
@@ -20,6 +15,11 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         [EdiTestSuite("SharedSuiteContext"), WithDebugLogPerSuite, AndDebugLogPerMethod]
         public class Part01
         {
+            public Part01()
+            {
+                EdiTestMachineryTrace.ClearTrace();
+            }
+
             [EdiSetUp]
             public void SetUp()
             {
