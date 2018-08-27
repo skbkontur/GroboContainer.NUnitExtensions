@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using GroboContainer.Impl;
 
 using JetBrains.Annotations;
 
-using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
 using SKBKontur.Catalogue.Objects;
@@ -21,11 +21,11 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 {
     public static class EdiTestAction
     {
-        public static void BeforeTest([NotNull] TestDetails testDetails)
+        public static void BeforeTest([NotNull] ITest testDetails)
         {
             EnsureAppDomainIntialization();
 
-            var test = testDetails.Method;
+            var test = testDetails.Method.MethodInfo;
             test.EnsureNunitAttributesAbscence();
             var fixtureType = test.GetFixtureType();
             var testFixture = testDetails.Fixture;
@@ -74,10 +74,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             return true;
         }
 
-        public static void AfterTest([NotNull] TestDetails testDetails)
+        public static void AfterTest([NotNull] ITest testDetails)
         {
             var errors = new List<Exception>();
-            var test = testDetails.Method;
+            var test = testDetails.Method.MethodInfo;
             var suiteName = test.GetSuiteName();
             SuiteDescriptor suiteDescriptor;
             if (!suiteDescriptors.TryGetValue(suiteName, out suiteDescriptor))
