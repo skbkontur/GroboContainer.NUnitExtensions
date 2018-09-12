@@ -1,4 +1,9 @@
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+
 using JetBrains.Annotations;
+
+using NUnit.Framework.Interfaces;
 
 using SKBKontur.Catalogue.Objects;
 
@@ -9,32 +14,47 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         [NotNull]
         public static EdiTestContext GetCurrentContext()
         {
-            if (currentMethodContext == null)
-                throw new InvalidProgramStateException("Current test context is not set");
-            return new EdiTestContext(currentTestName, currentSuiteContext, currentMethodContext);
+            var testName = global::NUnit.Framework.TestContext.CurrentContext.Test.FullName;
+            var testId = global::NUnit.Framework.TestContext.CurrentContext.Test.ID;
+            var suiteName = GetTestMethodInfo().GetSuiteName();
+            if (!methodContexts.TryGetValue(testId, out var currentMethodContext))
+                throw new InvalidProgramStateException("TestContext for test with name: {testName}, id: {testId} is not set");
+            if (!suiteContexts.TryGetValue(suiteName, out var currentSuiteContext))
+                throw new InvalidProgramStateException("SuiteContext for test with name: {testName}, id: {testId} is not set");
+
+            return new EdiTestContext(testName, currentSuiteContext, currentMethodContext);
         }
 
-        public static void SetCurrentContext([NotNull] string testName, [NotNull] EdiTestSuiteContextData suiteContext, [NotNull] EdiTestMethodContextData methodContext)
+        public static void SetCurrentContext([NotNull] EdiTestSuiteContextData suiteContext, [NotNull] EdiTestMethodContextData methodContext)
         {
-            currentTestName = testName;
-            currentSuiteContext = suiteContext;
-            currentMethodContext = methodContext;
+            var testName = global::NUnit.Framework.TestContext.CurrentContext.Test.FullName;
+            var testId = global::NUnit.Framework.TestContext.CurrentContext.Test.ID;
+            if (!methodContexts.TryAdd(testId, methodContext))
+                throw new InvalidProgramStateException($"MethodContext for test with id: {testId}, name: {testName} already exists");
+
+            var suiteName = GetTestMethodInfo().GetSuiteName();
+            suiteContexts.TryAdd(suiteName, suiteContext);
         }
 
         [NotNull]
         public static EdiTestMethodContextData ResetCurrentTestContext()
         {
-            var methodContext = currentMethodContext;
-            if (methodContext == null)
-                throw new InvalidProgramStateException("Current test context is not set");
-            currentMethodContext = null;
-            currentSuiteContext = null;
-            currentTestName = null;
-            return methodContext;
+            var testName = global::NUnit.Framework.TestContext.CurrentContext.Test.FullName;
+            var testId = global::NUnit.Framework.TestContext.CurrentContext.Test.ID;
+            if (!methodContexts.TryRemove(testId, out var currentMethodContext))
+                throw new InvalidProgramStateException($"Unable to remove TestContext for test with id: {testId}, name: {testName}");
+            return currentMethodContext;
         }
 
-        private static string currentTestName;
-        private static EdiTestSuiteContextData currentSuiteContext;
-        private static EdiTestMethodContextData currentMethodContext;
+        private static MethodInfo GetTestMethodInfo()
+        {
+            var testAdapter = global::NUnit.Framework.TestContext.CurrentContext.Test;
+            var test = (ITest)testField.GetValue(testAdapter);
+            return test.Method.MethodInfo;
+        }
+
+        private static readonly FieldInfo testField = typeof(global::NUnit.Framework.TestContext.TestAdapter).GetField("_test", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly ConcurrentDictionary<string, EdiTestSuiteContextData> suiteContexts = new ConcurrentDictionary<string, EdiTestSuiteContextData>();
+        private static readonly ConcurrentDictionary<string, EdiTestMethodContextData> methodContexts = new ConcurrentDictionary<string, EdiTestMethodContextData>();
     }
 }

@@ -36,12 +36,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(fixtureType.Assembly));
             var suiteContext = suiteDescriptor.SuiteContext;
             foreach (var suiteWrapper in test.GetSuiteWrappers())
-            {
-                if (suiteDescriptor.SetUpedSuiteWrappers.Contains(suiteWrapper))
-                    continue;
-                suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
-                suiteDescriptor.SetUpedSuiteWrappers.Add(suiteWrapper);
-            }
+                if (suiteDescriptor.SetUpedSuiteWrappers.TryAdd(suiteWrapper, Timestamp.Now))
+                    suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
 
             if (IsFixtureNotSetuped(testFixture))
             {
@@ -60,7 +56,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             foreach (var methodWrapper in test.GetMethodWrappers())
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
 
-            EdiTestContextHolder.SetCurrentContext(testName, suiteContext, methodContext);
+            EdiTestContextHolder.SetCurrentContext(suiteContext, methodContext);
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
         }
@@ -156,7 +152,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             {
                 var suiteName = kvp.Key;
                 var suiteDescriptor = kvp.Value;
-                foreach (var suiteWrapper in Enumerable.Reverse(suiteDescriptor.SetUpedSuiteWrappers))
+                foreach (var suiteWrapper in suiteDescriptor.SetUpedSuiteWrappers.OrderByDescending(x => x.Value).Select(x => x.Key))
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
                 suiteDescriptor.Destroy(suiteName);
             }
@@ -177,7 +173,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 TestAssembly = testAssembly;
                 LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load(), "test", ContainerMode.UseShortLog)));
                 SuiteContext = new EdiTestSuiteContextData(LazyContainer);
-                SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
+                SetUpedSuiteWrappers = new ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp>();
             }
 
             public int Order { get; private set; }
@@ -192,7 +188,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             public EdiTestSuiteContextData SuiteContext { get; private set; }
 
             [NotNull]
-            public List<EdiTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; private set; }
+            public ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp> SetUpedSuiteWrappers { get; private set; }
 
             public void Destroy([NotNull] string suiteName)
             {
