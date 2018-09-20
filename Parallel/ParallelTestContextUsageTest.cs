@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Linq;
 
 using NUnit.Framework;
 
@@ -12,14 +12,6 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
         public int InvocationsCount { get; set; }
     }
 
-    public class WithTestInvocationCounter : EdiTestSuiteWrapperAttribute
-    {
-        public override void SetUp(string suiteName, Assembly testAssembly, IEditableEdiTestContext suiteContext)
-        {
-            suiteContext.AddItem("counter", new Counter());
-        }
-    }
-
     public class AndTestInvocationCounter : EdiTestMethodWrapperAttribute
     {
         public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
@@ -28,23 +20,19 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
         }
     }
 
-    [EdiTestSuite, WithTestInvocationCounter, AndTestInvocationCounter, Parallelizable(ParallelScope.All)]
-    public class ParallelTestContextUsageTest2
-    {
-        [Test]
-        public void Test()
-        {
-            ParallelTestContextUsageTest.TestInvocationCount();
-        }
-    }
-
-    [EdiTestSuite("Diff"), WithTestInvocationCounter, AndTestInvocationCounter, Parallelizable(ParallelScope.All)]
+    [EdiTestFixture, AndTestInvocationCounter, Parallelizable(ParallelScope.Children)]
     public class ParallelTestContextUsageTest
     {
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
+        [TestCase(7)]
+        [TestCase(8)]
+        [TestCase(9)]
+        [TestCase(10)]
         public void Test(int n)
         {
             TestInvocationCount();
@@ -68,7 +56,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
             TestInvocationCount();
         }
 
-        public static void TestInvocationCount()
+        private static void TestInvocationCount()
         {
             Assert.That(EdiTestContext.Current.TryGetContextItem("counter", out var o), Is.True);
             var counter = (Counter)o;
@@ -76,10 +64,6 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
             Assert.That(counter.InvocationsCount, Is.EqualTo(1));
         }
 
-        private static readonly TestCaseData[] testCases =
-            {
-                new TestCaseData(),
-                new TestCaseData(),
-            };
+        private static readonly TestCaseData[] testCases = Enumerable.Range(0, 100).Select(x => new TestCaseData()).ToArray();
     }
 }
