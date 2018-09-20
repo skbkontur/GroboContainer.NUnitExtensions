@@ -30,14 +30,18 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var fixtureType = test.GetFixtureType();
             var testFixture = testDetails.Fixture;
             if (fixtureType != testFixture.GetType())
-                throw new InvalidProgramStateException(string.Format("TestFixtureType mismatch for: {0}", test.GetMethodName()));
+                throw new InvalidProgramStateException($"TestFixtureType mismatch for: {test.GetMethodName()}");
 
             var suiteName = test.GetSuiteName();
             var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(fixtureType.Assembly));
             var suiteContext = suiteDescriptor.SuiteContext;
-            foreach (var suiteWrapper in test.GetSuiteWrappers())
-                if (suiteDescriptor.SetUpedSuiteWrappers.TryAdd(suiteWrapper, Timestamp.Now))
-                    suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
+            var suiteWrappers = test.GetSuiteWrappers();
+            lock (suiteDescriptor)
+            {
+                foreach (var suiteWrapper in suiteWrappers)
+                    if (suiteDescriptor.SetUpedSuiteWrappers.TryAdd(suiteWrapper, Timestamp.Now))
+                        suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
+            }
 
             if (IsFixtureNotSetuped(testFixture))
             {
@@ -45,7 +49,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 if (fixtureSetUpMethod != null)
                 {
                     if (suiteName != fixtureType.FullName)
-                        throw new InvalidProgramStateException(string.Format("EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {0}", test.GetMethodName()));
+                        throw new InvalidProgramStateException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
                     InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
                 }
                 InjectFixtureFields(suiteContext, testFixture);
@@ -63,8 +67,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
         {
-            object value;
-            if (setUpedFixtures.TryGetValue(testFixture, out value))
+            if (setUpedFixtures.TryGetValue(testFixture, out _))
                 return false;
             setUpedFixtures.Add(testFixture, null);
             return true;
@@ -75,9 +78,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var errors = new List<Exception>();
             var test = testDetails.Method.MethodInfo;
             var suiteName = test.GetSuiteName();
-            SuiteDescriptor suiteDescriptor;
-            if (!suiteDescriptors.TryGetValue(suiteName, out suiteDescriptor))
-                throw new InvalidProgramStateException(string.Format("Suite context is not set for: {0}", suiteName));
+            if (!suiteDescriptors.TryGetValue(suiteName, out var suiteDescriptor))
+                throw new InvalidProgramStateException($"Suite context is not set for: {suiteName}");
 
             try
             {
@@ -103,8 +105,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 }
             }
 
-            AggregateException error;
-            if (!methodContext.TryDestroy(out error))
+            if (!methodContext.TryDestroy(out var error))
             {
                 errors.Add(error);
             }
@@ -138,15 +139,22 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static void EnsureAppDomainIntialization()
         {
-            if (appDomainIsIntialized)
-                return;
-            AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
-            appDomainIsIntialized = true;
+            if (!appDomainIsIntialized)
+            {
+                lock (appDomainInitializationLock)
+                {
+                    if (!appDomainIsIntialized)
+                    {
+                        AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
+                        appDomainIsIntialized = true;
+                    }
+                }
+            }
         }
 
         private static void OnAppDomainUnload()
         {
-            var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Order).ToList();
+            var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Timestamp).ToList();
             Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptorsInOrderOfDestruction.Select(x => x.Key)));
             foreach (var kvp in suiteDescriptorsInOrderOfDestruction)
             {
@@ -160,41 +168,40 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
         }
 
-        private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
-
         private static bool appDomainIsIntialized;
+        private static readonly object appDomainInitializationLock = new object();
+        private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
 
         private class SuiteDescriptor
         {
             public SuiteDescriptor([NotNull] Assembly testAssembly)
             {
-                Order = order++;
+                Timestamp = Timestamp.Now;
                 TestAssembly = testAssembly;
                 LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load(), "test", ContainerMode.UseShortLog)));
                 SuiteContext = new EdiTestSuiteContextData(LazyContainer);
                 SetUpedSuiteWrappers = new ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp>();
             }
 
-            public int Order { get; private set; }
+            public Timestamp Timestamp { get; }
 
             [NotNull]
-            public Assembly TestAssembly { get; private set; }
+            public Assembly TestAssembly { get; }
 
             [NotNull]
-            public Lazy<IContainer> LazyContainer { get; private set; }
+            public Lazy<IContainer> LazyContainer { get; }
 
             [NotNull]
-            public EdiTestSuiteContextData SuiteContext { get; private set; }
+            public EdiTestSuiteContextData SuiteContext { get; }
 
             [NotNull]
-            public ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp> SetUpedSuiteWrappers { get; private set; }
+            public ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp> SetUpedSuiteWrappers { get; }
 
             public void Destroy([NotNull] string suiteName)
             {
-                AggregateException error;
-                if (!SuiteContext.TryDestroy(out error))
-                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to destroy suite context for: {0}", suiteName), error);
+                if (!SuiteContext.TryDestroy(out var error))
+                    Log.For("EdiTestMachinery").Fatal($"Failed to destroy suite context for: {suiteName}", error);
                 if (!LazyContainer.IsValueCreated)
                     return;
                 try
@@ -203,11 +210,9 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 }
                 catch (Exception e)
                 {
-                    Log.For("EdiTestMachinery").Fatal(string.Format("Failed to dispose container for: {0}", suiteName), e);
+                    Log.For("EdiTestMachinery").Fatal($"Failed to dispose container for: {suiteName}", e);
                 }
             }
-
-            private static int order;
         }
     }
 }
