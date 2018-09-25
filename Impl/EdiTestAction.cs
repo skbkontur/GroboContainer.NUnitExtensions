@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 using GroboContainer.Core;
 using GroboContainer.Impl;
@@ -39,8 +40,12 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             lock (suiteDescriptor)
             {
                 foreach (var suiteWrapper in suiteWrappers)
-                    if (suiteDescriptor.SetUpedSuiteWrappers.TryAdd(suiteWrapper, Timestamp.Now))
-                        suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
+                {
+                    if (suiteDescriptor.SetUpedSuiteWrappers.Contains(suiteWrapper))
+                        continue;
+                    suiteWrapper.SetUp(suiteName, suiteDescriptor.TestAssembly, suiteContext);
+                    suiteDescriptor.SetUpedSuiteWrappers.Add(suiteWrapper);
+                }
             }
 
             if (IsFixtureNotSetuped(testFixture))
@@ -157,13 +162,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static void OnAppDomainUnload()
         {
-            var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Timestamp).ToList();
+            var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Order).ToList();
             Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptorsInOrderOfDestruction.Select(x => x.Key)));
             foreach (var kvp in suiteDescriptorsInOrderOfDestruction)
             {
                 var suiteName = kvp.Key;
                 var suiteDescriptor = kvp.Value;
-                foreach (var suiteWrapper in suiteDescriptor.SetUpedSuiteWrappers.OrderByDescending(x => x.Value).Select(x => x.Key))
+                foreach (var suiteWrapper in Enumerable.Reverse(suiteDescriptor.SetUpedSuiteWrappers))
                     suiteWrapper.TearDown(suiteName, suiteDescriptor.TestAssembly, suiteDescriptor.SuiteContext);
                 suiteDescriptor.Destroy(suiteName);
             }
@@ -181,14 +186,14 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             public SuiteDescriptor([NotNull] Assembly testAssembly)
             {
-                Timestamp = Timestamp.Now;
+                Order = Interlocked.Increment(ref order);
                 TestAssembly = testAssembly;
                 LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load(), "test", ContainerMode.UseShortLog)));
                 SuiteContext = new EdiTestSuiteContextData(LazyContainer);
-                SetUpedSuiteWrappers = new ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp>();
+                SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
             }
 
-            public Timestamp Timestamp { get; }
+            public int Order { get; }
 
             [NotNull]
             public Assembly TestAssembly { get; }
@@ -200,7 +205,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             public EdiTestSuiteContextData SuiteContext { get; }
 
             [NotNull]
-            public ConcurrentDictionary<EdiTestSuiteWrapperAttribute, Timestamp> SetUpedSuiteWrappers { get; }
+            public List<EdiTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; }
 
             public void Destroy([NotNull] string suiteName)
             {
@@ -217,6 +222,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     Log.For("EdiTestMachinery").Fatal($"Failed to dispose container for: {suiteName}", e);
                 }
             }
+
+            private static int order;
         }
     }
 }
