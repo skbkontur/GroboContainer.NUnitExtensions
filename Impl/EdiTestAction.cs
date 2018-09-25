@@ -67,10 +67,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
         {
-            if (setUpedFixtures.TryGetValue(testFixture, out _))
-                return false;
-            setUpedFixtures.Add(testFixture, null);
-            return true;
+            lock (setUpedFixturesLock)
+            {
+                if (setUpedFixtures.TryGetValue(testFixture, out _))
+                    return false;
+                setUpedFixtures.Add(testFixture, null);
+                return true;
+            }
         }
 
         public static void AfterTest([NotNull] ITest testDetails)
@@ -170,6 +173,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static bool appDomainIsIntialized;
         private static readonly object appDomainInitializationLock = new object();
+        private static readonly object setUpedFixturesLock = new object();
         private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
 
