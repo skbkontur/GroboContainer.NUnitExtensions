@@ -25,7 +25,6 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
         }
     }
 
-
     [EdiTestSuite("ParallelUsage"), WithFirstContextItem, Parallelizable(ParallelScope.Self)]
     public class FirstParallelSuiteContextUsageTest
     {
