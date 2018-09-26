@@ -48,16 +48,19 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 }
             }
 
-            if (IsFixtureNotSetuped(testFixture))
+            lock (testFixture)
             {
-                var fixtureSetUpMethod = test.FindFixtureSetUpMethod();
-                if (fixtureSetUpMethod != null)
+                if (IsFixtureNotSetuped(testFixture))
                 {
-                    if (suiteName != fixtureType.FullName)
-                        throw new InvalidProgramStateException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
-                    InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
+                    var fixtureSetUpMethod = test.FindFixtureSetUpMethod();
+                    if (fixtureSetUpMethod != null)
+                    {
+                        if (suiteName != fixtureType.FullName)
+                            throw new InvalidProgramStateException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
+                        InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
+                    }
+                    InjectFixtureFields(suiteContext, testFixture);
                 }
-                InjectFixtureFields(suiteContext, testFixture);
             }
 
             var testName = testDetails.FullName;
@@ -72,13 +75,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
         {
-            lock (setUpedFixturesLock)
-            {
-                if (setUpedFixtures.TryGetValue(testFixture, out _))
-                    return false;
-                setUpedFixtures.Add(testFixture, null);
-                return true;
-            }
+            if (setUpedFixtures.TryGetValue(testFixture, out _))
+                return false;
+            setUpedFixtures.Add(testFixture, null);
+            return true;
         }
 
         public static void AfterTest([NotNull] ITest testDetails)
@@ -178,7 +178,6 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
         private static bool appDomainIsIntialized;
         private static readonly object appDomainInitializationLock = new object();
-        private static readonly object setUpedFixturesLock = new object();
         private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
 
