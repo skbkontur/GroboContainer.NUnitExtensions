@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using GroboContainer.Core;
 
@@ -46,7 +47,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         public bool TryDestroy(out AggregateException aggregateError)
         {
             var errors = new List<InvalidProgramStateException>();
-            foreach (var kvp in items.OrderByDescending(x => x.Value.Timestamp))
+            foreach (var kvp in items.OrderByDescending(x => x.Value.Order))
             {
                 if (kvp.Value.ItemValue is IDisposable disposableItem)
                 {
@@ -91,14 +92,16 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         {
             public ItemValueHolder([NotNull] object itemValue)
             {
-                Timestamp = Timestamp.Now;
+                Order = Interlocked.Increment(ref order);
                 ItemValue = itemValue;
             }
 
-            public Timestamp Timestamp { get; }
+            public int Order { get; }
 
             [NotNull]
             public object ItemValue { get; }
+
+            private static int order;
         }
     }
 }
