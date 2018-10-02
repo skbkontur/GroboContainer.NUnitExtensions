@@ -36,6 +36,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var suiteName = test.GetSuiteName();
             var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(fixtureType.Assembly));
             var suiteContext = suiteDescriptor.SuiteContext;
+            var methodContext = new EdiTestMethodContextData(suiteDescriptor.LazyContainer);
+
+            EdiTestContextHolder.SetCurrentContext(suiteContext, methodContext);
+
             var suiteWrappers = test.GetSuiteWrappers();
             lock (suiteDescriptor)
             {
@@ -64,11 +68,8 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             }
 
             var testName = testDetails.FullName;
-            var methodContext = new EdiTestMethodContextData(suiteDescriptor.LazyContainer);
             foreach (var methodWrapper in test.GetMethodWrappers())
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
-
-            EdiTestContextHolder.SetCurrentContext(suiteContext, methodContext);
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
         }
