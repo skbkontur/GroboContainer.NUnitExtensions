@@ -69,9 +69,13 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
             var testName = testDetails.FullName;
             foreach (var methodWrapper in test.GetMethodWrappers())
+            {
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
+                methodContext.SetUpWrappers.Add(methodWrapper);
+            }
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
+            methodContext.IsSetUp = true;
         }
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
@@ -85,25 +89,34 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         public static void AfterTest([NotNull] ITest testDetails)
         {
             var errors = new List<Exception>();
+
             var test = testDetails.Method.MethodInfo;
+            if (test.HasNunitAttributes())
+                return;
+
             var suiteName = test.GetSuiteName();
             if (!suiteDescriptors.TryGetValue(suiteName, out var suiteDescriptor))
                 throw new InvalidProgramStateException($"Suite context is not set for: {suiteName}");
 
-            try
-            {
-                InvokeWrapperMethod(test.FindTearDownMethod(), testDetails.Fixture);
-            }
-            catch (Exception exception)
-            {
-                errors.Add(exception);
-            }
-
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
+            if (methodContext.IsSetUp)
+            {
+                try
+                {
+                    InvokeWrapperMethod(test.FindTearDownMethod(), testDetails.Fixture);
+                }
+                catch (Exception exception)
+                {
+                    errors.Add(exception);
+                }
+            }
 
             var testName = testDetails.FullName;
             foreach (var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
             {
+                if (!methodContext.SetUpWrappers.Contains(methodWrapper))
+                    continue;
+
                 try
                 {
                     methodWrapper.TearDown(testName, suiteDescriptor.SuiteContext, methodContext);

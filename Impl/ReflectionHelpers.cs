@@ -97,6 +97,12 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 throw new InvalidProgramStateException(string.Format("Prohibited NUnit attributes ({0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
         }
 
+        public static bool HasNunitAttributes([NotNull] this MethodInfo test)
+        {
+            var fixtureType = GetFixtureType(test);
+            return nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute);
+        }
+
         [NotNull]
         public static List<FieldInfo> GetFieldsForInjection([NotNull] this Type fixtureType)
         {
