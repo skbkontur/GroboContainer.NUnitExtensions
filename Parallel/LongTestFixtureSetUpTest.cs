@@ -37,8 +37,9 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Pa
             injected.Should().NotBeNull();
         }
 
+#pragma warning disable 649
         [Injected]
-        [UsedImplicitly]
         private readonly InjectedField injected;
+#pragma warning restore 649
     }
 }
