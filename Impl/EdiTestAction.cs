@@ -71,11 +71,11 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             foreach (var methodWrapper in test.GetMethodWrappers())
             {
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
-                methodContext.SetUpWrappers.Add(methodWrapper);
+                methodContext.SetUpedMethodWrappers.Add(methodWrapper);
             }
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
-            methodContext.IsSetUp = true;
+            methodContext.IsSetUped = true;
         }
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
@@ -99,7 +99,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 throw new InvalidProgramStateException($"Suite context is not set for: {suiteName}");
 
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
-            if (methodContext.IsSetUp)
+            if (methodContext.IsSetUped)
             {
                 try
                 {
@@ -114,7 +114,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             var testName = testDetails.FullName;
             foreach (var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
             {
-                if (!methodContext.SetUpWrappers.Contains(methodWrapper))
+                if (!methodContext.SetUpedMethodWrappers.Contains(methodWrapper))
                     continue;
 
                 try

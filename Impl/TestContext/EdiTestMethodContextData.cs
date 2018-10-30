@@ -12,11 +12,11 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         public EdiTestMethodContextData([NotNull] Lazy<IContainer> lazyContainer)
             : base(lazyContainer)
         {
-            SetUpWrappers = new HashSet<EdiTestMethodWrapperAttribute>();
-            IsSetUp = false;
+            SetUpedMethodWrappers = new HashSet<EdiTestMethodWrapperAttribute>();
+            IsSetUped = false;
         }
 
-        public HashSet<EdiTestMethodWrapperAttribute> SetUpWrappers { get; }
-        public bool IsSetUp { get; set; }
+        public HashSet<EdiTestMethodWrapperAttribute> SetUpedMethodWrappers { get; }
+        public bool IsSetUped { get; set; }
     }
 }
