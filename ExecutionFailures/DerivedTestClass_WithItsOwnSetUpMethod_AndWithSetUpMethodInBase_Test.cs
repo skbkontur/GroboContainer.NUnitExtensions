@@ -38,7 +38,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<DerivedTestClass_WithItsOwnSetUpMethod_AndWithSetUpMethodInBase_ExplicitTest>();
             var result = testResults[nameof(DerivedTestClass_WithItsOwnSetUpMethod_AndWithSetUpMethodInBase_ExplicitTest.Test01)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : There are multiple methods marked with EdiSetUpAttribute attribute in:");
+            result.Message.Should().Contain("There are multiple methods marked with EdiSetUpAttribute attribute in:");
         }
     }
 }

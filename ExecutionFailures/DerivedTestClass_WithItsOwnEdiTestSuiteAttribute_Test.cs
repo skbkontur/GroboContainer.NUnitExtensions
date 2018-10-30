@@ -25,7 +25,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<DerivedTestClass_WithItsOwnEdiTestSuiteAttribute_ExplicitTest>();
             var result = testResults[nameof(DerivedTestClass_WithItsOwnEdiTestSuiteAttribute_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : There are multiple suite names (BaseSuite, BaseSuite) defined for:");
+            result.Message.Should().Contain("There are multiple suite names (BaseSuite, BaseSuite) defined for:");
         }
     }
 }

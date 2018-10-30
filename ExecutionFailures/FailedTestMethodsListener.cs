@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using MoreLinq.Extensions;
-
 using NUnit.Framework.Interfaces;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures

@@ -85,7 +85,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<NUnit_TestFixtureAttribute_IsProhibited_ExplicitTest>();
             var result = testResults[nameof(NUnit_TestFixtureAttribute_IsProhibited_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
+            result.Message.Should().Contain("Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<NUnit_SetUpAttribute_IsProhibited_ExplicitTest>();
             var result = testResults[nameof(NUnit_SetUpAttribute_IsProhibited_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
+            result.Message.Should().Contain("Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<NUnit_TearDownAttribute_IsProhibited_ExplicitTest>();
             var result = testResults[nameof(NUnit_TearDownAttribute_IsProhibited_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
+            result.Message.Should().Contain("Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<NUnit_TestFixtureSetUpAttribute_IsProhibited_ExplicitTest>();
             var result = testResults[nameof(NUnit_TestFixtureSetUpAttribute_IsProhibited_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
+            result.Message.Should().Contain("Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<NUnit_TestFixtureTearDownAttribute_IsProhibited_ExplicitTest>();
             var result = testResults[nameof(NUnit_TestFixtureTearDownAttribute_IsProhibited_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
+            result.Message.Should().Contain("Prohibited NUnit attributes (SetUpAttribute, TearDownAttribute, OneTimeSetUpAttribute, OneTimeTearDownAttribute) are used in:");
         }
     }
 }

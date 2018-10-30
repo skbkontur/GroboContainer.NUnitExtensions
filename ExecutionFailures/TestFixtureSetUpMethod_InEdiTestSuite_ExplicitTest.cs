@@ -31,7 +31,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             var testResults = TestRunner.RunTestClass<TestFixtureSetUpMethod_InEdiTestSuite_ExplicitTest>();
             var result = testResults[nameof(TestFixtureSetUpMethod_InEdiTestSuite_ExplicitTest.Test)];
-            result.Message.Should().StartWith("SKBKontur.Catalogue.Objects.InvalidProgramStateException : EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite.");
+            result.Message.Should().Contain("EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite.");
         }
     }
 }
