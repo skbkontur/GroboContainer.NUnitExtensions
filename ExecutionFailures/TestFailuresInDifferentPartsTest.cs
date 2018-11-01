@@ -1,5 +1,3 @@
-using System.Reflection;
-
 using FluentAssertions;
 
 using NUnit.Framework;
