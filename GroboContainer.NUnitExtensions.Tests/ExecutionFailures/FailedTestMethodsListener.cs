@@ -20,6 +20,10 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
         }
 
+        public void SendMessage(TestMessage message)
+        {
+        }
+
         public Dictionary<string, ITestResult> TestResults { get; } = new Dictionary<string, ITestResult>();
     }
 }

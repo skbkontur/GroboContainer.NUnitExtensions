@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using JetBrains.Annotations;
 
@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl;
-using SKBKontur.Catalogue.Objects;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
 {
@@ -29,7 +28,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
         private static void EnsureWeAreInMethodContext([NotNull] ITest testDetails)
         {
             if (testDetails.IsSuite)
-                throw new InvalidProgramStateException($"IsSuite == true for: {testDetails.FullName}, Type: {testDetails.TestType}");
+                throw new InvalidOperationException($"IsSuite == true for: {testDetails.FullName}, Type: {testDetails.TestType}");
         }
     }
 }

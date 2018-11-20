@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,6 @@ using System.Threading;
 using GroboContainer.Core;
 
 using JetBrains.Annotations;
-
-using SKBKontur.Catalogue.Objects;
-using SKBKontur.Catalogue.Objects.Json;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 {
@@ -36,7 +33,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
         public void AddItem([NotNull] string itemName, [NotNull] object itemValue)
         {
             if (!items.TryAdd(itemName, new ItemValueHolder(itemValue)))
-                throw new InvalidProgramStateException($"Item with the same name is already added: {itemName}");
+                throw new InvalidOperationException($"Item with the same name is already added: {itemName}");
         }
 
         public bool RemoveItem([NotNull] string itemName)
@@ -46,7 +43,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
 
         public bool TryDestroy(out AggregateException aggregateError)
         {
-            var errors = new List<InvalidProgramStateException>();
+            var errors = new List<InvalidOperationException>();
             foreach (var kvp in items.OrderByDescending(x => x.Value.Order))
             {
                 if (kvp.Value.ItemValue is IDisposable disposableItem)
@@ -65,7 +62,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             return true;
         }
 
-        private static bool TryDisposeItem([NotNull] string itemName, [NotNull] IDisposable disposableItem, out InvalidProgramStateException error)
+        private static bool TryDisposeItem([NotNull] string itemName, [NotNull] IDisposable disposableItem, out InvalidOperationException error)
         {
             error = null;
             try
@@ -75,14 +72,14 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             }
             catch (Exception e)
             {
-                error = new InvalidProgramStateException($"Failed to dispose item: {itemName}", e);
+                error = new InvalidOperationException($"Failed to dispose item: {itemName}", e);
                 return false;
             }
         }
 
         public override string ToString()
         {
-            return $"{items.ToPrettyJson()}";
+            return string.Join(Environment.NewLine, items.Select(kvp => $"{kvp.Key}: ({kvp.Value.Order}, {kvp.Value.ItemValue})"));
         }
 
         private readonly Lazy<IContainer> lazyContainer;

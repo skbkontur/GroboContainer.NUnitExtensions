@@ -1,11 +1,10 @@
-﻿using System.Collections.Concurrent;
+using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 
 using JetBrains.Annotations;
 
 using NUnit.Framework.Interfaces;
-
-using SKBKontur.Catalogue.Objects;
 
 using NUnitTestContext = NUnit.Framework.TestContext;
 
@@ -19,11 +18,11 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
             if (!methodContexts.TryGetValue(testId, out var currentMethodContext))
-                throw new InvalidProgramStateException("TestContext for test with name: {testName}, id: {testId} is not set");
+                throw new InvalidOperationException("TestContext for test with name: {testName}, id: {testId} is not set");
 
             var suiteName = GetTestMethodInfo().GetSuiteName();
             if (!suiteContexts.TryGetValue(suiteName, out var currentSuiteContext))
-                throw new InvalidProgramStateException("SuiteContext for test with name: {testName}, id: {testId} is not set");
+                throw new InvalidOperationException("SuiteContext for test with name: {testName}, id: {testId} is not set");
 
             return new EdiTestContext(testName, currentSuiteContext, currentMethodContext);
         }
@@ -33,7 +32,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
             if (!methodContexts.TryAdd(testId, methodContext))
-                throw new InvalidProgramStateException($"MethodContext for test with id: {testId}, name: {testName} already exists");
+                throw new InvalidOperationException($"MethodContext for test with id: {testId}, name: {testName} already exists");
 
             var suiteName = GetTestMethodInfo().GetSuiteName();
             suiteContexts.TryAdd(suiteName, suiteContext);
@@ -45,7 +44,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
             if (!methodContexts.TryRemove(testId, out var currentMethodContext))
-                throw new InvalidProgramStateException($"Unable to remove TestContext for test with id: {testId}, name: {testName}");
+                throw new InvalidOperationException($"Unable to remove TestContext for test with id: {testId}, name: {testName}");
             return currentMethodContext;
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting;
-using SKBKontur.Catalogue.Objects;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 {
@@ -26,7 +25,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             var fixtureType = test.ReflectedType;
             if (fixtureType == null)
-                throw new InvalidProgramStateException(string.Format("test.ReflectedType is null for: {0}", test.Name));
+                throw new InvalidOperationException(string.Format("test.ReflectedType is null for: {0}", test.Name));
             return fixtureType;
         }
 
@@ -40,10 +39,10 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     if (testFixtureAttribute != null)
                         suiteNames.Add(fixtureType.FullName);
                     if (suiteNames.Count > 1)
-                        throw new InvalidProgramStateException(string.Format("There are multiple suite names ({0}) defined for: {1}", string.Join(", ", suiteNames), test.GetMethodName()));
+                        throw new InvalidOperationException(string.Format("There are multiple suite names ({0}) defined for: {1}", string.Join(", ", suiteNames), test.GetMethodName()));
                     var suiteName = suiteNames.SingleOrDefault();
                     if (string.IsNullOrEmpty(suiteName))
-                        throw new InvalidProgramStateException(string.Format("Suite name is not defined for: {0}", test.GetMethodName()));
+                        throw new InvalidOperationException(string.Format("Suite name is not defined for: {0}", test.GetMethodName()));
                     return suiteName;
                 });
         }
@@ -86,7 +85,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
                 .ToList();
             if (methods.Count > 1)
-                throw new InvalidProgramStateException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
+                throw new InvalidOperationException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
             return methods.SingleOrDefault();
         }
 
@@ -94,7 +93,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         {
             var fixtureType = GetFixtureType(test);
             if (nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))
-                throw new InvalidProgramStateException(string.Format("Prohibited NUnit attributes ({0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
+                throw new InvalidOperationException(string.Format("Prohibited NUnit attributes ({0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
         }
 
         public static bool HasNunitAttributes([NotNull] this MethodInfo test)

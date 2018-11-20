@@ -1,10 +1,11 @@
+using System;
+
 using FluentAssertions;
 
 using NUnit.Framework;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-using SKBKontur.Catalogue.Objects;
 
 namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
 {
@@ -63,14 +64,14 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         {
             EdiTestMachineryTrace.Log("AndB.SetUp()");
             if (exceptionInSetUp)
-                throw new InvalidProgramStateException("Error in AndB.SetUp()");
+                throw new InvalidOperationException("Error in AndB.SetUp()");
         }
 
         public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
         {
             EdiTestMachineryTrace.Log("AndB.TearDown()");
             if (exceptionInTearDown)
-                throw new InvalidProgramStateException("Error in AndB.TearDown()");
+                throw new InvalidOperationException("Error in AndB.TearDown()");
         }
 
         private readonly bool exceptionInSetUp;
@@ -99,7 +100,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
         public void Test()
         {
             EdiTestMachineryTrace.Log("FailureInTest_ExplicitTest.Test()");
-            throw new InvalidProgramStateException("Error in FailureInTest_ExplicitTest.Test()");
+            throw new InvalidOperationException("Error in FailureInTest_ExplicitTest.Test()");
         }
     }
 

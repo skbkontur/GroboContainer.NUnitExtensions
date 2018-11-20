@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,6 @@ using JetBrains.Annotations;
 using NUnit.Framework.Interfaces;
 
 using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-using SKBKontur.Catalogue.Objects;
-using SKBKontur.Catalogue.ServiceLib;
-using SKBKontur.Catalogue.ServiceLib.Logging;
 
 namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 {
@@ -24,17 +21,17 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
     {
         public static void BeforeTest([NotNull] ITest testDetails)
         {
-            EnsureAppDomainIntialization();
+            EnsureAppDomainInitialization();
 
             var test = testDetails.Method.MethodInfo;
             test.EnsureNunitAttributesAbscence();
             var fixtureType = test.GetFixtureType();
             var testFixture = testDetails.Fixture;
             if (fixtureType != testFixture.GetType())
-                throw new InvalidProgramStateException($"TestFixtureType mismatch for: {test.GetMethodName()}");
+                throw new InvalidOperationException($"TestFixtureType mismatch for: {test.GetMethodName()}");
 
             var suiteName = test.GetSuiteName();
-            var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(fixtureType.Assembly));
+            var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(suiteName, fixtureType.Assembly));
             var suiteContext = suiteDescriptor.SuiteContext;
             var methodContext = new EdiTestMethodContextData(suiteDescriptor.LazyContainer);
 
@@ -60,7 +57,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                     if (fixtureSetUpMethod != null)
                     {
                         if (suiteName != fixtureType.FullName)
-                            throw new InvalidProgramStateException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
+                            throw new InvalidOperationException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
                         InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
                     }
                     InjectFixtureFields(suiteContext, testFixture);
@@ -96,7 +93,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
 
             var suiteName = test.GetSuiteName();
             if (!suiteDescriptors.TryGetValue(suiteName, out var suiteDescriptor))
-                throw new InvalidProgramStateException($"Suite context is not set for: {suiteName}");
+                throw new InvalidOperationException($"Suite context is not set for: {suiteName}");
 
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
             if (methodContext.IsSetUped)
@@ -159,16 +156,16 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 fieldInfo.SetValue(testFixture, suiteContext.Container.Get(fieldInfo.FieldType));
         }
 
-        private static void EnsureAppDomainIntialization()
+        private static void EnsureAppDomainInitialization()
         {
-            if (!appDomainIsIntialized)
+            if (!appDomainIsInitialized)
             {
                 lock (appDomainInitializationLock)
                 {
-                    if (!appDomainIsIntialized)
+                    if (!appDomainIsInitialized)
                     {
                         AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
-                        appDomainIsIntialized = true;
+                        appDomainIsInitialized = true;
                     }
                 }
             }
@@ -177,7 +174,6 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
         private static void OnAppDomainUnload()
         {
             var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Order).ToList();
-            Log.For("EdiTestMachinery").InfoFormat("Suites to tear down: {0}", string.Join(", ", suiteDescriptorsInOrderOfDestruction.Select(x => x.Key)));
             foreach (var kvp in suiteDescriptorsInOrderOfDestruction)
             {
                 var suiteName = kvp.Key;
@@ -187,21 +183,20 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 suiteDescriptor.Destroy(suiteName);
             }
             suiteDescriptors.Clear();
-            Log.For("EdiTestMachinery").InfoFormat("App domain cleanup is finished");
         }
 
-        private static bool appDomainIsIntialized;
+        private static bool appDomainIsInitialized;
         private static readonly object appDomainInitializationLock = new object();
         private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
 
         private class SuiteDescriptor
         {
-            public SuiteDescriptor([NotNull] Assembly testAssembly)
+            public SuiteDescriptor([NotNull] string suiteName, [NotNull] Assembly testAssembly)
             {
                 Order = Interlocked.Increment(ref order);
                 TestAssembly = testAssembly;
-                LazyContainer = new Lazy<IContainer>(() => new Container(new ContainerConfiguration(AssembliesLoader.Load(), "test", ContainerMode.UseShortLog)));
+                LazyContainer = new Lazy<IContainer>(() => new Container(GetContainerConfiguration(suiteName, testAssembly)));
                 SuiteContext = new EdiTestSuiteContextData(LazyContainer);
                 SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
             }
@@ -223,7 +218,7 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
             public void Destroy([NotNull] string suiteName)
             {
                 if (!SuiteContext.TryDestroy(out var error))
-                    Log.For("EdiTestMachinery").Fatal($"Failed to destroy suite context for: {suiteName}", error);
+                    Console.Error.WriteLine($"Failed to destroy suite context for {suiteName} with error: {error}");
                 if (!LazyContainer.IsValueCreated)
                     return;
                 try
@@ -232,7 +227,34 @@ namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
                 }
                 catch (Exception e)
                 {
-                    Log.For("EdiTestMachinery").Fatal($"Failed to dispose container for: {suiteName}", e);
+                    Console.Error.WriteLine($"Failed to dispose container for {suiteName} with error: {e}");
+                }
+            }
+
+            [NotNull]
+            private static ContainerConfiguration GetContainerConfiguration([NotNull] string suiteName, [NotNull] Assembly testAssembly)
+            {
+                const string containerConfiguratorTypeName = "GroboTestMachineryContainerConfigurator";
+                var containerConfiguratorTypes = testAssembly.GetExportedTypes().Where(t=> t.IsClass && t.Name == containerConfiguratorTypeName).ToList();
+                if (!containerConfiguratorTypes.Any())
+                    throw new InvalidOperationException($"Failed to get container configuration for test suite {suiteName}. There is no {containerConfiguratorTypeName} type in test assembly: {testAssembly}");
+                if (containerConfiguratorTypes.Count > 1)
+                    throw new InvalidOperationException($"Failed to get container configuration for test suite {suiteName}. There are multiple types with {containerConfiguratorTypeName} name in test assembly: {testAssembly}");
+
+                const string getContainerConfigurationMethodName = "GetContainerConfiguration";
+                var methodInfo = containerConfiguratorTypes.Single().GetMethod(getContainerConfigurationMethodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                if (methodInfo == null)
+                    throw new InvalidOperationException($"Failed to get container configuration for test suite {suiteName}. There is no {containerConfiguratorTypeName}.{getContainerConfigurationMethodName}() method in test assembly: {testAssembly}");
+
+                try
+                {
+                    return (ContainerConfiguration)methodInfo.Invoke(null, new object[] {suiteName});
+                }
+                catch (TargetInvocationException exception)
+                {
+                    exception.RethrowInnerException();
+                    // ReSharper disable once AssignNullToNotNullAttribute
+                    return null;
                 }
             }
 
