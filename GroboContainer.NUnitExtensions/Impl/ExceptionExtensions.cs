@@ -15,8 +15,7 @@ namespace GroboContainer.NUnitExtensions.Impl
 
         public static void RethrowInnerException([NotNull] this TargetInvocationException exception)
         {
-            if (exception.InnerException != null)
-                exception.InnerException.Rethrow();
+            exception.InnerException?.Rethrow();
             throw exception;
         }
 

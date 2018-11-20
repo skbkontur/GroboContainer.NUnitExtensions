@@ -13,7 +13,7 @@ namespace GroboContainer.NUnitExtensions.Impl.TopologicalSorting
         }
 
         [NotNull]
-        public T Payload { get; private set; }
+        public T Payload { get; }
 
         public bool InResults { get; set; }
         public bool InProgress { get; set; }

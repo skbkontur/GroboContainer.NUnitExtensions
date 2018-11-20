@@ -11,7 +11,7 @@ namespace GroboContainer.NUnitExtensions
 {
     public abstract class EdiTestSuiteAttributeBase : Attribute, ITestAction
     {
-        public ActionTargets Targets { get { return ActionTargets.Test; } }
+        public ActionTargets Targets => ActionTargets.Test;
 
         public void BeforeTest([NotNull] ITest testDetails)
         {

@@ -18,8 +18,7 @@ namespace GroboContainer.NUnitExtensions
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            var other = obj as EdiTestWrapperAttribute;
-            return other != null && Equals(other);
+            return obj is EdiTestWrapperAttribute other && Equals(other);
         }
 
         public override int GetHashCode()

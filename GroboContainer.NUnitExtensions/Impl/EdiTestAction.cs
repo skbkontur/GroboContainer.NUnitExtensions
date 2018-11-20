@@ -23,7 +23,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             EnsureAppDomainInitialization();
 
             var test = testDetails.Method.MethodInfo;
-            test.EnsureNunitAttributesAbscence();
+            test.EnsureNunitAttributesAbsence();
             var fixtureType = test.GetFixtureType();
             var testFixture = testDetails.Fixture;
             if (fixtureType != testFixture.GetType())
@@ -67,11 +67,11 @@ namespace GroboContainer.NUnitExtensions.Impl
             foreach (var methodWrapper in test.GetMethodWrappers())
             {
                 methodWrapper.SetUp(testName, suiteContext, methodContext);
-                methodContext.SetUpedMethodWrappers.Add(methodWrapper);
+                methodContext.SetUppedMethodWrappers.Add(methodWrapper);
             }
 
             InvokeWrapperMethod(test.FindSetUpMethod(), testFixture);
-            methodContext.IsSetUped = true;
+            methodContext.IsSetUpped = true;
         }
 
         private static bool IsFixtureNotSetuped([NotNull] object testFixture)
@@ -95,7 +95,7 @@ namespace GroboContainer.NUnitExtensions.Impl
                 throw new InvalidOperationException($"Suite context is not set for: {suiteName}");
 
             var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
-            if (methodContext.IsSetUped)
+            if (methodContext.IsSetUpped)
             {
                 try
                 {
@@ -110,7 +110,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             var testName = testDetails.FullName;
             foreach (var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
             {
-                if (!methodContext.SetUpedMethodWrappers.Contains(methodWrapper))
+                if (!methodContext.SetUppedMethodWrappers.Contains(methodWrapper))
                     continue;
 
                 try

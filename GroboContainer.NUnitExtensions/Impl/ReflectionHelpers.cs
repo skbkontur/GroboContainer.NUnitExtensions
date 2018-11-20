@@ -89,7 +89,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             return methods.SingleOrDefault();
         }
 
-        public static void EnsureNunitAttributesAbscence([NotNull] this MethodInfo test)
+        public static void EnsureNunitAttributesAbsence([NotNull] this MethodInfo test)
         {
             var fixtureType = GetFixtureType(test);
             if (nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))

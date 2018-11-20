@@ -12,11 +12,12 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
         public EdiTestMethodContextData([NotNull] Lazy<IContainer> lazyContainer)
             : base(lazyContainer)
         {
-            SetUpedMethodWrappers = new HashSet<EdiTestMethodWrapperAttribute>();
-            IsSetUped = false;
+            SetUppedMethodWrappers = new HashSet<EdiTestMethodWrapperAttribute>();
+            IsSetUpped = false;
         }
 
-        public HashSet<EdiTestMethodWrapperAttribute> SetUpedMethodWrappers { get; }
-        public bool IsSetUped { get; set; }
+        public HashSet<EdiTestMethodWrapperAttribute> SetUppedMethodWrappers { get; }
+
+        public bool IsSetUpped { get; set; }
     }
 }

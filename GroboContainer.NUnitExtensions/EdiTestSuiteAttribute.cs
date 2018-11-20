@@ -15,7 +15,7 @@ namespace GroboContainer.NUnitExtensions
         }
 
         [NotNull]
-        public string SuiteName { get; private set; }
+        public string SuiteName { get; }
 
         public override string ToString()
         {

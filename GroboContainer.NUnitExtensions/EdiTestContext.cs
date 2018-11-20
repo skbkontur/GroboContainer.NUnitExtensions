@@ -15,10 +15,10 @@ namespace GroboContainer.NUnitExtensions
         }
 
         [NotNull]
-        public static IEdiTestContext Current { get { return EdiTestContextHolder.GetCurrentContext(); } }
+        public static IEdiTestContext Current => EdiTestContextHolder.GetCurrentContext();
 
         [NotNull]
-        public IContainer Container { get { return suiteContext.Container; } }
+        public IContainer Container => suiteContext.Container;
 
         public bool TryGetContextItem([NotNull] string itemName, out object itemValue)
         {

@@ -13,9 +13,9 @@ namespace GroboContainer.NUnitExtensions.Impl.TopologicalSorting
         }
 
         [NotNull]
-        public List<DependencyNode<T>> SortedNodes { get; private set; }
+        public List<DependencyNode<T>> SortedNodes { get; }
 
         [NotNull]
-        public List<List<DependencyNode<T>>> Cycles { get; private set; }
+        public List<List<DependencyNode<T>>> Cycles { get; }
     }
 }
