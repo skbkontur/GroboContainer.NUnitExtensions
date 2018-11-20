@@ -12,8 +12,8 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchyForSetUpMethod"));
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "TestBase_SetUp()",
                     "Test()",
                 });

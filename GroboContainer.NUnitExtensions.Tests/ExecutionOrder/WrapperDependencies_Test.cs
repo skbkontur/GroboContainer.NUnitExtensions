@@ -24,11 +24,11 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",
@@ -43,11 +43,11 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",
@@ -55,8 +55,8 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
                     "TearDown()",
                     "AndV(t=12).TearDown()",
                     "AndU(s=11).TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test02", EdiTestContext.Current.SuiteName()),
+                    $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test02",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",

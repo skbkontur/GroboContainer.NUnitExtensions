@@ -15,12 +15,12 @@ namespace GroboContainer.NUnitExtensions.Tests
         {
             suiteContext.AddItem("SuiteDebugId", Guid.NewGuid());
             suiteContext.AddItem("TestSuiteName", suiteName);
-            EdiTestMachineryTrace.Log(string.Format("SuiteWrapper.SetUp() for {0}", suiteName), suiteContext);
+            EdiTestMachineryTrace.Log($"SuiteWrapper.SetUp() for {suiteName}", suiteContext);
         }
 
         public override sealed void TearDown([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEditableEdiTestContext suiteContext)
         {
-            EdiTestMachineryTrace.Log(string.Format("SuiteWrapper.TearDown() for {0}", suiteName), suiteContext);
+            EdiTestMachineryTrace.Log($"SuiteWrapper.TearDown() for {suiteName}", suiteContext);
             Assert.That(suiteName, Is.EqualTo(suiteContext.GetContextItem<string>("TestSuiteName")));
             Assert.That(suiteContext.RemoveItem("TestSuiteName"), Is.True);
         }

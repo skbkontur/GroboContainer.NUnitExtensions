@@ -17,7 +17,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         [NotNull]
         public static string GetMethodName([NotNull] this MethodInfo test)
         {
-            return string.Format("{0}.{1}", test.GetFixtureType().FullName, test.Name);
+            return $"{test.GetFixtureType().FullName}.{test.Name}";
         }
 
         [NotNull]
@@ -25,7 +25,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         {
             var fixtureType = test.ReflectedType;
             if (fixtureType == null)
-                throw new InvalidOperationException(string.Format("test.ReflectedType is null for: {0}", test.Name));
+                throw new InvalidOperationException($"test.ReflectedType is null for: {test.Name}");
             return fixtureType;
         }
 
@@ -39,10 +39,10 @@ namespace GroboContainer.NUnitExtensions.Impl
                     if (testFixtureAttribute != null)
                         suiteNames.Add(fixtureType.FullName);
                     if (suiteNames.Count > 1)
-                        throw new InvalidOperationException(string.Format("There are multiple suite names ({0}) defined for: {1}", string.Join(", ", suiteNames), test.GetMethodName()));
+                        throw new InvalidOperationException($"There are multiple suite names ({string.Join(", ", suiteNames)}) defined for: {test.GetMethodName()}");
                     var suiteName = suiteNames.SingleOrDefault();
                     if (string.IsNullOrEmpty(suiteName))
-                        throw new InvalidOperationException(string.Format("Suite name is not defined for: {0}", test.GetMethodName()));
+                        throw new InvalidOperationException($"Suite name is not defined for: {test.GetMethodName()}");
                     return suiteName;
                 });
         }
@@ -85,7 +85,7 @@ namespace GroboContainer.NUnitExtensions.Impl
                 .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
                 .ToList();
             if (methods.Count > 1)
-                throw new InvalidOperationException(string.Format("There are multiple methods marked with {0} attribute in: {1}", typeof(TAttribute).Name, fixtureType.FullName));
+                throw new InvalidOperationException($"There are multiple methods marked with {typeof(TAttribute).Name} attribute in: {fixtureType.FullName}");
             return methods.SingleOrDefault();
         }
 
@@ -93,7 +93,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         {
             var fixtureType = GetFixtureType(test);
             if (nunitAttributesPresence.GetOrAdd(fixtureType, HasMethodMarkedWithNUnitAttribute))
-                throw new InvalidOperationException(string.Format("Prohibited NUnit attributes ({0}) are used in: {1}", string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name)), fixtureType.FullName));
+                throw new InvalidOperationException($"Prohibited NUnit attributes ({string.Join(", ", forbiddenNunitMethodAttributes.Select(x => x.Name))}) are used in: {fixtureType.FullName}");
         }
 
         public static bool HasNunitAttributes([NotNull] this MethodInfo test)

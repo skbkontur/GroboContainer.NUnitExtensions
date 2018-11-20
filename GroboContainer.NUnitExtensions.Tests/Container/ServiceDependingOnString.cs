@@ -9,7 +9,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
 
         public void Hoo(int q)
         {
-            EdiTestMachineryTrace.Log(string.Format("ServiceDependingOnString.Hoo(p={0}, q={1})", param, q));
+            EdiTestMachineryTrace.Log($"ServiceDependingOnString.Hoo(p={param}, q={q})");
         }
 
         private readonly string param;

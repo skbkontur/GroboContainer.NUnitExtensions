@@ -11,7 +11,7 @@ namespace GroboContainer.NUnitExtensions
         {
             object itemValue;
             if (!ctx.TryGetContextItem(itemName, out itemValue) || itemValue == null)
-                throw new InvalidOperationException(string.Format("{0} is not set in context: {1}", itemName, ctx));
+                throw new InvalidOperationException($"{itemName} is not set in context: {ctx}");
             return (TItem)itemValue;
         }
     }

@@ -14,7 +14,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
 
         public override void SetUp(string suiteName, Assembly testAssembly, IEditableEdiTestContext suiteContext)
         {
-            EdiTestMachineryTrace.Log(string.Format("WithServiceDependingOnString(p={0}).SetUp()", p), suiteContext);
+            EdiTestMachineryTrace.Log($"WithServiceDependingOnString(p={p}).SetUp()", suiteContext);
             suiteContext.Container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString(p));
         }
 

@@ -19,7 +19,7 @@ namespace GroboContainer.NUnitExtensions
 
         public override string ToString()
         {
-            return string.Format("SuiteName: {0}", SuiteName);
+            return $"SuiteName: {SuiteName}";
         }
     }
 }

@@ -12,12 +12,12 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithDuplicateWrappersSuite"));
             Assert.That(EdiTestMachineryTrace.TraceLines, Is.EquivalentTo(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "WithX(p=0).SetUp()",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "AndU(s=10).SetUp()",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",

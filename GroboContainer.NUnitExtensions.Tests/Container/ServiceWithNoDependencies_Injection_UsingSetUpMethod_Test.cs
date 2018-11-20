@@ -8,7 +8,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         [EdiSetUp]
         public void SetUp()
         {
-            EdiTestMachineryTrace.Log(string.Format("SetUp() for {0}", EdiTestContext.Current.SuiteName()));
+            EdiTestMachineryTrace.Log($"SetUp() for {EdiTestContext.Current.SuiteName()}");
             var serviceFromContainer = EdiTestContext.Current.Container.Get<IServiceWithNoDependencies>();
             if (serviceWithNoDependencies == null)
                 serviceWithNoDependencies = serviceFromContainer;
@@ -22,9 +22,9 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             serviceWithNoDependencies.Foo(1);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
-                    string.Format("SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
+                    $"SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "ServiceWithNoDependencies.Foo(p=1)",
                 });
         }

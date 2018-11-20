@@ -10,7 +10,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         [EdiTestFixtureSetUp]
         public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
         {
-            EdiTestMachineryTrace.Log(string.Format("TestFixtureSetUp() for {0}", suiteContext.GetContextItem<string>("TestSuiteName")));
+            EdiTestMachineryTrace.Log($"TestFixtureSetUp() for {suiteContext.GetContextItem<string>("TestSuiteName")}");
             suiteContext.Container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString("2"));
         }
 
@@ -20,9 +20,9 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             serviceDependingOnString.Hoo(1);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("TestFixtureSetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"TestFixtureSetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "ServiceDependingOnString.Hoo(p=2, q=1)",
                 });
         }

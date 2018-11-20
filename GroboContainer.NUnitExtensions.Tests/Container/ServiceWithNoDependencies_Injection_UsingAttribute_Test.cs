@@ -11,8 +11,8 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             serviceWithNoDependencies.Foo(0);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "ServiceWithNoDependencies.Foo(p=0)",
                 });
         }

@@ -31,7 +31,7 @@ namespace GroboContainer.NUnitExtensions
 
         public override string ToString()
         {
-            return string.Format("TestName: {0}, TestSuiteContext: {1}, TestMethodContext: {2}", testName, suiteContext, methodContext);
+            return $"TestName: {testName}, TestSuiteContext: {suiteContext}, TestMethodContext: {methodContext}";
         }
 
         private readonly string testName;

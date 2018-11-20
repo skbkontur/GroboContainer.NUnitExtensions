@@ -11,9 +11,9 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             serviceDependingOnString.Hoo(0);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "WithServiceDependingOnString(p=1).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "ServiceDependingOnString.Hoo(p=1, q=0)",
                 });
         }

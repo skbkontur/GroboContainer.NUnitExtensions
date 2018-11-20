@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
@@ -17,7 +17,7 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
         public void Test02(string @case)
         {
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("NamedSuite"));
-            Assert.That(EdiTestContext.Current.TestName(), Is.EqualTo(string.Format("{0}.Test02(\"{1}\")", GetType().FullName, @case)));
+            Assert.That(EdiTestContext.Current.TestName(), Is.EqualTo($"{GetType().FullName}.Test02(\"{@case}\")"));
         }
 
         [TestCase]

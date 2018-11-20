@@ -12,9 +12,9 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("ZZZZ"));
             Assert.That(EdiTestMachineryTrace.TraceLines, Is.EquivalentTo(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
                     "WithA(p=0).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::{1}", EdiTestContext.Current.SuiteName(), EdiTestContext.Current.TestName()),
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
                     "AndU(s=0).SetUp()",
                     "Test01()",
                 }));

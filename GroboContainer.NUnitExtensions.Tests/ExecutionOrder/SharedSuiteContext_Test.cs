@@ -37,8 +37,8 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
                 EdiTestMachineryTrace.Log("Test01()");
                 AssertEdiTestMachineryTrace(new[]
                     {
-                        string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01",
                         "Part01_SetUp()",
                         "Test01()",
                     });
@@ -67,13 +67,13 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
                 EdiTestMachineryTrace.Log("Test02()");
                 AssertEdiTestMachineryTrace(new[]
                     {
-                        string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01",
                         "Part01_SetUp()",
                         "Test01()",
                         "Part01_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
+                        $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02",
                         "Part02_SetUp()",
                         "Test02()",
                     }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
@@ -86,18 +86,18 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
                 EdiTestMachineryTrace.Log("Test03()");
                 AssertEdiTestMachineryTrace(new[]
                     {
-                        string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01",
                         "Part01_SetUp()",
                         "Test01()",
                         "Part01_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
+                        $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02",
                         "Part02_SetUp()",
                         "Test02()",
                         "Part02_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test03", EdiTestContext.Current.SuiteName()),
+                        $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02",
+                        $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test03",
                         "Part02_SetUp()",
                         "Test03()",
                     }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

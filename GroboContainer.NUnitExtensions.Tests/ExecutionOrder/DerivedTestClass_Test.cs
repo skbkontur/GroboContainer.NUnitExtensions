@@ -23,13 +23,13 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchy"));
             AssertEdiTestMachineryTrace(new[]
                 {
-                    string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
                     "SetUp()",
                     "Test01()",
                     "TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.TestX", EdiTestContext.Current.SuiteName()),
+                    $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
+                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.TestX",
                     "SetUp()",
                     "TestX()",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

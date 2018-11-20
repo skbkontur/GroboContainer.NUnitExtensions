@@ -12,12 +12,12 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 
         public override void SetUp(string suiteName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log(string.Format("AndV(t={0}).SetUp()", t), methodContext);
+            EdiTestMachineryTrace.Log($"AndV(t={t}).SetUp()", methodContext);
         }
 
         public override void TearDown(string suiteName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log(string.Format("AndV(t={0}).TearDown()", t), methodContext);
+            EdiTestMachineryTrace.Log($"AndV(t={t}).TearDown()", methodContext);
         }
 
         protected override string TryGetIdentity()

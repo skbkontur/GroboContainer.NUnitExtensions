@@ -13,7 +13,7 @@ namespace GroboContainer.NUnitExtensions.Impl.TopologicalSorting
         {
             var result = new TopSorter<T>().Run(nodes);
             if (result.Cycles.Any())
-                throw new InvalidOperationException(string.Format("At least one cycle was detected in: {0}; First cycle: {1}", string.Join(", ", nodes), string.Join(", ", result.Cycles.First())));
+                throw new InvalidOperationException($"At least one cycle was detected in: {string.Join(", ", nodes)}; First cycle: {string.Join(", ", result.Cycles.First())}");
             return result.SortedNodes;
         }
     }
