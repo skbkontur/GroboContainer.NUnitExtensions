@@ -1,7 +1,6 @@
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [AndU("11")]
     public class AndV : EdiTestMethodWrapperAttribute

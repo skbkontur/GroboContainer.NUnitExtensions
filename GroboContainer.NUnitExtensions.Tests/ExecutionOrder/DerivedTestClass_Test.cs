@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     public class DerivedTestClass_Test : TestBase
     {
@@ -26,12 +24,12 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
             AssertEdiTestMachineryTrace(new[]
                 {
                     string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "Test01()",
                     "TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.DerivedTestClass_Test.TestX", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.TestX", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "TestX()",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

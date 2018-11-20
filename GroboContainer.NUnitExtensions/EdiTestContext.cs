@@ -1,10 +1,9 @@
-﻿using GroboContainer.Core;
+using GroboContainer.Core;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
 using JetBrains.Annotations;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     public class EdiTestContext : IEdiTestContext
     {

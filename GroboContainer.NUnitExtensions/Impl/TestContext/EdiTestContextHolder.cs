@@ -8,7 +8,7 @@ using NUnit.Framework.Interfaces;
 
 using NUnitTestContext = NUnit.Framework.TestContext;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
+namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
     public static class EdiTestContextHolder
     {

@@ -1,11 +1,10 @@
 using FluentAssertions;
 
+using GroboContainer.NUnitExtensions.Tests.ExecutionOrder;
+
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     [EdiTestSuite("InheritanceHierarchyForSetUpMethod2")]
     [Explicit("Intentionally fails with 'There are multiple methods marked with EdiSetUp/EdiTearDown attribute in ...' error")]

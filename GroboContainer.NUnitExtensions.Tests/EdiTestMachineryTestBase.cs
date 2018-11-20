@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions.Tests
 {
     [WithDebugLogPerSuite]
     public abstract class EdiTestMachineryTestBase : IDebugLogPerMethodMixin

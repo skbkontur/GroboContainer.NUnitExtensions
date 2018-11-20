@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]

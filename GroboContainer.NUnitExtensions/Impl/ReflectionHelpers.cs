@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using GroboContainer.NUnitExtensions.Impl.TopologicalSorting;
+
 using JetBrains.Annotations;
 
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting;
-
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
+namespace GroboContainer.NUnitExtensions.Impl
 {
     public static class ReflectionHelpers
     {

@@ -3,7 +3,7 @@ using System;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     [Serializable]
     public class ClassFilter<T> : TestFilter

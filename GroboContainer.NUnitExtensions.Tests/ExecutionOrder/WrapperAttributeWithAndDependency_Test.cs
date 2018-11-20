@@ -1,8 +1,6 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [EdiTestSuite("ZZZZ"), WithBAndU("0")]
     public class WrapperAttributeWithAndDependency_Test : EdiTestMachineryTestBase

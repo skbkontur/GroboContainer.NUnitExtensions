@@ -1,8 +1,6 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [EdiTestSuite("InheritanceHierarchyForSetUpMethod")]
     public class DerivedTestClass_WithSetUpMethodInBase_Test : TestBaseWithSetUpMethod

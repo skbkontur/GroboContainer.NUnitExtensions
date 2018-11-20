@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [EdiTestSuite("WithWrappersSuite"), WithZ("3"), AndV("12")]
     public class WrapperDependencies_Test : EdiTestMachineryTestBase
@@ -49,7 +47,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",
@@ -57,8 +55,8 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                     "TearDown()",
                     "AndV(t=12).TearDown()",
                     "AndU(s=11).TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.WrapperDependencies_Test.Test02", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test02", EdiTestContext.Current.SuiteName()),
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",

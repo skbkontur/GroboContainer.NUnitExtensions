@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
+namespace GroboContainer.NUnitExtensions.Tests.Container
 {
     [EdiTestFixture]
     public class ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test : EdiTestMachineryTestBase
@@ -37,13 +35,13 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
             serviceWithNoDependencies.Foo(2);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    "SuiteWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
-                    "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test01",
-                    "SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
+                    "SuiteWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
+                    "MethodWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test01",
+                    "SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
                     "ServiceWithNoDependencies.Foo(p=1)",
-                    "MethodWrapper.TearDown() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test01",
-                    "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test02",
-                    "SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
+                    "MethodWrapper.TearDown() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test01",
+                    "MethodWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test02",
+                    "SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
                     "ServiceWithNoDependencies.Foo(p=2)",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
         }

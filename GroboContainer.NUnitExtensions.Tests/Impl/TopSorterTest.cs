@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using GroboContainer.NUnitExtensions.Impl.TopologicalSorting;
+
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Impl
+namespace GroboContainer.NUnitExtensions.Tests.Impl
 {
     [TestFixture]
     public class TopSorterTest

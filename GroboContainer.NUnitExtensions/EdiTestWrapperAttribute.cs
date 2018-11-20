@@ -3,7 +3,7 @@ using System.Text;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     public abstract class EdiTestWrapperAttribute : Attribute, IEquatable<EdiTestWrapperAttribute>
     {

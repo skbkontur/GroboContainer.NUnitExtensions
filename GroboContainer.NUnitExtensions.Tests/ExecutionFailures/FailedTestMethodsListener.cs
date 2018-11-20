@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using NUnit.Framework.Interfaces;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     public class FailedTestMethodsListener<T> : ITestListener
     {

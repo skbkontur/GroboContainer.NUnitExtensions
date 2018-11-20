@@ -4,7 +4,7 @@ using System.Reflection;
 using NUnit.Framework.Api;
 using NUnit.Framework.Interfaces;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     public static class TestRunner
     {

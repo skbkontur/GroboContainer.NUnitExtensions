@@ -2,12 +2,11 @@ using System;
 
 using FluentAssertions;
 
+using GroboContainer.NUnitExtensions.Impl.TestContext;
+
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     [AndB]
     public class AndAPass : EdiTestMethodWrapperAttribute

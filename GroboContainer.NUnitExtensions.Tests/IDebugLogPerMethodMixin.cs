@@ -1,4 +1,4 @@
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions.Tests
 {
     [AndDebugLogPerMethod]
     public interface IDebugLogPerMethodMixin

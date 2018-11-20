@@ -1,4 +1,4 @@
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     public sealed class EdiTestFixtureSetUpAttribute : EdiTestMethodAttributeBase
     {

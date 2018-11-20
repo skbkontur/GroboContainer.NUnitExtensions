@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
+using NUnit.Framework;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
+namespace GroboContainer.NUnitExtensions.Tests.Container
 {
     [EdiTestFixture]
     public class ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test : EdiTestMachineryTestBase
@@ -34,12 +33,12 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Co
             serviceDependingOnString.Hoo(2);
             AssertEdiTestMachineryTrace(new[]
                 {
-                    "SuiteWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",
-                    "TestFixtureSetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",
-                    "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test01",
+                    "SuiteWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",
+                    "TestFixtureSetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",
+                    "MethodWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test01",
                     "ServiceDependingOnString.Hoo(p=2, q=1)",
-                    "MethodWrapper.TearDown() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test01",
-                    "MethodWrapper.SetUp() for SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test02",
+                    "MethodWrapper.TearDown() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test01",
+                    "MethodWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test.Test02",
                     "ServiceDependingOnString.Hoo(p=2, q=2)",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
         }

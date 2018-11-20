@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
+namespace GroboContainer.NUnitExtensions.Tests.Container
 {
     public abstract class InjectedAttributeTestBase
     {

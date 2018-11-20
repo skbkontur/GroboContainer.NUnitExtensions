@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions.Tests
 {
     public static class EdiTestMachineryTrace
     {

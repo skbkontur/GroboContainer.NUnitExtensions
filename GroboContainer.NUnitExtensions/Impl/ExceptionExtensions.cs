@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Reflection;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
+namespace GroboContainer.NUnitExtensions.Impl
 {
     public static class ExceptionExtensions
     {

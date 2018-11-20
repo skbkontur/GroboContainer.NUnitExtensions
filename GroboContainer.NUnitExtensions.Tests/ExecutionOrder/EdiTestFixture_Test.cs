@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
+using NUnit.Framework;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [EdiTestFixture]
     public class EdiTestFixture_Test : EdiTestMachineryTestBase
@@ -50,12 +49,12 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                 {
                     string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
                     "TestFixtureSetUp()",
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.EdiTestFixture_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.EdiTestFixture_Test.Test01", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "Test01()",
                     "TearDown()",
-                    string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.EdiTestFixture_Test.Test01", EdiTestContext.Current.SuiteName()),
-                    string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.EdiTestFixture_Test.Test02", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.EdiTestFixture_Test.Test01", EdiTestContext.Current.SuiteName()),
+                    string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.EdiTestFixture_Test.Test02", EdiTestContext.Current.SuiteName()),
                     "SetUp()",
                     "Test02()",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

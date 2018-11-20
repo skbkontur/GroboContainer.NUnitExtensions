@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     [MeansImplicitUse]
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]

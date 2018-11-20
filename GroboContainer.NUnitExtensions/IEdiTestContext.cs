@@ -2,7 +2,7 @@ using GroboContainer.Core;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     public interface IEdiTestContext
     {

@@ -1,8 +1,6 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     [TestFixture]
     public class SharedSuiteContext_Test
@@ -40,7 +38,7 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                 AssertEdiTestMachineryTrace(new[]
                     {
                         string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
                         "Part01_SetUp()",
                         "Test01()",
                     });
@@ -70,12 +68,12 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                 AssertEdiTestMachineryTrace(new[]
                     {
                         string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
                         "Part01_SetUp()",
                         "Test01()",
                         "Part01_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
                         "Part02_SetUp()",
                         "Test02()",
                     }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса
@@ -89,17 +87,17 @@ namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Ex
                 AssertEdiTestMachineryTrace(new[]
                     {
                         string.Format("SuiteWrapper.SetUp() for {0}", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
                         "Part01_SetUp()",
                         "Test01()",
                         "Part01_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part01.Test01", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
                         "Part02_SetUp()",
                         "Test02()",
                         "Part02_TearDown()",
-                        string.Format("MethodWrapper.TearDown() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
-                        string.Format("MethodWrapper.SetUp() for {0}::SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder.SharedSuiteContext_Test+Part02.Test03", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.TearDown() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test02", EdiTestContext.Current.SuiteName()),
+                        string.Format("MethodWrapper.SetUp() for {0}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.SharedSuiteContext_Test+Part02.Test03", EdiTestContext.Current.SuiteName()),
                         "Part02_SetUp()",
                         "Test03()",
                     }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

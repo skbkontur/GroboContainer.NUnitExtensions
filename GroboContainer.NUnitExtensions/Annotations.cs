@@ -29,7 +29,6 @@ using System;
 // ReSharper disable IntroduceOptionalParameters.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
-
 // ReSharper disable once CheckNamespace
 
 namespace JetBrains.Annotations

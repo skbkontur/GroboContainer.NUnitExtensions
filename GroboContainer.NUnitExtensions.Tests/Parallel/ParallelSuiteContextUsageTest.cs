@@ -2,12 +2,11 @@
 
 using FluentAssertions;
 
+using GroboContainer.NUnitExtensions.Impl.TestContext;
+
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Parallel
+namespace GroboContainer.NUnitExtensions.Tests.Parallel
 {
     public class WithFirstContextItem : EdiTestSuiteWrapperAttribute
     {

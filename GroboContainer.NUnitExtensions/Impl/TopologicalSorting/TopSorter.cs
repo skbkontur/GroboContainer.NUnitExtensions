@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting
+namespace GroboContainer.NUnitExtensions.Impl.TopologicalSorting
 {
     public class TopSorter<T>
     {

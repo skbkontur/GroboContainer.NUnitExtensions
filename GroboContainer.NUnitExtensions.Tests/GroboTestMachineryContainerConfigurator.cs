@@ -6,7 +6,7 @@ using GroboContainer.Impl;
 
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions.Tests
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public static class GroboTestMachineryContainerConfigurator

@@ -1,13 +1,13 @@
 using System;
 
+using GroboContainer.NUnitExtensions.Impl;
+
 using JetBrains.Annotations;
 
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl;
-
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery
+namespace GroboContainer.NUnitExtensions
 {
     public abstract class EdiTestSuiteAttributeBase : Attribute, ITestAction
     {

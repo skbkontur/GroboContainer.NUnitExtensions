@@ -8,14 +8,13 @@ using System.Threading;
 
 using GroboContainer.Core;
 using GroboContainer.Impl;
+using GroboContainer.NUnitExtensions.Impl.TestContext;
 
 using JetBrains.Annotations;
 
 using NUnit.Framework.Interfaces;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext;
-
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl
+namespace GroboContainer.NUnitExtensions.Impl
 {
     public static class EdiTestAction
     {

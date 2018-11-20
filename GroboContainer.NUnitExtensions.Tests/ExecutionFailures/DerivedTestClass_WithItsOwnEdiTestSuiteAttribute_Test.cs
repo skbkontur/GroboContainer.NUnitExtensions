@@ -1,11 +1,10 @@
 using FluentAssertions;
 
+using GroboContainer.NUnitExtensions.Tests.ExecutionOrder;
+
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionOrder;
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.ExecutionFailures
+namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     [EdiTestSuite("BaseSuite")]
     [Explicit("Intentionally fails with 'There are multiple suite names (BaseSuite, BaseSuite) defined for ...' error")]

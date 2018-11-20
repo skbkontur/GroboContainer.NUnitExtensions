@@ -1,8 +1,6 @@
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
+namespace GroboContainer.NUnitExtensions.Tests.Container
 {
     [EdiTestFixture, WithServiceDependingOnString("1")]
     public class ServiceDependingOnString_Configuration_ViaWrapperAttribute_Test : EdiTestMachineryTestBase

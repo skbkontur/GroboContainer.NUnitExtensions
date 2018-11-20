@@ -1,4 +1,4 @@
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container
+namespace GroboContainer.NUnitExtensions.Tests.Container
 {
     public class ServiceDependingOnString : IServiceDependingOnString
     {

@@ -1,6 +1,6 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TopologicalSorting
+namespace GroboContainer.NUnitExtensions.Impl.TopologicalSorting
 {
     public static class Node
     {

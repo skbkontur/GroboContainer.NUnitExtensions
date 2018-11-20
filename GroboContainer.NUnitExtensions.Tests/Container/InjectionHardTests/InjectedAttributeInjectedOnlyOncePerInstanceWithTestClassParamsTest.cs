@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
 
-using SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery;
-
-namespace SKBKontur.Catalogue.Core.Tests.NUnitExtensionTests.EdiTestMachinery.Container.InjectionHardTests
+namespace GroboContainer.NUnitExtensions.Tests.Container.InjectionHardTests
 {
     [EdiTestFixture]
     [TestFixture(1)]

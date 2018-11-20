@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace SKBKontur.Catalogue.NUnit.Extensions.EdiTestMachinery.Impl.TestContext
+namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
     public interface IEditableEdiTestContext : IEdiTestContext
     {
