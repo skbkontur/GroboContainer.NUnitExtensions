@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Reflection;
 
 using GroboContainer.Core;
@@ -14,9 +13,7 @@ namespace GroboContainer.NUnitExtensions.Tests
         [NotNull]
         public static ContainerConfiguration GetContainerConfiguration([NotNull] string testSuiteName)
         {
-            return containerConfigurations.GetOrAdd(testSuiteName, _ => new ContainerConfiguration(new[] {Assembly.GetExecutingAssembly()}, testSuiteName, ContainerMode.UseShortLog));
+            return new ContainerConfiguration(new[] {Assembly.GetExecutingAssembly()}, testSuiteName, ContainerMode.UseShortLog);
         }
-
-        private static readonly ConcurrentDictionary<string, ContainerConfiguration> containerConfigurations = new ConcurrentDictionary<string, ContainerConfiguration>();
     }
 }
