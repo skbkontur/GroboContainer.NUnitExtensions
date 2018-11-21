@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace GroboContainer.NUnitExtensions
 {
-    public abstract class EdiTestWrapperAttribute : Attribute, IEquatable<EdiTestWrapperAttribute>
+    public abstract class GroboTestWrapperAttribute : Attribute, IEquatable<GroboTestWrapperAttribute>
     {
-        public bool Equals([CanBeNull] EdiTestWrapperAttribute other)
+        public bool Equals([CanBeNull] GroboTestWrapperAttribute other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -18,7 +18,7 @@ namespace GroboContainer.NUnitExtensions
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj is EdiTestWrapperAttribute other && Equals(other);
+            return obj is GroboTestWrapperAttribute other && Equals(other);
         }
 
         public override int GetHashCode()

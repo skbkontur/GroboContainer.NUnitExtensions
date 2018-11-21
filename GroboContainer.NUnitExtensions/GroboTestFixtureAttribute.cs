@@ -5,7 +5,7 @@ namespace GroboContainer.NUnitExtensions
 {
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class EdiTestFixtureAttribute : EdiTestSuiteAttributeBase
+    public sealed class GroboTestFixtureAttribute : GroboTestSuiteAttributeBase
     {
     }
 }

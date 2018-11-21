@@ -4,13 +4,13 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Container
 {
-    [EdiTestFixture]
-    public class ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test : EdiTestMachineryTestBase
+    [GroboTestFixture]
+    public class ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test : GroboTestMachineryTestBase
     {
-        [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableGroboTestContext suiteContext)
         {
-            EdiTestMachineryTrace.Log($"TestFixtureSetUp() for {suiteContext.GetContextItem<string>("TestSuiteName")}");
+            GroboTestMachineryTrace.Log($"TestFixtureSetUp() for {suiteContext.GetContextItem<string>("TestSuiteName")}");
             suiteContext.Container.Configurator.ForAbstraction<IServiceDependingOnString>().UseInstances(new ServiceDependingOnString("2"));
         }
 
@@ -18,11 +18,11 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         public void Test01()
         {
             serviceDependingOnString.Hoo(1);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
-                    $"TestFixtureSetUp() for {EdiTestContext.Current.SuiteName()}",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
+                    $"TestFixtureSetUp() for {GroboTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::{GroboTestContext.Current.TestName()}",
                     "ServiceDependingOnString.Hoo(p=2, q=1)",
                 });
         }
@@ -31,7 +31,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         public void Test02()
         {
             serviceDependingOnString.Hoo(2);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
                     "SuiteWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",
                     "TestFixtureSetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceDependingOnString_Configuration_ViaTestFixtureSetUpMethod_Test",

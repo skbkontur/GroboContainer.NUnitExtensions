@@ -16,7 +16,7 @@ using NUnit.Framework.Interfaces;
 
 namespace GroboContainer.NUnitExtensions.Impl
 {
-    public static class EdiTestAction
+    public static class GroboTestAction
     {
         public static void BeforeTest([NotNull] ITest testDetails)
         {
@@ -32,9 +32,9 @@ namespace GroboContainer.NUnitExtensions.Impl
             var suiteName = test.GetSuiteName();
             var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(suiteName, fixtureType.Assembly));
             var suiteContext = suiteDescriptor.SuiteContext;
-            var methodContext = new EdiTestMethodContextData(suiteDescriptor.LazyContainer);
+            var methodContext = new GroboTestMethodContextData(suiteDescriptor.LazyContainer);
 
-            EdiTestContextHolder.SetCurrentContext(suiteContext, methodContext);
+            GroboTestContextHolder.SetCurrentContext(suiteContext, methodContext);
 
             var suiteWrappers = test.GetSuiteWrappers();
             lock (suiteDescriptor)
@@ -56,7 +56,7 @@ namespace GroboContainer.NUnitExtensions.Impl
                     if (fixtureSetUpMethod != null)
                     {
                         if (suiteName != fixtureType.FullName)
-                            throw new InvalidOperationException($"EdiTestFixtureSetUp method is only allowed inside EdiTestFixture suite. Test: {test.GetMethodName()}");
+                            throw new InvalidOperationException($"GroboTestFixtureSetUp method is only allowed inside GroboTestFixture suite. Test: {test.GetMethodName()}");
                         InvokeWrapperMethod(fixtureSetUpMethod, testFixture, suiteContext);
                     }
                     InjectFixtureFields(suiteContext, testFixture);
@@ -94,7 +94,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             if (!suiteDescriptors.TryGetValue(suiteName, out var suiteDescriptor))
                 throw new InvalidOperationException($"Suite context is not set for: {suiteName}");
 
-            var methodContext = EdiTestContextHolder.ResetCurrentTestContext();
+            var methodContext = GroboTestContextHolder.ResetCurrentTestContext();
             if (methodContext.IsSetUpped)
             {
                 try
@@ -149,7 +149,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             }
         }
 
-        private static void InjectFixtureFields([NotNull] EdiTestSuiteContextData suiteContext, [NotNull] object testFixture)
+        private static void InjectFixtureFields([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] object testFixture)
         {
             foreach (var fieldInfo in testFixture.GetType().GetFieldsForInjection())
                 fieldInfo.SetValue(testFixture, suiteContext.Container.Get(fieldInfo.FieldType));
@@ -196,8 +196,8 @@ namespace GroboContainer.NUnitExtensions.Impl
                 Order = Interlocked.Increment(ref order);
                 TestAssembly = testAssembly;
                 LazyContainer = new Lazy<IContainer>(() => new Container(GetContainerConfiguration(suiteName, testAssembly)));
-                SuiteContext = new EdiTestSuiteContextData(LazyContainer);
-                SetUpedSuiteWrappers = new List<EdiTestSuiteWrapperAttribute>();
+                SuiteContext = new GroboTestSuiteContextData(LazyContainer);
+                SetUpedSuiteWrappers = new List<GroboTestSuiteWrapperAttribute>();
             }
 
             public int Order { get; }
@@ -209,10 +209,10 @@ namespace GroboContainer.NUnitExtensions.Impl
             public Lazy<IContainer> LazyContainer { get; }
 
             [NotNull]
-            public EdiTestSuiteContextData SuiteContext { get; }
+            public GroboTestSuiteContextData SuiteContext { get; }
 
             [NotNull]
-            public List<EdiTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; }
+            public List<GroboTestSuiteWrapperAttribute> SetUpedSuiteWrappers { get; }
 
             public void Destroy([NotNull] string suiteName)
             {

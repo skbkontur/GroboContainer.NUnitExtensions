@@ -7,9 +7,9 @@ namespace GroboContainer.NUnitExtensions
 {
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = false, AllowMultiple = false)]
-    public sealed class EdiTestSuiteAttribute : EdiTestSuiteAttributeBase
+    public sealed class GroboTestSuiteAttribute : GroboTestSuiteAttributeBase
     {
-        public EdiTestSuiteAttribute([NotNull] string suiteName = "DefaultSuite")
+        public GroboTestSuiteAttribute([NotNull] string suiteName = "DefaultSuite")
         {
             SuiteName = suiteName;
         }

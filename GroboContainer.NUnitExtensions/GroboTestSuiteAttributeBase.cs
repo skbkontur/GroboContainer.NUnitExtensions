@@ -9,20 +9,20 @@ using NUnit.Framework.Interfaces;
 
 namespace GroboContainer.NUnitExtensions
 {
-    public abstract class EdiTestSuiteAttributeBase : Attribute, ITestAction
+    public abstract class GroboTestSuiteAttributeBase : Attribute, ITestAction
     {
         public ActionTargets Targets => ActionTargets.Test;
 
         public void BeforeTest([NotNull] ITest testDetails)
         {
             EnsureWeAreInMethodContext(testDetails);
-            EdiTestAction.BeforeTest(testDetails);
+            GroboTestAction.BeforeTest(testDetails);
         }
 
         public void AfterTest([NotNull] ITest testDetails)
         {
             EnsureWeAreInMethodContext(testDetails);
-            EdiTestAction.AfterTest(testDetails);
+            GroboTestAction.AfterTest(testDetails);
         }
 
         private static void EnsureWeAreInMethodContext([NotNull] ITest testDetails)

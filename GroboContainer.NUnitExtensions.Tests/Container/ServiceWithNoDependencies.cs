@@ -4,7 +4,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
     {
         public void Foo(int p)
         {
-            EdiTestMachineryTrace.Log($"ServiceWithNoDependencies.Foo(p={p})");
+            GroboTestMachineryTrace.Log($"ServiceWithNoDependencies.Foo(p={p})");
         }
     }
 }

@@ -10,9 +10,9 @@ using JetBrains.Annotations;
 
 namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
-    public abstract class EdiTestContextData : IEditableEdiTestContext
+    public abstract class GroboTestContextData : IEditableGroboTestContext
     {
-        protected EdiTestContextData([NotNull] Lazy<IContainer> lazyContainer)
+        protected GroboTestContextData([NotNull] Lazy<IContainer> lazyContainer)
         {
             this.lazyContainer = lazyContainer;
             items = new ConcurrentDictionary<string, ItemValueHolder>();

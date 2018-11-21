@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Container
 {
-    [EdiTestFixture]
+    [GroboTestFixture]
     public class InjectedAttribute_Test : InjectedAttributeTestBase
     {
         [Test]

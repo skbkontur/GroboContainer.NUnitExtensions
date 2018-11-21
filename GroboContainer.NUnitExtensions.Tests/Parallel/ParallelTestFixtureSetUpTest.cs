@@ -6,11 +6,11 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Parallel
 {
-    [EdiTestFixture, Parallelizable(ParallelScope.Self)]
+    [GroboTestFixture, Parallelizable(ParallelScope.Self)]
     public class FirstTestFixtureSetUpTest
     {
-        [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableGroboTestContext suiteContext)
         {
             suiteContext.AddItem("item1", new object());
         }
@@ -18,15 +18,15 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
         [Test]
         public void Test()
         {
-            EdiTestContext.Current.TryGetContextItem("item1", out _).Should().BeTrue();
+            GroboTestContext.Current.TryGetContextItem("item1", out _).Should().BeTrue();
         }
     }
 
-    [EdiTestFixture, Parallelizable(ParallelScope.Self)]
+    [GroboTestFixture, Parallelizable(ParallelScope.Self)]
     public class SecondTestFixtureSetUpTest
     {
-        [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableGroboTestContext suiteContext)
         {
             suiteContext.AddItem("item2", new object());
         }
@@ -34,15 +34,15 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
         [Test]
         public void Test()
         {
-            EdiTestContext.Current.TryGetContextItem("item2", out _).Should().BeTrue();
+            GroboTestContext.Current.TryGetContextItem("item2", out _).Should().BeTrue();
         }
     }
 
-    [EdiTestFixture, Parallelizable(ParallelScope.Children)]
+    [GroboTestFixture, Parallelizable(ParallelScope.Children)]
     public class ThirdTestFixtureSetUpTest
     {
-        [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableGroboTestContext suiteContext)
         {
             if (suiteContext.TryGetContextItem("item3", out var item3))
             {
@@ -63,7 +63,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
         [TestCase(10)]
         public void Test(int n)
         {
-            EdiTestContext.Current.TryGetContextItem("item3", out var item3).Should().BeTrue();
+            GroboTestContext.Current.TryGetContextItem("item3", out var item3).Should().BeTrue();
             ((Counter)item3).InvocationsCount.Should().Be(0);
         }
     }

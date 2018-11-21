@@ -8,7 +8,7 @@ namespace GroboContainer.NUnitExtensions
     [MeansImplicitUse]
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public abstract class EdiTestMethodAttributeBase : Attribute
+    public abstract class GroboTestMethodAttributeBase : Attribute
     {
     }
 }

@@ -5,9 +5,9 @@ using GroboContainer.NUnitExtensions.Impl.TestContext;
 
 namespace GroboContainer.NUnitExtensions.Tests
 {
-    public static class EdiTestMachineryTrace
+    public static class GroboTestMachineryTrace
     {
-        public static void Log(string message, IEditableEdiTestContext context = null)
+        public static void Log(string message, IEditableGroboTestContext context = null)
         {
             TraceLines.Add(message);
             Console.Out.WriteLine(message);

@@ -6,27 +6,27 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
-    [EdiTestSuite("InheritanceHierarchyForSetUpMethod2")]
-    [Explicit("Intentionally fails with 'There are multiple methods marked with EdiSetUp/EdiTearDown attribute in ...' error")]
+    [GroboTestSuite("InheritanceHierarchyForSetUpMethod2")]
+    [Explicit("Intentionally fails with 'There are multiple methods marked with GroboSetUp/GroboTearDown attribute in ...' error")]
     public class DerivedTestClass_WithItsOwnSetUpMethod_AndWithSetUpMethodInBase_ExplicitTest : TestBaseWithSetUpMethod
     {
-        [EdiSetUp]
+        [GroboSetUp]
         public void SetUp()
         {
-            EdiTestMachineryTrace.Log("SetUp()");
+            GroboTestMachineryTrace.Log("SetUp()");
         }
 
-        [EdiTearDown]
+        [GroboTearDown]
         public void TearDown()
         {
-            EdiTestMachineryTrace.Log("TearDown()");
+            GroboTestMachineryTrace.Log("TearDown()");
         }
 
         [Test]
         public void Test01()
         {
-            EdiTestMachineryTrace.Log("Test01()");
-            Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchyForSetUpMethod"));
+            GroboTestMachineryTrace.Log("Test01()");
+            Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchyForSetUpMethod"));
         }
     }
 
@@ -37,7 +37,7 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         {
             var testResults = TestRunner.RunTestClass<DerivedTestClass_WithItsOwnSetUpMethod_AndWithSetUpMethodInBase_ExplicitTest>();
             var result = testResults[nameof(DerivedTestClass_WithItsOwnSetUpMethod_AndWithSetUpMethodInBase_ExplicitTest.Test01)];
-            result.Message.Should().Contain("There are multiple methods marked with EdiSetUpAttribute attribute in:");
+            result.Message.Should().Contain("There are multiple methods marked with GroboSetUpAttribute attribute in:");
         }
     }
 }

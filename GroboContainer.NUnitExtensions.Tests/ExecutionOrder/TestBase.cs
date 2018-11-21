@@ -2,14 +2,14 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
-    [EdiTestSuite("InheritanceHierarchy")]
-    public class TestBase : EdiTestMachineryTestBase
+    [GroboTestSuite("InheritanceHierarchy")]
+    public class TestBase : GroboTestMachineryTestBase
     {
         [Test]
         public void Test01()
         {
-            EdiTestMachineryTrace.Log("Test01()");
-            Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchy"));
+            GroboTestMachineryTrace.Log("Test01()");
+            Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchy"));
         }
     }
 }

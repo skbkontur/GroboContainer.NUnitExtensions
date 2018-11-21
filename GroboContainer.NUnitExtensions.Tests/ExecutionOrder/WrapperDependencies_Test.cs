@@ -2,33 +2,33 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
-    [EdiTestSuite("WithWrappersSuite"), WithZ("3"), AndV("12")]
-    public class WrapperDependencies_Test : EdiTestMachineryTestBase
+    [GroboTestSuite("WithWrappersSuite"), WithZ("3"), AndV("12")]
+    public class WrapperDependencies_Test : GroboTestMachineryTestBase
     {
-        [EdiSetUp]
+        [GroboSetUp]
         public void SetUp()
         {
-            EdiTestMachineryTrace.Log("SetUp()");
+            GroboTestMachineryTrace.Log("SetUp()");
         }
 
-        [EdiTearDown]
+        [GroboTearDown]
         public void TearDown()
         {
-            EdiTestMachineryTrace.Log("TearDown()");
+            GroboTestMachineryTrace.Log("TearDown()");
         }
 
         [Test]
         public void Test01()
         {
-            EdiTestMachineryTrace.Log("Test01()");
-            Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
-            AssertEdiTestMachineryTrace(new[]
+            GroboTestMachineryTrace.Log("Test01()");
+            Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::{GroboTestContext.Current.TestName()}",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",
@@ -39,15 +39,15 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
         [Test]
         public void Test02()
         {
-            EdiTestMachineryTrace.Log("Test02()");
-            Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
-            AssertEdiTestMachineryTrace(new[]
+            GroboTestMachineryTrace.Log("Test02()");
+            Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo("WithWrappersSuite"));
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
                     "WithX(p=1).SetUp()",
                     "WithY(q=2).SetUp()",
                     "WithZ(r=3).SetUp()",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",
@@ -55,8 +55,8 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
                     "TearDown()",
                     "AndV(t=12).TearDown()",
                     "AndU(s=11).TearDown()",
-                    $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test02",
+                    $"MethodWrapper.TearDown() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test01",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.WrapperDependencies_Test.Test02",
                     "AndU(s=11).SetUp()",
                     "AndV(t=12).SetUp()",
                     "SetUp()",

@@ -11,15 +11,15 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
         public int InvocationsCount { get; set; }
     }
 
-    public class AndTestInvocationCounter : EdiTestMethodWrapperAttribute
+    public class AndTestInvocationCounter : GroboTestMethodWrapperAttribute
     {
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
             methodContext.AddItem("counter", new Counter());
         }
     }
 
-    [EdiTestFixture, AndTestInvocationCounter, Parallelizable(ParallelScope.Children)]
+    [GroboTestFixture, AndTestInvocationCounter, Parallelizable(ParallelScope.Children)]
     public class ParallelTestContextUsageTest
     {
         [TestCase(1)]
@@ -57,7 +57,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
 
         private static void TestInvocationCount()
         {
-            Assert.That(EdiTestContext.Current.TryGetContextItem("counter", out var o), Is.True);
+            Assert.That(GroboTestContext.Current.TryGetContextItem("counter", out var o), Is.True);
             var counter = (Counter)o;
             counter.InvocationsCount++;
             Assert.That(counter.InvocationsCount, Is.EqualTo(1));

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace GroboContainer.NUnitExtensions
 {
-    public interface IEdiTestContext
+    public interface IGroboTestContext
     {
         [NotNull]
         IContainer Container { get; }

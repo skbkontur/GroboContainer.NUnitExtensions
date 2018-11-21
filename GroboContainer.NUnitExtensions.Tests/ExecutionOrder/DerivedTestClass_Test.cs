@@ -4,32 +4,32 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
     public class DerivedTestClass_Test : TestBase
     {
-        [EdiSetUp]
+        [GroboSetUp]
         public void SetUp()
         {
-            EdiTestMachineryTrace.Log("SetUp()");
+            GroboTestMachineryTrace.Log("SetUp()");
         }
 
-        [EdiTearDown]
+        [GroboTearDown]
         public void TearDown()
         {
-            EdiTestMachineryTrace.Log("TearDown()");
+            GroboTestMachineryTrace.Log("TearDown()");
         }
 
         [Test]
         public void TestX()
         {
-            EdiTestMachineryTrace.Log("TestX()");
-            Assert.That(EdiTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchy"));
-            AssertEdiTestMachineryTrace(new[]
+            GroboTestMachineryTrace.Log("TestX()");
+            Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo("InheritanceHierarchy"));
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
                     "SetUp()",
                     "Test01()",
                     "TearDown()",
-                    $"MethodWrapper.TearDown() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.TestX",
+                    $"MethodWrapper.TearDown() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.Test01",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::GroboContainer.NUnitExtensions.Tests.ExecutionOrder.DerivedTestClass_Test.TestX",
                     "SetUp()",
                     "TestX()",
                 }); // NB! полагаемся на алфавитный порядок запуска тестов внутри одного класса

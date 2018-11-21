@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace GroboContainer.NUnitExtensions
 {
-    public class EdiTestContext : IEdiTestContext
+    public class GroboTestContext : IGroboTestContext
     {
-        public EdiTestContext([NotNull] string testName, [NotNull] IEditableEdiTestContext suiteContext, [NotNull] IEditableEdiTestContext methodContext)
+        public GroboTestContext([NotNull] string testName, [NotNull] IEditableGroboTestContext suiteContext, [NotNull] IEditableGroboTestContext methodContext)
         {
             this.testName = testName;
             this.suiteContext = suiteContext;
@@ -15,7 +15,7 @@ namespace GroboContainer.NUnitExtensions
         }
 
         [NotNull]
-        public static IEdiTestContext Current => EdiTestContextHolder.GetCurrentContext();
+        public static IGroboTestContext Current => GroboTestContextHolder.GetCurrentContext();
 
         [NotNull]
         public IContainer Container => suiteContext.Container;
@@ -35,7 +35,7 @@ namespace GroboContainer.NUnitExtensions
         }
 
         private readonly string testName;
-        private readonly IEditableEdiTestContext suiteContext;
-        private readonly IEditableEdiTestContext methodContext;
+        private readonly IEditableGroboTestContext suiteContext;
+        private readonly IEditableGroboTestContext methodContext;
     }
 }

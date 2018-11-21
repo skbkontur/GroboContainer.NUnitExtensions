@@ -10,10 +10,10 @@ using NUnitTestContext = NUnit.Framework.TestContext;
 
 namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
-    public static class EdiTestContextHolder
+    public static class GroboTestContextHolder
     {
         [NotNull]
-        public static EdiTestContext GetCurrentContext()
+        public static GroboTestContext GetCurrentContext()
         {
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
@@ -24,10 +24,10 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
             if (!suiteContexts.TryGetValue(suiteName, out var currentSuiteContext))
                 throw new InvalidOperationException("SuiteContext for test with name: {testName}, id: {testId} is not set");
 
-            return new EdiTestContext(testName, currentSuiteContext, currentMethodContext);
+            return new GroboTestContext(testName, currentSuiteContext, currentMethodContext);
         }
 
-        public static void SetCurrentContext([NotNull] EdiTestSuiteContextData suiteContext, [NotNull] EdiTestMethodContextData methodContext)
+        public static void SetCurrentContext([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] GroboTestMethodContextData methodContext)
         {
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
@@ -39,7 +39,7 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
         }
 
         [NotNull]
-        public static EdiTestMethodContextData ResetCurrentTestContext()
+        public static GroboTestMethodContextData ResetCurrentTestContext()
         {
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
@@ -56,7 +56,7 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
         }
 
         private static readonly FieldInfo testField = typeof(NUnitTestContext.TestAdapter).GetField("_test", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly ConcurrentDictionary<string, EdiTestSuiteContextData> suiteContexts = new ConcurrentDictionary<string, EdiTestSuiteContextData>();
-        private static readonly ConcurrentDictionary<string, EdiTestMethodContextData> methodContexts = new ConcurrentDictionary<string, EdiTestMethodContextData>();
+        private static readonly ConcurrentDictionary<string, GroboTestSuiteContextData> suiteContexts = new ConcurrentDictionary<string, GroboTestSuiteContextData>();
+        private static readonly ConcurrentDictionary<string, GroboTestMethodContextData> methodContexts = new ConcurrentDictionary<string, GroboTestMethodContextData>();
     }
 }

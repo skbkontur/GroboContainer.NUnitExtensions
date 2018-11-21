@@ -15,11 +15,11 @@ namespace GroboContainer.NUnitExtensions.Tests.Parallel
     {
     }
 
-    [EdiTestFixture, Parallelizable(ParallelScope.Children)]
+    [GroboTestFixture, Parallelizable(ParallelScope.Children)]
     public class LongTestFixtureSetUpTest
     {
-        [EdiTestFixtureSetUp]
-        public void SetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void SetUp(IEditableGroboTestContext suiteContext)
         {
             Thread.Sleep(1000);
         }

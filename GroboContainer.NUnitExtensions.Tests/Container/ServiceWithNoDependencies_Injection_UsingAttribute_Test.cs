@@ -2,17 +2,17 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Container
 {
-    [EdiTestFixture]
-    public class ServiceWithNoDependencies_Injection_UsingAttribute_Test : EdiTestMachineryTestBase
+    [GroboTestFixture]
+    public class ServiceWithNoDependencies_Injection_UsingAttribute_Test : GroboTestMachineryTestBase
     {
         [Test]
         public void Test()
         {
             serviceWithNoDependencies.Foo(0);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::{GroboTestContext.Current.TestName()}",
                     "ServiceWithNoDependencies.Foo(p=0)",
                 });
         }

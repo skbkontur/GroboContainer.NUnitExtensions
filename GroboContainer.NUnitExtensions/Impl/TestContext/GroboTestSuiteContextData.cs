@@ -6,9 +6,9 @@ using JetBrains.Annotations;
 
 namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
-    public class EdiTestSuiteContextData : EdiTestContextData
+    public class GroboTestSuiteContextData : GroboTestContextData
     {
-        public EdiTestSuiteContextData([NotNull] Lazy<IContainer> lazyContainer)
+        public GroboTestSuiteContextData([NotNull] Lazy<IContainer> lazyContainer)
             : base(lazyContainer)
         {
         }

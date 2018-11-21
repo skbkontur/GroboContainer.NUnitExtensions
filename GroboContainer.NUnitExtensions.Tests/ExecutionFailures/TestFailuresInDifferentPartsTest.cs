@@ -10,49 +10,49 @@ using NUnit.Framework;
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
     [AndB]
-    public class AndAPass : EdiTestMethodWrapperAttribute
+    public class AndAPass : GroboTestMethodWrapperAttribute
     {
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.SetUp()");
+            GroboTestMachineryTrace.Log("AndA.SetUp()");
         }
 
-        public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void TearDown(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.TearDown()");
+            GroboTestMachineryTrace.Log("AndA.TearDown()");
         }
     }
 
     [AndB(exceptionInSetUp : true)]
-    public class AndASetUpFailure : EdiTestMethodWrapperAttribute
+    public class AndASetUpFailure : GroboTestMethodWrapperAttribute
     {
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.SetUp()");
+            GroboTestMachineryTrace.Log("AndA.SetUp()");
         }
 
-        public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void TearDown(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.TearDown()");
+            GroboTestMachineryTrace.Log("AndA.TearDown()");
         }
     }
 
     [AndB(exceptionInTearDown : true)]
-    public class AndATearDownFailure : EdiTestMethodWrapperAttribute
+    public class AndATearDownFailure : GroboTestMethodWrapperAttribute
     {
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.SetUp()");
+            GroboTestMachineryTrace.Log("AndA.SetUp()");
         }
 
-        public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void TearDown(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndA.TearDown()");
+            GroboTestMachineryTrace.Log("AndA.TearDown()");
         }
     }
 
     [AndC]
-    public class AndB : EdiTestMethodWrapperAttribute
+    public class AndB : GroboTestMethodWrapperAttribute
     {
         public AndB(bool exceptionInSetUp = false, bool exceptionInTearDown = false)
         {
@@ -60,16 +60,16 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
             this.exceptionInTearDown = exceptionInTearDown;
         }
 
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndB.SetUp()");
+            GroboTestMachineryTrace.Log("AndB.SetUp()");
             if (exceptionInSetUp)
                 throw new InvalidOperationException("Error in AndB.SetUp()");
         }
 
-        public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void TearDown(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndB.TearDown()");
+            GroboTestMachineryTrace.Log("AndB.TearDown()");
             if (exceptionInTearDown)
                 throw new InvalidOperationException("Error in AndB.TearDown()");
         }
@@ -78,68 +78,68 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         private readonly bool exceptionInTearDown;
     }
 
-    public class AndC : EdiTestMethodWrapperAttribute
+    public class AndC : GroboTestMethodWrapperAttribute
     {
-        public override void SetUp(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void SetUp(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.ClearTrace();
-            EdiTestMachineryTrace.Log("AndC.SetUp()");
+            GroboTestMachineryTrace.ClearTrace();
+            GroboTestMachineryTrace.Log("AndC.SetUp()");
         }
 
-        public override void TearDown(string testName, IEditableEdiTestContext suiteContext, IEditableEdiTestContext methodContext)
+        public override void TearDown(string testName, IEditableGroboTestContext suiteContext, IEditableGroboTestContext methodContext)
         {
-            EdiTestMachineryTrace.Log("AndC.TearDown()");
+            GroboTestMachineryTrace.Log("AndC.TearDown()");
         }
     }
 
     [Explicit("Intentionally fails with 'Error in FailureInTest_ExplicitTest.Test()' error")]
-    [EdiTestFixture, AndAPass]
+    [GroboTestFixture, AndAPass]
     public class FailureInTest_ExplicitTest
     {
         [Test]
         public void Test()
         {
-            EdiTestMachineryTrace.Log("FailureInTest_ExplicitTest.Test()");
+            GroboTestMachineryTrace.Log("FailureInTest_ExplicitTest.Test()");
             throw new InvalidOperationException("Error in FailureInTest_ExplicitTest.Test()");
         }
     }
 
     [Explicit("Intentionally fails with 'Error in AndB.SetUp()' error")]
-    [EdiTestFixture, AndASetUpFailure]
+    [GroboTestFixture, AndASetUpFailure]
     public class FailureInSetUpTest_ExplicitTest
     {
         [Test]
         public void Test()
         {
-            EdiTestMachineryTrace.Log("FailureInSetUpTest_ExplicitTest.Test()");
+            GroboTestMachineryTrace.Log("FailureInSetUpTest_ExplicitTest.Test()");
         }
     }
 
     [Explicit("Intentionally fails with 'Error in AndB.TearDown()' error")]
-    [EdiTestFixture, AndATearDownFailure]
+    [GroboTestFixture, AndATearDownFailure]
     public class FailureInTearDown_ExplicitTest
     {
         [Test]
         public void Test()
         {
-            EdiTestMachineryTrace.Log("FailureInTearDown_ExplicitTest.Test()");
+            GroboTestMachineryTrace.Log("FailureInTearDown_ExplicitTest.Test()");
         }
     }
 
     [Explicit("Intentionally fails with 'GroboContainer.Impl.Exceptions.AmbiguousConstructorException' error")]
-    [EdiTestFixture]
+    [GroboTestFixture]
     public class FailureInFieldInjection_ExplicitTest
     {
-        [EdiTestFixtureSetUp]
-        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        [GroboTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableGroboTestContext suiteContext)
         {
-            EdiTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.TestFixtureSetUp()");
+            GroboTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.TestFixtureSetUp()");
         }
 
         [Test]
         public void Test()
         {
-            EdiTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.Test()");
+            GroboTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.Test()");
         }
 
 #pragma warning disable 169
@@ -201,7 +201,7 @@ AndC.TearDown()
 
         /// <summary>
         ///     Exception occurs in AndB.TearDown, but we still need to call corresponding TearDown
-        ///     for each EdiTestMethodWrapperAttribute for which SetUp was called
+        ///     for each GroboTestMethodWrapperAttribute for which SetUp was called
         ///     In this method we check that all necessary TearDowns are called and correct error message is displayed
         /// </summary>
         [Test]

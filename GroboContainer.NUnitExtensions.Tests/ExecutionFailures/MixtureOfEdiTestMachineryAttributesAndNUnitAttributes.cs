@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
 {
-    [EdiTestSuite]
+    [GroboTestSuite]
     [Explicit("Intentionally fails with 'Prohibited NUnit attributes ...' error")]
     public class NUnit_SetUpAttribute_IsProhibited_ExplicitTest
     {
@@ -19,7 +19,7 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         }
     }
 
-    [EdiTestSuite]
+    [GroboTestSuite]
     [Explicit("Intentionally fails with 'Prohibited NUnit attributes ...' error")]
     public class NUnit_TearDownAttribute_IsProhibited_ExplicitTest
     {
@@ -34,7 +34,7 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         }
     }
 
-    [EdiTestSuite]
+    [GroboTestSuite]
     [Explicit("Intentionally fails with 'Prohibited NUnit attributes ...' error")]
     public class NUnit_TestFixtureSetUpAttribute_IsProhibited_ExplicitTest
     {
@@ -49,7 +49,7 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         }
     }
 
-    [EdiTestSuite]
+    [GroboTestSuite]
     [Explicit("Intentionally fails with 'Prohibited NUnit attributes ...' error")]
     public class NUnit_TestFixtureTearDownAttribute_IsProhibited_ExplicitTest
     {

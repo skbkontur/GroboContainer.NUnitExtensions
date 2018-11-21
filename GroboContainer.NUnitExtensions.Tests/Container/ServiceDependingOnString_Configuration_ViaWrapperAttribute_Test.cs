@@ -2,18 +2,18 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Container
 {
-    [EdiTestFixture, WithServiceDependingOnString("1")]
-    public class ServiceDependingOnString_Configuration_ViaWrapperAttribute_Test : EdiTestMachineryTestBase
+    [GroboTestFixture, WithServiceDependingOnString("1")]
+    public class ServiceDependingOnString_Configuration_ViaWrapperAttribute_Test : GroboTestMachineryTestBase
     {
         [Test]
         public void Test()
         {
             serviceDependingOnString.Hoo(0);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
                     "WithServiceDependingOnString(p=1).SetUp()",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::{GroboTestContext.Current.TestName()}",
                     "ServiceDependingOnString.Hoo(p=1, q=0)",
                 });
         }

@@ -2,7 +2,7 @@
 
 namespace GroboContainer.NUnitExtensions.Tests.Container.InjectionHardTests
 {
-    [EdiTestFixture]
+    [GroboTestFixture]
     public class InjectedAttributeInjectedOnlyOncePerInstanceTest : InjectedAttributeTestBase
     {
         [Test]

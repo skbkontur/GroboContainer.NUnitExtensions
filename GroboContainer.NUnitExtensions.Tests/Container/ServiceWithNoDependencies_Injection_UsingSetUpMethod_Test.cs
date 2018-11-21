@@ -2,14 +2,14 @@ using NUnit.Framework;
 
 namespace GroboContainer.NUnitExtensions.Tests.Container
 {
-    [EdiTestFixture]
-    public class ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test : EdiTestMachineryTestBase
+    [GroboTestFixture]
+    public class ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test : GroboTestMachineryTestBase
     {
-        [EdiSetUp]
+        [GroboSetUp]
         public void SetUp()
         {
-            EdiTestMachineryTrace.Log($"SetUp() for {EdiTestContext.Current.SuiteName()}");
-            var serviceFromContainer = EdiTestContext.Current.Container.Get<IServiceWithNoDependencies>();
+            GroboTestMachineryTrace.Log($"SetUp() for {GroboTestContext.Current.SuiteName()}");
+            var serviceFromContainer = GroboTestContext.Current.Container.Get<IServiceWithNoDependencies>();
             if (serviceWithNoDependencies == null)
                 serviceWithNoDependencies = serviceFromContainer;
             else
@@ -20,11 +20,11 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         public void Test01()
         {
             serviceWithNoDependencies.Foo(1);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
-                    $"SuiteWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}",
-                    $"MethodWrapper.SetUp() for {EdiTestContext.Current.SuiteName()}::{EdiTestContext.Current.TestName()}",
-                    $"SetUp() for {EdiTestContext.Current.SuiteName()}",
+                    $"SuiteWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}",
+                    $"MethodWrapper.SetUp() for {GroboTestContext.Current.SuiteName()}::{GroboTestContext.Current.TestName()}",
+                    $"SetUp() for {GroboTestContext.Current.SuiteName()}",
                     "ServiceWithNoDependencies.Foo(p=1)",
                 });
         }
@@ -33,7 +33,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         public void Test02()
         {
             serviceWithNoDependencies.Foo(2);
-            AssertEdiTestMachineryTrace(new[]
+            AssertTestMachineryTrace(new[]
                 {
                     "SuiteWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test",
                     "MethodWrapper.SetUp() for GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test::GroboContainer.NUnitExtensions.Tests.Container.ServiceWithNoDependencies_Injection_UsingSetUpMethod_Test.Test01",

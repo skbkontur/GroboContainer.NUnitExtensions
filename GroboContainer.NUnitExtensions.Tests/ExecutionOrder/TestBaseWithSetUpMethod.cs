@@ -1,17 +1,17 @@
 namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
 {
-    public abstract class TestBaseWithSetUpMethod : EdiTestMachineryTestBase
+    public abstract class TestBaseWithSetUpMethod : GroboTestMachineryTestBase
     {
-        [EdiSetUp]
+        [GroboSetUp]
         public void TestBase_SetUp()
         {
-            EdiTestMachineryTrace.Log("TestBase_SetUp()");
+            GroboTestMachineryTrace.Log("TestBase_SetUp()");
         }
 
-        [EdiTearDown]
+        [GroboTearDown]
         public void TestBase_TearDown()
         {
-            EdiTestMachineryTrace.Log("TestBase_TearDown()");
+            GroboTestMachineryTrace.Log("TestBase_TearDown()");
         }
     }
 }

@@ -34,8 +34,8 @@ namespace GroboContainer.NUnitExtensions.Impl
         {
             return suiteNamesCache.GetOrAdd(test.GetFixtureType(), fixtureType =>
                 {
-                    var suiteNames = GetAttributesForTestFixture<EdiTestSuiteAttribute>(fixtureType).Select(x => x.SuiteName).ToList();
-                    var testFixtureAttribute = GetAttributesForType<EdiTestFixtureAttribute>(fixtureType).SingleOrDefault();
+                    var suiteNames = GetAttributesForTestFixture<GroboTestSuiteAttribute>(fixtureType).Select(x => x.SuiteName).ToList();
+                    var testFixtureAttribute = GetAttributesForType<GroboTestFixtureAttribute>(fixtureType).SingleOrDefault();
                     if (testFixtureAttribute != null)
                         suiteNames.Add(fixtureType.FullName);
                     if (suiteNames.Count > 1)
@@ -48,33 +48,33 @@ namespace GroboContainer.NUnitExtensions.Impl
         }
 
         [NotNull]
-        public static List<EdiTestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
+        public static List<GroboTestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
         {
-            return suiteWrappersForTest.GetOrAdd(test, GetWrappers<EdiTestSuiteWrapperAttribute>);
+            return suiteWrappersForTest.GetOrAdd(test, GetWrappers<GroboTestSuiteWrapperAttribute>);
         }
 
         [NotNull]
-        public static List<EdiTestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
+        public static List<GroboTestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
         {
-            return methodWrappersForTest.GetOrAdd(test, GetWrappers<EdiTestMethodWrapperAttribute>);
+            return methodWrappersForTest.GetOrAdd(test, GetWrappers<GroboTestMethodWrapperAttribute>);
         }
 
         [CanBeNull]
         public static MethodInfo FindFixtureSetUpMethod([NotNull] this MethodInfo test)
         {
-            return fixtureSetUpMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<EdiTestFixtureSetUpAttribute>);
+            return fixtureSetUpMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<GroboTestFixtureSetUpAttribute>);
         }
 
         [CanBeNull]
         public static MethodInfo FindSetUpMethod([NotNull] this MethodInfo test)
         {
-            return setUpMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<EdiSetUpAttribute>);
+            return setUpMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<GroboSetUpAttribute>);
         }
 
         [CanBeNull]
         public static MethodInfo FindTearDownMethod([NotNull] this MethodInfo test)
         {
-            return tearDownMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<EdiTearDownAttribute>);
+            return tearDownMethods.GetOrAdd(GetFixtureType(test), FindSingleMethodMarkedWith<GroboTearDownAttribute>);
         }
 
         [CanBeNull]
@@ -131,21 +131,21 @@ namespace GroboContainer.NUnitExtensions.Impl
         }
 
         [NotNull]
-        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test) where TWrapper : EdiTestWrapperAttribute
+        private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test) where TWrapper : GroboTestWrapperAttribute
         {
             var fixtureType = GetFixtureType(test);
-            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<EdiTestWrapperAttribute>);
+            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<GroboTestWrapperAttribute>);
             var wrappersForMethod = GetAttributesForMethod<TWrapper>(test);
-            var visitedWrappers = new HashSet<EdiTestWrapperAttribute>();
-            var nodes = new ConcurrentDictionary<EdiTestWrapperAttribute, DependencyNode<EdiTestWrapperAttribute>>();
-            var queue = new Queue<EdiTestWrapperAttribute>(wrappersForMethod.Concat(wrappersForFixture));
+            var visitedWrappers = new HashSet<GroboTestWrapperAttribute>();
+            var nodes = new ConcurrentDictionary<GroboTestWrapperAttribute, DependencyNode<GroboTestWrapperAttribute>>();
+            var queue = new Queue<GroboTestWrapperAttribute>(wrappersForMethod.Concat(wrappersForFixture));
             while (queue.Count > 0)
             {
                 var wrapper = queue.Dequeue();
                 if (!visitedWrappers.Add(wrapper))
                     continue;
                 var node = nodes.GetOrAdd(wrapper, Node.Create);
-                var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<EdiTestWrapperAttribute>(x).ToList());
+                var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<GroboTestWrapperAttribute>(x).ToList());
                 foreach (var wrapperDependency in wrapperDependencies)
                 {
                     queue.Enqueue(wrapperDependency);
@@ -200,9 +200,9 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static readonly ConcurrentDictionary<Type, MethodInfo> fixtureSetUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> setUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> tearDownMethods = new ConcurrentDictionary<Type, MethodInfo>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>> wrappersForFixtureCache = new ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>> wrappersForWrapperCache = new ConcurrentDictionary<Type, List<EdiTestWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<MethodInfo, List<EdiTestSuiteWrapperAttribute>> suiteWrappersForTest = new ConcurrentDictionary<MethodInfo, List<EdiTestSuiteWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<MethodInfo, List<EdiTestMethodWrapperAttribute>> methodWrappersForTest = new ConcurrentDictionary<MethodInfo, List<EdiTestMethodWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>> wrappersForFixtureCache = new ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>> wrappersForWrapperCache = new ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<MethodInfo, List<GroboTestSuiteWrapperAttribute>> suiteWrappersForTest = new ConcurrentDictionary<MethodInfo, List<GroboTestSuiteWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<MethodInfo, List<GroboTestMethodWrapperAttribute>> methodWrappersForTest = new ConcurrentDictionary<MethodInfo, List<GroboTestMethodWrapperAttribute>>();
     }
 }
