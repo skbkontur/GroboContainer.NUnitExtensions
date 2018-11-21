@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using FluentAssertions;
 
@@ -125,12 +126,46 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         }
     }
 
+    [Explicit("Intentionally fails with 'GroboContainer.Impl.Exceptions.AmbiguousConstructorException' error")]
+    [EdiTestFixture]
+    public class FailureInFieldInjection_ExplicitTest
+    {
+        [EdiTestFixtureSetUp]
+        public void TestFixtureSetUp(IEditableEdiTestContext suiteContext)
+        {
+            EdiTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.TestFixtureSetUp()");
+        }
+
+        [Test]
+        public void Test()
+        {
+            EdiTestMachineryTrace.Log("FailureInFieldInjection_ExplicitTest.Test()");
+        }
+
+#pragma warning disable 169
+        [Injected]
+        private readonly NonConstructableByContainerClass fieldForWhichContainerIsNotConfigured;
+#pragma warning restore 169
+
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        private class NonConstructableByContainerClass
+        {
+            public NonConstructableByContainerClass(string fieldForWhichContainerIsNotConfigured)
+            {
+                this.fieldForWhichContainerIsNotConfigured = fieldForWhichContainerIsNotConfigured;
+            }
+
+            [SuppressMessage("ReSharper", "NotAccessedField.Local")]
+            private readonly string fieldForWhichContainerIsNotConfigured;
+        }
+    }
+
     public class TestFailuresInDifferentPartsTest
     {
         /// <summary>
         ///     Initially SetUps should be called in following order: AndC.SetUp(), AndB.SetUp(), AndA.SetUp()
         ///     TearDowns should be called in following order: AndA.TearDown(), AndB.TearDown(), AndC.TearDown()
-        ///     In this test we check that this order persists if we encounter IPSE in test method
+        ///     In this test we check that this order persists if we encounter exception in test method
         /// </summary>
         [Test]
         public void TestFailureInTest()
@@ -149,8 +184,8 @@ AndC.TearDown()
         }
 
         /// <summary>
-        ///     Exception ocurrs in AndB.SetUp, so next AndA.SetUp should not be called
-        ///     TearDown is not called for AndA, for which SetUp was not called and for AndB, for which SetUp failed with IPSE
+        ///     Exception occurs in AndB.SetUp, so next AndA.SetUp should not be called
+        ///     TearDown is not called for AndA, for which SetUp was not called and for AndB, for which SetUp failed with exception
         /// </summary>
         [Test]
         public void TestFailureInSetUp()
@@ -182,6 +217,16 @@ FailureInTearDown_ExplicitTest.Test()
 AndA.TearDown()
 AndB.TearDown()
 AndC.TearDown()
+");
+        }
+
+        [Test]
+        public void TestFailureInFieldInjection()
+        {
+            var testResults = TestRunner.RunTestClass<FailureInFieldInjection_ExplicitTest>();
+            var result = testResults[nameof(FailureInFieldInjection_ExplicitTest.Test)];
+            result.Message.Should().Contain("GroboContainer.Impl.Exceptions.AmbiguousConstructorException");
+            result.Output.Should().Be(@"FailureInFieldInjection_ExplicitTest.TestFixtureSetUp()
 ");
         }
     }
