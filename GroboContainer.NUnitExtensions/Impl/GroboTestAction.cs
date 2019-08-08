@@ -155,6 +155,7 @@ namespace GroboContainer.NUnitExtensions.Impl
                 fieldInfo.SetValue(testFixture, InstantiateField(suiteContext, fieldInfo));
         }
 
+        [NotNull]
         private static object InstantiateField([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] FieldInfo fieldInfo)
         {
             var fieldType = fieldInfo.FieldType;
