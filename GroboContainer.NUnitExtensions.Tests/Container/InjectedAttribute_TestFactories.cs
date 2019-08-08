@@ -37,10 +37,10 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         [Test]
         public void TestFactory4()
         {
-            var service = factory4(new[] {"qxx"}, new[] {1}, new[] {2.5}, new short[] {3});
+            var service = factory4(new[] {"qxx"}, new[] {1}, new short[] {2}, new byte[] {3});
             Assert.That(service, Is.Not.Null);
             service.Qoo(43);
-            Assert.That(GroboTestMachineryTrace.TraceLines, Is.EqualTo(new[] {"ServiceDependingOnManyStrings.Qoo(a=qxx, b=1, c=2,5, d=3, p=43)"}));
+            Assert.That(GroboTestMachineryTrace.TraceLines, Is.EqualTo(new[] {"ServiceDependingOnManyStrings.Qoo(a=qxx, b=1, c=2, d=3, p=43)"}));
         }
 
         [Injected]
@@ -50,13 +50,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         private Func<string, IServiceDependingOnString> factoryFromString;
 
         [Injected]
-        private Func<string[], int[], IServiceWithManyDependencies> factory2;
-
-        [Injected]
-        private Func<string[], int[], double[], IServiceWithManyDependencies> factory3;
-
-        [Injected]
-        private Func<string[], int[], double[], short[], IServiceWithManyDependencies> factory4;
+        private Func<string[], int[], short[], byte[], IServiceWithManyDependencies> factory4;
     }
 
     public interface IServiceWithManyDependencies
@@ -68,10 +62,10 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
     {
         private readonly string[] a;
         private readonly int[] b;
-        private readonly double[] c;
-        private readonly short[] d;
+        private readonly short[] c;
+        private readonly byte[] d;
 
-        public ServiceWithManyDependencies(string[] a, int[] b, double[] c, short[] d)
+        public ServiceWithManyDependencies(string[] a, int[] b, short[] c, byte[] d)
         {
             this.a = a;
             this.b = b;
