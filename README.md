@@ -12,7 +12,7 @@ See [CHANGELOG](CHANGELOG.md).
 ## How to Use
 
 First define GroboContainer configuration for your test suite:
-```
+```C#
 public static class GroboTestMachineryContainerConfigurator
 {
     public static ContainerConfiguration GetContainerConfiguration(string testSuiteName)
@@ -24,7 +24,7 @@ public static class GroboTestMachineryContainerConfigurator
 By convention this must be done in a static method `GetContainerConfiguration` in a class named exactly `GroboTestMachineryContainerConfigurator` which is placed in the same assembly as your tests.
 
 Then define several helper attributes which will hold logic for different aspects of test environment configuration:
-```
+```C#
 public class WithX : GroboTestSuiteWrapperAttribute
 {
     public override void SetUp(string suiteName, Assembly testAssembly, IEditableGroboTestContext suiteContext)
@@ -65,7 +65,7 @@ public class AndLogTestName : GroboTestMethodWrapperAttribute
 ```
 
 And now you can write your test cases with minimum container configuration boilerplate:
-```
+```C#
 [GroboTestSuite("SomeTestSuite"), WithY, WithFixedSeedRandom, AndLogTestName]
 public interface ISomeTestSuite { }
 
