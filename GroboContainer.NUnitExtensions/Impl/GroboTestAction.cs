@@ -152,7 +152,19 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static void InjectFixtureFields([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] object testFixture)
         {
             foreach (var fieldInfo in testFixture.GetType().GetFieldsForInjection())
-                fieldInfo.SetValue(testFixture, suiteContext.Container.Get(fieldInfo.FieldType));
+                fieldInfo.SetValue(testFixture, InstantiateField(suiteContext, fieldInfo));
+        }
+
+        private static object InstantiateField([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] FieldInfo fieldInfo)
+        {
+            var fieldType = fieldInfo.FieldType;
+            if (fieldType.IsGenericType)
+            {
+                var genericFieldType = fieldType.GetGenericTypeDefinition();
+                if (supportedFactoryFuncTypes.Contains(genericFieldType))
+                    return suiteContext.Container.GetCreationFunc(fieldType);
+            }
+            return suiteContext.Container.Get(fieldType);
         }
 
         private static void EnsureAppDomainInitialization()
@@ -188,6 +200,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static readonly object appDomainInitializationLock = new object();
         private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
+        private static readonly Type[] supportedFactoryFuncTypes = {typeof(Func<>), typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>), typeof(Func<,,,,>)};
 
         private class SuiteDescriptor
         {
