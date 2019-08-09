@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.23 - 2019.08.09
+- Add support of `Func<>` factories for `[Injected]` fields
+
+
 ## v1.0 - 2018.11.21
 - Support NUnit 3.x.
 - Support .NET Standard 2.0.
