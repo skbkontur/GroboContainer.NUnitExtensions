@@ -159,11 +159,12 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static object InstantiateField([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] FieldInfo fieldInfo)
         {
             var fieldType = fieldInfo.FieldType;
-            if (fieldType.IsGenericType)
+            if (typeof(Delegate).IsAssignableFrom(fieldType))
             {
-                var genericFieldType = fieldType.GetGenericTypeDefinition();
-                if (supportedFactoryFuncTypes.Contains(genericFieldType))
+                if (fieldType.IsGenericType && supportedFactoryFuncTypes.Contains(fieldType.GetGenericTypeDefinition()))
                     return suiteContext.Container.GetCreationFunc(fieldType);
+                throw new InvalidOperationException($"Unable to instantiate injected field '{fieldInfo.Name}' of delegate type '{fieldType}'. " +
+                                                    $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
             }
             return suiteContext.Container.Get(fieldType);
         }
@@ -248,7 +249,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             private static ContainerConfiguration GetContainerConfiguration([NotNull] string suiteName, [NotNull] Assembly testAssembly)
             {
                 const string containerConfiguratorTypeName = "GroboTestMachineryContainerConfigurator";
-                var containerConfiguratorTypes = testAssembly.GetExportedTypes().Where(t=> t.IsClass && t.Name == containerConfiguratorTypeName).ToList();
+                var containerConfiguratorTypes = testAssembly.GetExportedTypes().Where(t => t.IsClass && t.Name == containerConfiguratorTypeName).ToList();
                 if (!containerConfiguratorTypes.Any())
                     throw new InvalidOperationException($"Failed to get container configuration for test suite {suiteName}. There is no {containerConfiguratorTypeName} type in test assembly: {testAssembly}");
                 if (containerConfiguratorTypes.Count > 1)
