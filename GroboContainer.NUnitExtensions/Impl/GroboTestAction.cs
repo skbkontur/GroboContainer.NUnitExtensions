@@ -152,7 +152,21 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static void InjectFixtureFields([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] object testFixture)
         {
             foreach (var fieldInfo in testFixture.GetType().GetFieldsForInjection())
-                fieldInfo.SetValue(testFixture, suiteContext.Container.Get(fieldInfo.FieldType));
+                fieldInfo.SetValue(testFixture, InstantiateField(suiteContext, fieldInfo));
+        }
+
+        [NotNull]
+        private static object InstantiateField([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] FieldInfo fieldInfo)
+        {
+            var fieldType = fieldInfo.FieldType;
+            if (typeof(Delegate).IsAssignableFrom(fieldType))
+            {
+                if (fieldType.IsGenericType && supportedFactoryFuncTypes.Contains(fieldType.GetGenericTypeDefinition()))
+                    return suiteContext.Container.GetCreationFunc(fieldType);
+                throw new InvalidOperationException($"Unable to instantiate injected field '{fieldInfo.Name}' of delegate type '{fieldType}'. " +
+                                                    $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
+            }
+            return suiteContext.Container.Get(fieldType);
         }
 
         private static void EnsureAppDomainInitialization()
@@ -188,6 +202,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static readonly object appDomainInitializationLock = new object();
         private static readonly ConditionalWeakTable<object, object> setUpedFixtures = new ConditionalWeakTable<object, object>();
         private static readonly ConcurrentDictionary<string, SuiteDescriptor> suiteDescriptors = new ConcurrentDictionary<string, SuiteDescriptor>();
+        private static readonly Type[] supportedFactoryFuncTypes = {typeof(Func<>), typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>), typeof(Func<,,,,>)};
 
         private class SuiteDescriptor
         {
@@ -234,7 +249,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             private static ContainerConfiguration GetContainerConfiguration([NotNull] string suiteName, [NotNull] Assembly testAssembly)
             {
                 const string containerConfiguratorTypeName = "GroboTestMachineryContainerConfigurator";
-                var containerConfiguratorTypes = testAssembly.GetExportedTypes().Where(t=> t.IsClass && t.Name == containerConfiguratorTypeName).ToList();
+                var containerConfiguratorTypes = testAssembly.GetExportedTypes().Where(t => t.IsClass && t.Name == containerConfiguratorTypeName).ToList();
                 if (!containerConfiguratorTypes.Any())
                     throw new InvalidOperationException($"Failed to get container configuration for test suite {suiteName}. There is no {containerConfiguratorTypeName} type in test assembly: {testAssembly}");
                 if (containerConfiguratorTypes.Count > 1)
