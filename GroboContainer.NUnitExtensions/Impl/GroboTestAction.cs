@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 using GroboContainer.Core;
 using GroboContainer.Impl;
@@ -141,7 +142,9 @@ namespace GroboContainer.NUnitExtensions.Impl
                 return;
             try
             {
-                wrapperMethod.Invoke(testFixture, @params);
+                var result = wrapperMethod.Invoke(testFixture, @params);
+                if(wrapperMethod.ReturnType == typeof(Task))
+                    (result as Task).GetAwaiter().GetResult();
             }
             catch (TargetInvocationException exception)
             {
