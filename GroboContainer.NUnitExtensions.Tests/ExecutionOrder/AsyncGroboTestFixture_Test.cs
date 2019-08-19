@@ -31,8 +31,9 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
         }
 
         [Test]
-        public void Test01()
+        public async Task Test01()
         {
+            await Task.Delay(1000);
             Assert.That(GroboTestContext.Current.SuiteName(), Is.EqualTo(GetType().FullName));
             Assert.That(GroboTestContext.Current.TestName(), Is.EqualTo(GetType().FullName + ".Test01"));
             GroboTestMachineryTrace.Log("Test01()");
@@ -47,8 +48,9 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
         }
 
         [Test]
-        public void Test02()
+        public async Task Test02()
         {
+            await Task.Delay(1000);
             GroboTestMachineryTrace.Log("Test02()");
             AssertTestMachineryTrace(new[]
                 {
