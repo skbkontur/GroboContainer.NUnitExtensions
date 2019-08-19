@@ -143,7 +143,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             try
             {
                 var result = wrapperMethod.Invoke(testFixture, @params);
-                if(wrapperMethod.ReturnType == typeof(Task))
+                if (wrapperMethod.ReturnType == typeof(Task))
                     (result as Task).GetAwaiter().GetResult();
             }
             catch (TargetInvocationException exception)
