@@ -152,37 +152,22 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static void InjectFixtureFields([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] object testFixture)
         {
             foreach (var fieldInfo in testFixture.GetType().GetFieldsForInjection())
-                fieldInfo.SetValue(testFixture, InstantiateField(suiteContext, fieldInfo));
+                fieldInfo.SetValue(testFixture, InstantiateMember(suiteContext, fieldInfo.FieldType, fieldInfo.Name));
             foreach (var propertyInfo in testFixture.GetType().GetPropertiesForInjection())
-                propertyInfo.SetValue(testFixture, InstantiateProperty(suiteContext, propertyInfo));
+                propertyInfo.SetValue(testFixture, InstantiateMember(suiteContext, propertyInfo.PropertyType, propertyInfo.Name));
         }
 
         [NotNull]
-        private static object InstantiateField([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] FieldInfo fieldInfo)
+        private static object InstantiateMember([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] Type memberType, [NotNull] string memberName)
         {
-            var fieldType = fieldInfo.FieldType;
-            if (typeof(Delegate).IsAssignableFrom(fieldType))
+            if (typeof(Delegate).IsAssignableFrom(memberType))
             {
-                if (fieldType.IsGenericType && supportedFactoryFuncTypes.Contains(fieldType.GetGenericTypeDefinition()))
-                    return suiteContext.Container.GetCreationFunc(fieldType);
-                throw new InvalidOperationException($"Unable to instantiate injected field '{fieldInfo.Name}' of delegate type '{fieldType}'. " +
+                if (memberType.IsGenericType && supportedFactoryFuncTypes.Contains(memberType.GetGenericTypeDefinition()))
+                    return suiteContext.Container.GetCreationFunc(memberType);
+                throw new InvalidOperationException($"Unable to instantiate injected member '{memberName}' of delegate type '{memberType}'. " +
                                                     $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
             }
-            return suiteContext.Container.Get(fieldType);
-        }
-
-        [NotNull]
-        private static object InstantiateProperty([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] PropertyInfo propertyInfo)
-        {
-            var propertyType = propertyInfo.PropertyType;
-            if (typeof(Delegate).IsAssignableFrom(propertyType))
-            {
-                if (propertyType.IsGenericType && supportedFactoryFuncTypes.Contains(propertyType.GetGenericTypeDefinition()))
-                    return suiteContext.Container.GetCreationFunc(propertyType);
-                throw new InvalidOperationException($"Unable to instantiate injected field '{propertyInfo.Name}' of delegate type '{propertyType}'. " +
-                                                    $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
-            }
-            return suiteContext.Container.Get(propertyType);
+            return suiteContext.Container.Get(memberType);
         }
 
         private static void EnsureAppDomainInitialization()
