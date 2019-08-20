@@ -153,6 +153,8 @@ namespace GroboContainer.NUnitExtensions.Impl
         {
             foreach (var fieldInfo in testFixture.GetType().GetFieldsForInjection())
                 fieldInfo.SetValue(testFixture, InstantiateField(suiteContext, fieldInfo));
+            foreach (var propertyInfo in testFixture.GetType().GetPropertiesForInjection())
+                propertyInfo.SetValue(testFixture, InstantiateProperty(suiteContext, propertyInfo));
         }
 
         [NotNull]
@@ -167,6 +169,20 @@ namespace GroboContainer.NUnitExtensions.Impl
                                                     $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
             }
             return suiteContext.Container.Get(fieldType);
+        }
+
+        [NotNull]
+        private static object InstantiateProperty([NotNull] GroboTestSuiteContextData suiteContext, [NotNull] PropertyInfo propertyInfo)
+        {
+            var propertyType = propertyInfo.PropertyType;
+            if (typeof(Delegate).IsAssignableFrom(propertyType))
+            {
+                if (propertyType.IsGenericType && supportedFactoryFuncTypes.Contains(propertyType.GetGenericTypeDefinition()))
+                    return suiteContext.Container.GetCreationFunc(propertyType);
+                throw new InvalidOperationException($"Unable to instantiate injected field '{propertyInfo.Name}' of delegate type '{propertyType}'. " +
+                                                    $"Following delegate types are supported: {string.Join(", ", supportedFactoryFuncTypes.Select(x => x.Name))}");
+            }
+            return suiteContext.Container.Get(propertyType);
         }
 
         private static void EnsureAppDomainInitialization()

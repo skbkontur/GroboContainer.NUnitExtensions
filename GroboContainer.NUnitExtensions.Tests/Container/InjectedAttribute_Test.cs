@@ -12,9 +12,15 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         }
 
         [Test]
-        public void PublicProperty_IsNotInjected()
+        public void PublicProperty_IsInjected()
         {
-            Assert.That(PublicProperty, Is.Null);
+            Assert.That(PublicProperty, Is.Not.Null);
+        }
+
+        [Test]
+        public void PrivateProperty_IsInjected()
+        {
+            Assert.That(PrivateProperty, Is.Not.Null);
         }
 
         [Test]
@@ -35,10 +41,20 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             DoPrivateReadonlyFieldInBaseClass();
         }
 
+        [Test]
+        public void PrivatePropertyInBaseClass()
+        {
+            DoPrivatePropertyInBaseClass();
+        }
+
         [Injected]
         // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IServiceWithNoDependencies PublicProperty { get; set; }
+        
+        [Injected]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private IServiceWithNoDependencies PrivateProperty { get; set; }
 
 #pragma warning disable 649
         [Injected]
