@@ -22,13 +22,12 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         [Injected]
         // ReSharper disable once UnassignedReadonlyField
         protected readonly IServiceWithNoDependencies protectedReadonlyFieldInBaseClass;
-        
+
         [Injected]
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private IServiceWithNoDependencies PrivatePropertyInBaseClass { get; set; }
-        
+
         [Injected]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private IServiceWithNoDependencies ProtectedPropertyInBaseClass { get; set; }
+        protected IServiceWithNoDependencies ProtectedPropertyInBaseClass { get; set; }
     }
 }
