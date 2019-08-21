@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.30 - 2019.08.21
+- Await asynchronous wrapper methods
+- Add support in `[Injected]` for properties
+
 ## v1.0.23 - 2019.08.09
 - Add support of `Func<>` factories for `[Injected]` fields
 
