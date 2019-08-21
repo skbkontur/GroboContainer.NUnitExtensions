@@ -6,7 +6,7 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
     public class InjectedAttribute_Test : InjectedAttributeTestBase
     {
         [Test]
-        public void PublicField()
+        public void PublicField_IsInjected()
         {
             Assert.That(publicField, Is.Not.Null);
         }
@@ -30,25 +30,25 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         }
 
         [Test]
-        public void PrivateReadonlyField()
+        public void PrivateReadonlyField_IsInjected()
         {
             Assert.That(privateReadonlyField, Is.Not.Null);
         }
 
         [Test]
-        public void ProtectedReadonlyFieldInBaseClass()
+        public void ProtectedReadonlyFieldInBaseClass_IsInjected()
         {
             Assert.That(protectedReadonlyFieldInBaseClass, Is.Not.Null);
         }
 
         [Test]
-        public void PrivateReadonlyFieldInBaseClass()
+        public void PrivateReadonlyFieldInBaseClass_IsInjected()
         {
             DoPrivateReadonlyFieldInBaseClass();
         }
 
         [Test]
-        public void PrivatePropertyInBaseClass()
+        public void PrivatePropertyInBaseClass_IsInjected()
         {
             DoPrivatePropertyInBaseClass();
         }
