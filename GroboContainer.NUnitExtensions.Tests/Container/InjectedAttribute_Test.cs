@@ -6,39 +6,61 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
     public class InjectedAttribute_Test : InjectedAttributeTestBase
     {
         [Test]
-        public void PublicField()
+        public void PublicField_IsInjected()
         {
             Assert.That(publicField, Is.Not.Null);
         }
 
         [Test]
-        public void PublicProperty_IsNotInjected()
+        public void PublicProperty_IsInjected()
         {
-            Assert.That(PublicProperty, Is.Null);
+            Assert.That(PublicProperty, Is.Not.Null);
         }
 
         [Test]
-        public void PrivateReadonlyField()
+        public void PrivateProperty_IsInjected()
+        {
+            Assert.That(PrivateProperty, Is.Not.Null);
+        }
+
+        [Test]
+        public void ProtectedPropertyInBaseClass_IsInjected()
+        {
+            Assert.That(ProtectedPropertyInBaseClass, Is.Not.Null);
+        }
+
+        [Test]
+        public void PrivateReadonlyField_IsInjected()
         {
             Assert.That(privateReadonlyField, Is.Not.Null);
         }
 
         [Test]
-        public void ProtectedReadonlyFieldInBaseClass()
+        public void ProtectedReadonlyFieldInBaseClass_IsInjected()
         {
             Assert.That(protectedReadonlyFieldInBaseClass, Is.Not.Null);
         }
 
         [Test]
-        public void PrivateReadonlyFieldInBaseClass()
+        public void PrivateReadonlyFieldInBaseClass_IsInjected()
         {
             DoPrivateReadonlyFieldInBaseClass();
+        }
+
+        [Test]
+        public void PrivatePropertyInBaseClass_IsInjected()
+        {
+            DoPrivatePropertyInBaseClass();
         }
 
         [Injected]
         // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IServiceWithNoDependencies PublicProperty { get; set; }
+
+        [Injected]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private IServiceWithNoDependencies PrivateProperty { get; set; }
 
 #pragma warning disable 649
         [Injected]

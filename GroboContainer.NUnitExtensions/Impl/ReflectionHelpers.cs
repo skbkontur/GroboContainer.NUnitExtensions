@@ -120,6 +120,24 @@ namespace GroboContainer.NUnitExtensions.Impl
                 .ToList();
         }
 
+        [NotNull]
+        public static List<PropertyInfo> GetPropertiesForInjection([NotNull] this Type fixtureType)
+        {
+            return propertiesForInjection.GetOrAdd(fixtureType, DoGetPropertiesForInjection);
+        }
+
+        [NotNull]
+        private static List<PropertyInfo> DoGetPropertiesForInjection([CanBeNull] Type fixtureType)
+        {
+            if (fixtureType == null)
+                return new List<PropertyInfo>();
+            return fixtureType
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
+                .Concat(DoGetPropertiesForInjection(fixtureType.BaseType))
+                .ToList();
+        }
+
         private static bool HasMethodMarkedWithNUnitAttribute([NotNull] Type fixtureType)
         {
             return forbiddenNunitMethodAttributes.Any(a => fixtureType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Any(m => IsMarkedWithAttribute(m, a)));
@@ -197,6 +215,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static readonly ConcurrentDictionary<Type, string> suiteNamesCache = new ConcurrentDictionary<Type, string>();
         private static readonly ConcurrentDictionary<Type, bool> nunitAttributesPresence = new ConcurrentDictionary<Type, bool>();
         private static readonly ConcurrentDictionary<Type, List<FieldInfo>> fieldsForInjection = new ConcurrentDictionary<Type, List<FieldInfo>>();
+        private static readonly ConcurrentDictionary<Type, List<PropertyInfo>> propertiesForInjection = new ConcurrentDictionary<Type, List<PropertyInfo>>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> fixtureSetUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> setUpMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, MethodInfo> tearDownMethods = new ConcurrentDictionary<Type, MethodInfo>();
