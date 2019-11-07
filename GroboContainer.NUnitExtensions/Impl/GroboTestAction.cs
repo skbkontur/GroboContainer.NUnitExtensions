@@ -15,6 +15,8 @@ using JetBrains.Annotations;
 
 using NUnit.Framework.Interfaces;
 
+using NUnitTestContext = NUnit.Framework.TestContext;
+
 namespace GroboContainer.NUnitExtensions.Impl
 {
     public static class GroboTestAction
@@ -130,9 +132,19 @@ namespace GroboContainer.NUnitExtensions.Impl
             }
             if (errors.Count > 0)
             {
+                var aggregateExceptionMessage = $"{errors.Count} TearDown methods failed.";
+
+                var testResult = NUnitTestContext.CurrentContext.Result;
+                if (testResult.Outcome.Status == TestStatus.Failed && testResult.Outcome.Site == FailureSite.Test)
+                {
+                    aggregateExceptionMessage = $"Test method and {errors.Count} TearDown method(s) failed.";
+                    errors.Insert(0, new FailedTestException(testResult.Message, testResult.StackTrace));
+                }
+
                 if (errors.Count == 1)
                     throw errors[0];
-                throw new AggregateException("After test methods failed.", errors);
+
+                throw new AggregateException(aggregateExceptionMessage, errors);
             }
         }
 

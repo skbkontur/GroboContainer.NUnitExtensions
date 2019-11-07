@@ -160,6 +160,18 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionFailures
         }
     }
 
+    [Explicit("Intentionally fails with 'Error in FailureInTestAndTearDown_ExplicitTest.Test()' error and 'Error in AndB.TearDown()' error")]
+    [GroboTestFixture, AndATearDownFailure]
+    public class FailureInTestAndTearDown_ExplicitTest
+    {
+        [Test]
+        public void Test()
+        {
+            GroboTestMachineryTrace.Log($"{nameof(FailureInTestAndTearDown_ExplicitTest)}.Test()");
+            throw new InvalidOperationException($"Error in {nameof(FailureInTestAndTearDown_ExplicitTest)}.Test()");
+        }
+    }
+
     public class TestFailuresInDifferentPartsTest
     {
         /// <summary>
@@ -227,6 +239,22 @@ AndC.TearDown()
             var result = testResults[nameof(FailureInFieldInjection_ExplicitTest.Test)];
             result.Message.Should().Contain("GroboContainer.Impl.Exceptions.AmbiguousConstructorException");
             result.Output.Should().Be(@"FailureInFieldInjection_ExplicitTest.TestFixtureSetUp()
+");
+        }
+
+        [Test]
+        public void TestFailureInTestAndTearDown()
+        {
+            var testResults = TestRunner.RunTestClass<FailureInTestAndTearDown_ExplicitTest>();
+            var result = testResults[nameof(FailureInTestAndTearDown_ExplicitTest.Test)];
+            result.Message.Should().Contain($"Error in {nameof(FailureInTestAndTearDown_ExplicitTest)}.Test()").And.Contain("Error in AndB.TearDown()");
+            result.Output.Should().Be(@"AndC.SetUp()
+AndB.SetUp()
+AndA.SetUp()
+FailureInTestAndTearDown_ExplicitTest.Test()
+AndA.TearDown()
+AndB.TearDown()
+AndC.TearDown()
 ");
         }
     }
