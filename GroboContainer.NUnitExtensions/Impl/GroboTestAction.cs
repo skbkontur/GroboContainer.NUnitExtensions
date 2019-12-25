@@ -23,14 +23,17 @@ namespace GroboContainer.NUnitExtensions.Impl
     {
         public static void BeforeTest([NotNull] ITest testDetails)
         {
-            EnsureAppDomainInitialization();
-
             var test = testDetails.Method.MethodInfo;
             test.EnsureNunitAttributesAbsence();
             var fixtureType = test.GetFixtureType();
             var testFixture = testDetails.Fixture;
             if (fixtureType != testFixture.GetType())
                 throw new InvalidOperationException($"TestFixtureType mismatch for: {test.GetMethodName()}");
+
+            const string tearDownTypeName = "GroboTestMachineryTearDown";
+            var tearDownTypes = fixtureType.Assembly.GetExportedTypes().Where(t => t.IsClass && t.Name == tearDownTypeName).ToList();
+            if (!tearDownTypes.Any())
+                EnsureAppDomainInitialization();
 
             var suiteName = test.GetSuiteName();
             var suiteDescriptor = suiteDescriptors.GetOrAdd(suiteName, x => new SuiteDescriptor(suiteName, fixtureType.Assembly));
@@ -193,14 +196,14 @@ namespace GroboContainer.NUnitExtensions.Impl
                 {
                     if (!appDomainIsInitialized)
                     {
-                        AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
+                        AppDomain.CurrentDomain.DomainUnload += (sender, args) => TearDown();
                         appDomainIsInitialized = true;
                     }
                 }
             }
         }
 
-        private static void OnAppDomainUnload()
+        public static void TearDown()
         {
             var suiteDescriptorsInOrderOfDestruction = suiteDescriptors.OrderByDescending(x => x.Value.Order).ToList();
             foreach (var kvp in suiteDescriptorsInOrderOfDestruction)
