@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>GroboContainer.NUnitExtensions</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="GroboContainer" Version="1.2.45" />
-    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
   </ItemGroup>
 
 </Project>

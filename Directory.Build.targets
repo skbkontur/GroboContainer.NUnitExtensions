@@ -9,7 +9,6 @@
 
   <Target Name="SetNuSpecProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion">
     <PropertyGroup>
-      <PackageId>$(AssemblyName)</PackageId>
       <Authors>Andrew Kostousov</Authors>
       <PackageDescription>NUnit extensions simplifying DI-container management in tests</PackageDescription>
       <PackageTags>GroboContainer NUnit</PackageTags>

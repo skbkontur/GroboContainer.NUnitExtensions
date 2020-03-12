@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.x - 2020.03.12
+- Update dependencies
+- Use [SourceLink](https://github.com/dotnet/sourcelink) to help ReSharper decompiler show actual code.
+
 ## v1.0.35 - 2019.11.07
 - Make exception thrown in test method visible to user when exception also occurs in TearDown method
   (PR [#4](https://github.com/skbkontur/GroboContainer.NUnitExtensions/pull/4)).
