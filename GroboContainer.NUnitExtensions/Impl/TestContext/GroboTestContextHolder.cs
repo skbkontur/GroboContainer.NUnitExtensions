@@ -18,11 +18,11 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
             if (!methodContexts.TryGetValue(testId, out var currentMethodContext))
-                throw new InvalidOperationException("TestContext for test with name: {testName}, id: {testId} is not set");
+                throw new InvalidOperationException($"TestContext for test with name: {testName}, id: {testId} is not set");
 
             var suiteName = GetTestMethodInfo().GetSuiteName();
             if (!suiteContexts.TryGetValue(suiteName, out var currentSuiteContext))
-                throw new InvalidOperationException("SuiteContext for test with name: {testName}, id: {testId} is not set");
+                throw new InvalidOperationException($"SuiteContext for test with name: {testName}, id: {testId} is not set");
 
             return new GroboTestContext(testName, currentSuiteContext, currentMethodContext);
         }
@@ -39,13 +39,21 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
         }
 
         [NotNull]
-        public static GroboTestMethodContextData ResetCurrentTestContext()
+        public static GroboTestMethodContextData GetCurrentMethodContext()
         {
             var testName = NUnitTestContext.CurrentContext.Test.FullName;
             var testId = NUnitTestContext.CurrentContext.Test.ID;
-            if (!methodContexts.TryRemove(testId, out var currentMethodContext))
-                throw new InvalidOperationException($"Unable to remove TestContext for test with id: {testId}, name: {testName}");
+            if (!methodContexts.TryGetValue(testId, out var currentMethodContext))
+                throw new InvalidOperationException($"Unable to get TestContext for test with id: {testId}, name: {testName}");
             return currentMethodContext;
+        }
+
+        public static void ResetCurrentMethodContext()
+        {
+            var testName = NUnitTestContext.CurrentContext.Test.FullName;
+            var testId = NUnitTestContext.CurrentContext.Test.ID;
+            if (!methodContexts.TryRemove(testId, out _))
+                throw new InvalidOperationException($"Unable to remove TestContext for test with id: {testId}, name: {testName}");
         }
 
         private static MethodInfo GetTestMethodInfo()
