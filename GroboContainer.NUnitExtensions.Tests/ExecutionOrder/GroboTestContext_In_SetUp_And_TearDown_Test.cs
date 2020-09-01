@@ -26,6 +26,6 @@ namespace GroboContainer.NUnitExtensions.Tests.ExecutionOrder
             GroboTestContext.Current.SuiteName().Should().Be(suiteName);
         }
 
-        private const string suiteName = "GroboTestContextInSetUpAndTearDown_Test";
+        private const string suiteName = "GroboTestContext_In_SetUp_And_TearDown_Test";
     }
 }

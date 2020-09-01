@@ -97,7 +97,7 @@ namespace GroboContainer.NUnitExtensions.Impl
             if (!suiteDescriptors.TryGetValue(suiteName, out var suiteDescriptor))
                 throw new InvalidOperationException($"Suite context is not set for: {suiteName}");
 
-            var methodContext = GroboTestContextHolder.ResetCurrentTestContext();
+            var methodContext = GroboTestContextHolder.GetCurrentMethodContext();
             if (methodContext.IsSetUpped)
             {
                 try
@@ -109,6 +109,8 @@ namespace GroboContainer.NUnitExtensions.Impl
                     errors.Add(exception);
                 }
             }
+
+            GroboTestContextHolder.ResetCurrentMethodContext();
 
             var testName = testDetails.FullName;
             foreach (var methodWrapper in Enumerable.Reverse(test.GetMethodWrappers()))
