@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.42 - 2020.09.02
+- Fix bug: GroboTestContext.Current throws an exception when it uses in GroboTearDown method
+
 ## v1.0.38 - 2020.03.12
 - Update dependencies
 - Use [SourceLink](https://github.com/dotnet/sourcelink) to help ReSharper decompiler show actual code.
