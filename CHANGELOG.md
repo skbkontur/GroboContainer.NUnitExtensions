@@ -1,7 +1,11 @@
 # Changelog
 
+## v1.0.44 - 2021.03.14
+- Update dependencies.
+- Run tests against net5.0 tfm.
+
 ## v1.0.42 - 2020.09.02
-- Fix bug: GroboTestContext.Current throws an exception when it uses in GroboTearDown method
+- Fix bug: GroboTestContext.Current throws an exception when it is used in GroboTearDown method.
 
 ## v1.0.38 - 2020.03.12
 - Update dependencies
