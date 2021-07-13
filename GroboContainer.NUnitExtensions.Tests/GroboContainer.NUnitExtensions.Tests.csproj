@@ -7,9 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
