@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.50 - 2021.07.13
+## v1.0.49 - 2021.07.13
 - Fix Global TearDown behaviour (GroboTestSuite teardowns now work only in .NET Core).
 - Update dependencies.
 
