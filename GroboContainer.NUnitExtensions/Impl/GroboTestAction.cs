@@ -195,7 +195,10 @@ namespace GroboContainer.NUnitExtensions.Impl
                 {
                     if (!appDomainIsInitialized)
                     {
-                        AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
+                        if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+                            AppDomain.CurrentDomain.ProcessExit += (sender, args) => OnAppDomainUnload();
+                        else
+                            AppDomain.CurrentDomain.DomainUnload += (sender, args) => OnAppDomainUnload();
                         appDomainIsInitialized = true;
                     }
                 }
