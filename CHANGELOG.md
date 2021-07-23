@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.54 - 2021.07.23
+- Add support for NUnit OneTimeTearDown instead of relying on DomainUnload event
+
 ## v1.0.49 - 2021.07.13
 - Fix Global TearDown behaviour (GroboTestSuite teardowns now work only in .NET Core).
 - Update dependencies.
