@@ -81,9 +81,9 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static MethodInfo FindSingleMethodMarkedWith<TAttribute>([NotNull] Type fixtureType)
         {
             var methods = fixtureType
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
-                .ToList();
+                          .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                          .Where(x => x.GetCustomAttributes(typeof(TAttribute), true).Any())
+                          .ToList();
             if (methods.Count > 1)
                 throw new InvalidOperationException($"There are multiple methods marked with {typeof(TAttribute).Name} attribute in: {fixtureType.FullName}");
             return methods.SingleOrDefault();
@@ -114,10 +114,10 @@ namespace GroboContainer.NUnitExtensions.Impl
             if (fixtureType == null)
                 return new List<FieldInfo>();
             return fixtureType
-                .GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
-                .Concat(DoGetFieldsForInjection(fixtureType.BaseType))
-                .ToList();
+                   .GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                   .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
+                   .Concat(DoGetFieldsForInjection(fixtureType.BaseType))
+                   .ToList();
         }
 
         [NotNull]
@@ -132,10 +132,10 @@ namespace GroboContainer.NUnitExtensions.Impl
             if (fixtureType == null)
                 return new List<PropertyInfo>();
             return fixtureType
-                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
-                .Concat(DoGetPropertiesForInjection(fixtureType.BaseType))
-                .ToList();
+                   .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                   .Where(x => x.GetCustomAttributes(typeof(InjectedAttribute), false).Any())
+                   .Concat(DoGetPropertiesForInjection(fixtureType.BaseType))
+                   .ToList();
         }
 
         private static bool HasMethodMarkedWithNUnitAttribute([NotNull] Type fixtureType)
@@ -186,10 +186,10 @@ namespace GroboContainer.NUnitExtensions.Impl
             if (type == null)
                 return new List<Type>();
             return new[] {type}
-                .Union(type.GetInterfaces())
-                .Union(GetAllTypesToSearchForAttributes(type.BaseType))
-                .Distinct()
-                .ToList();
+                   .Union(type.GetInterfaces())
+                   .Union(GetAllTypesToSearchForAttributes(type.BaseType))
+                   .Distinct()
+                   .ToList();
         }
 
         [NotNull]

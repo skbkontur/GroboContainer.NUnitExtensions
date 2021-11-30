@@ -14,6 +14,13 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
             Assert.That(PrivatePropertyInBaseClass, Is.Not.Null);
         }
 
+        [Injected]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private IServiceWithNoDependencies PrivatePropertyInBaseClass { get; set; }
+
+        [Injected]
+        protected IServiceWithNoDependencies ProtectedPropertyInBaseClass { get; set; }
+
 #pragma warning disable 649
         [Injected]
         private readonly IServiceWithNoDependencies privateReadonlyFieldInBaseClass;
@@ -22,12 +29,5 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
         [Injected]
         // ReSharper disable once UnassignedReadonlyField
         protected readonly IServiceWithNoDependencies protectedReadonlyFieldInBaseClass;
-
-        [Injected]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private IServiceWithNoDependencies PrivatePropertyInBaseClass { get; set; }
-
-        [Injected]
-        protected IServiceWithNoDependencies ProtectedPropertyInBaseClass { get; set; }
     }
 }

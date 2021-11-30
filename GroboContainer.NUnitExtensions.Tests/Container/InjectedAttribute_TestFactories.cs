@@ -57,11 +57,6 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
 
     public class ServiceWithManyDependencies : IServiceWithManyDependencies
     {
-        private readonly string[] a;
-        private readonly int[] b;
-        private readonly short[] c;
-        private readonly byte[] d;
-
         public ServiceWithManyDependencies(string[] a, int[] b, short[] c, byte[] d)
         {
             this.a = a;
@@ -79,5 +74,10 @@ namespace GroboContainer.NUnitExtensions.Tests.Container
                                         $"d={(d == null ? "null" : string.Join(", ", d))}, " +
                                         $"p={p})");
         }
+
+        private readonly string[] a;
+        private readonly int[] b;
+        private readonly short[] c;
+        private readonly byte[] d;
     }
 }
