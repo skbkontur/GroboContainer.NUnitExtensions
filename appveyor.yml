@@ -45,7 +45,7 @@ test_script:
   - cmd: dotnet jb cleanupcode GroboContainer.NUnitExtensions.sln --profile=CatalogueCleanup --verbosity=WARN
   - cmd: git diff --exit-code
   - cmd: dotnet test --no-build --configuration Release ./GroboContainer.NUnitExtensions.Tests/GroboContainer.NUnitExtensions.Tests.csproj
-  - cmd: dotnet test --no-build --configuration Release --framework net5.0 ./GroboContainer.NUnitExtensions.Tests/GroboContainer.NUnitExtensions.Tests.csproj --filter FullyQualifiedName=GroboContainer.NUnitExtensions.Tests.ExecutionOrder.AfterTestCheck.Test
+  - cmd: dotnet test --no-build --configuration Release --framework net6.0 ./GroboContainer.NUnitExtensions.Tests/GroboContainer.NUnitExtensions.Tests.csproj --filter FullyQualifiedName=GroboContainer.NUnitExtensions.Tests.ExecutionOrder.AfterTestCheck.Test
 
 artifacts:
   - path: './GroboContainer.NUnitExtensions/bin/Release/*.nupkg'
