@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.56 - 2021.11.30
+- Update dependencies.
+
 ## v1.0.54 - 2021.07.23
 - Add support for NUnit OneTimeTearDown instead of relying on DomainUnload event
 
