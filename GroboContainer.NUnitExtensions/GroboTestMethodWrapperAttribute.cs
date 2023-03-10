@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using GroboContainer.NUnitExtensions.Impl.TestContext;
 
-using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GroboContainer.NUnitExtensions
 {
