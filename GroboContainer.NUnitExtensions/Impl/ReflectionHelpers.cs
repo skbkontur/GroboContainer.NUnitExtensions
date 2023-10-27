@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using GroboContainer.NUnitExtensions.Impl.TopologicalSorting;
 
@@ -14,6 +15,22 @@ namespace GroboContainer.NUnitExtensions.Impl
 {
     public static class ReflectionHelpers
     {
+        public static void InvokeWrapperMethod([CanBeNull] MethodInfo wrapperMethod, [NotNull] object testFixture, params object[] @params)
+        {
+            if (wrapperMethod == null)
+                return;
+            try
+            {
+                var result = wrapperMethod.Invoke(testFixture, @params);
+                if (wrapperMethod.ReturnType == typeof(Task))
+                    (result as Task).GetAwaiter().GetResult();
+            }
+            catch (TargetInvocationException exception)
+            {
+                exception.RethrowInnerException();
+            }
+        }
+
         [NotNull]
         public static string GetMethodName([NotNull] this MethodInfo test)
         {
@@ -48,15 +65,15 @@ namespace GroboContainer.NUnitExtensions.Impl
         }
 
         [NotNull]
-        public static List<GroboTestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
+        public static List<TestSuiteWrapperAttribute> GetSuiteWrappers([NotNull] this MethodInfo test)
         {
-            return suiteWrappersForTest.GetOrAdd(test, GetWrappers<GroboTestSuiteWrapperAttribute>);
+            return suiteWrappersForTest.GetOrAdd(test, GetWrappers<TestSuiteWrapperAttribute>);
         }
 
         [NotNull]
-        public static List<GroboTestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
+        public static List<TestMethodWrapperAttribute> GetMethodWrappers([NotNull] this MethodInfo test)
         {
-            return methodWrappersForTest.GetOrAdd(test, GetWrappers<GroboTestMethodWrapperAttribute>);
+            return methodWrappersForTest.GetOrAdd(test, GetWrappers<TestMethodWrapperAttribute>);
         }
 
         [CanBeNull]
@@ -152,7 +169,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static List<TWrapper> GetWrappers<TWrapper>([NotNull] MethodInfo test) where TWrapper : GroboTestWrapperAttribute
         {
             var fixtureType = GetFixtureType(test);
-            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestFixture<GroboTestWrapperAttribute>);
+            var wrappersForFixture = wrappersForFixtureCache.GetOrAdd(fixtureType, GetAttributesForTestSuiteAndFixture<GroboTestWrapperAttribute>);
             var wrappersForMethod = GetAttributesForMethod<TWrapper>(test);
             var visitedWrappers = new HashSet<GroboTestWrapperAttribute>();
             var nodes = new ConcurrentDictionary<GroboTestWrapperAttribute, DependencyNode<GroboTestWrapperAttribute>>();
@@ -162,16 +179,26 @@ namespace GroboContainer.NUnitExtensions.Impl
                 var wrapper = queue.Dequeue();
                 if (!visitedWrappers.Add(wrapper))
                     continue;
-                var node = nodes.GetOrAdd(wrapper, Node.Create);
-                var wrapperDependencies = wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => GetAttributesForType<GroboTestWrapperAttribute>(x).ToList());
-                foreach (var wrapperDependency in wrapperDependencies)
-                {
+                nodes.GetOrAdd(wrapper, Node.Create);
+                foreach (var wrapperDependency in GetWrapperDependencies(wrapper))
                     queue.Enqueue(wrapperDependency);
-                    var nodeDependency = nodes.GetOrAdd(wrapperDependency, Node.Create);
-                    node.DependsOn(nodeDependency);
-                }
             }
+
+            foreach (var wrapper in nodes.Keys)
+            {
+                var staticDeps = GetWrapperDependencies(wrapper).Select(x => nodes[x]);
+                var dynamicDeps = nodes.Where(x => !x.Key.Equals(wrapper) && wrapper.RunAfter(x.Key)).Select(x => x.Value);
+                nodes[wrapper].DependsOn(staticDeps.Concat(dynamicDeps).ToArray());
+            }
+
             return nodes.Values.OrderTopologically().Select(x => x.Payload).OfType<TWrapper>().ToList();
+        }
+
+        [NotNull]
+        private static List<TAttribute> GetAttributesForTestSuiteAndFixture<TAttribute>([NotNull] Type fixtureType)
+        {
+            var suiteAttribute = GetAttributesForTestFixture<GroboTestSuiteAttributeBase>(fixtureType).Single();
+            return GetAttributesForTestFixture<TAttribute>(suiteAttribute.GetType()).Concat(GetAttributesForTestFixture<TAttribute>(fixtureType)).ToList();
         }
 
         [NotNull]
@@ -204,6 +231,11 @@ namespace GroboContainer.NUnitExtensions.Impl
             return type.GetCustomAttributes(typeof(TAttribute), true).Cast<TAttribute>();
         }
 
+        private static List<GroboTestWrapperAttribute> GetWrapperDependencies(GroboTestWrapperAttribute wrapper)
+        {
+            return wrappersForWrapperCache.GetOrAdd(wrapper.GetType(), x => wrapper.DependsOn().ToList());
+        }
+
         private static readonly Type[] forbiddenNunitMethodAttributes =
             {
                 typeof(SetUpAttribute),
@@ -221,7 +253,7 @@ namespace GroboContainer.NUnitExtensions.Impl
         private static readonly ConcurrentDictionary<Type, MethodInfo> tearDownMethods = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>> wrappersForFixtureCache = new ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>>();
         private static readonly ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>> wrappersForWrapperCache = new ConcurrentDictionary<Type, List<GroboTestWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<MethodInfo, List<GroboTestSuiteWrapperAttribute>> suiteWrappersForTest = new ConcurrentDictionary<MethodInfo, List<GroboTestSuiteWrapperAttribute>>();
-        private static readonly ConcurrentDictionary<MethodInfo, List<GroboTestMethodWrapperAttribute>> methodWrappersForTest = new ConcurrentDictionary<MethodInfo, List<GroboTestMethodWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<MethodInfo, List<TestSuiteWrapperAttribute>> suiteWrappersForTest = new ConcurrentDictionary<MethodInfo, List<TestSuiteWrapperAttribute>>();
+        private static readonly ConcurrentDictionary<MethodInfo, List<TestMethodWrapperAttribute>> methodWrappersForTest = new ConcurrentDictionary<MethodInfo, List<TestMethodWrapperAttribute>>();
     }
 }

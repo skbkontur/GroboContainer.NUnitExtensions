@@ -1,23 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+using System.Linq;
 
-using GroboContainer.NUnitExtensions.Impl.TestContext;
-
-using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
+using GroboContainer.NUnitExtensions.Impl;
+using GroboContainer.NUnitExtensions.Impl.SetupAttributes;
 
 namespace GroboContainer.NUnitExtensions
 {
+    [WithGroboContainer]
     [SuppressMessage("ReSharper", "RedundantAttributeUsageProperty")]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = true)]
-    public abstract class GroboTestSuiteWrapperAttribute : GroboTestWrapperAttribute
+    public abstract class GroboTestSuiteWrapperAttribute : TestSuiteWrapperAttribute
     {
-        public virtual void SetUp([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEditableGroboTestContext suiteContext)
+        public override sealed IEnumerable<GroboTestWrapperAttribute> DependsOn()
         {
-        }
-
-        public virtual void TearDown([NotNull] string suiteName, [NotNull] Assembly testAssembly, [NotNull] IEditableGroboTestContext suiteContext)
-        {
+            return GetType().GetCustomAttributes(typeof(GroboTestWrapperAttribute), true).Cast<GroboTestWrapperAttribute>();
         }
     }
 }

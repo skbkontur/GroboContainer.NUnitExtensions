@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using JetBrains.Annotations;
@@ -7,6 +9,16 @@ namespace GroboContainer.NUnitExtensions
 {
     public abstract class GroboTestWrapperAttribute : Attribute, IEquatable<GroboTestWrapperAttribute>
     {
+        public virtual IEnumerable<GroboTestWrapperAttribute> DependsOn()
+        {
+            return Enumerable.Empty<GroboTestWrapperAttribute>();
+        }
+
+        public virtual bool RunAfter(GroboTestWrapperAttribute other)
+        {
+            return false;
+        }
+
         public bool Equals([CanBeNull] GroboTestWrapperAttribute other)
         {
             if (ReferenceEquals(null, other)) return false;

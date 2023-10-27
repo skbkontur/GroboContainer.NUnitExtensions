@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 
 using GroboContainer.Core;
+using GroboContainer.NUnitExtensions.Impl.SetupAttributes;
 
 using JetBrains.Annotations;
 
@@ -12,14 +13,8 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
 {
     public abstract class GroboTestContextData : IEditableGroboTestContext
     {
-        protected GroboTestContextData([NotNull] Lazy<IContainer> lazyContainer)
-        {
-            this.lazyContainer = lazyContainer;
-            items = new ConcurrentDictionary<string, ItemValueHolder>();
-        }
-
         [NotNull]
-        public IContainer Container => lazyContainer.Value;
+        public IContainer Container => this.GetContextItem<Lazy<IContainer>>(WithGroboContainerAttribute.ContainerKey).Value;
 
         public bool TryGetContextItem([NotNull] string itemName, out object itemValue)
         {
@@ -82,8 +77,7 @@ namespace GroboContainer.NUnitExtensions.Impl.TestContext
             return string.Join(Environment.NewLine, items.Select(kvp => $"{kvp.Key}: ({kvp.Value.Order}, {kvp.Value.ItemValue})"));
         }
 
-        private readonly Lazy<IContainer> lazyContainer;
-        private readonly ConcurrentDictionary<string, ItemValueHolder> items;
+        private readonly ConcurrentDictionary<string, ItemValueHolder> items = new ConcurrentDictionary<string, ItemValueHolder>();
 
         private class ItemValueHolder
         {
